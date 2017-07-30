@@ -5,14 +5,14 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import Login from '../view/Login/index.vue'
 import Layout from '../view/Layout/index.vue'
-
+import Student from '../view/Student/index.vue'
 Vue.use(Router);
 const routes = [
     {
         path: "/",
         component: Layout,
         children: [
-
+            {path:"student",component:Student}
         ]
     },
     {
