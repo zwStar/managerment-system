@@ -15,13 +15,29 @@
                             <el-col :span="14" :offset="1"><el-input v-model="form.age" auto-complete="off"></el-input></el-col>
                         </el-row>
                     </el-form-item>
+                    <el-form-item label="教师性别" :label-width="formLabelWidth">
+                        <el-row>
+                            <el-col :span = '14' :offset="1">
+                                <el-select v-model="form.sex" placeholder="请选择性别">
+                                    <el-option
+                                            v-for="item in sex"
+                                            :key="item.value"
+                                            :label="item.label"
+                                            :value="item.value">
+                                    </el-option>
+                                </el-select>
+                            </el-col>
+                        </el-row>
+                    </el-form-item>
                     <el-form-item label="入职日期" :label-width="formLabelWidth">
                         <el-row>
-                            <el-col :span="14" :offset="1"><el-date-picker
-                                    v-model="form.date"
+                            <el-col :span="14" :offset="1">
+                                <el-date-picker
+                                    v-model="form.inductionDate"
                                     type="date"
                                     placeholder="选择日期">
-                            </el-date-picker></el-col>
+                                </el-date-picker>
+                            </el-col>
                         </el-row>
                     </el-form-item>
                     <el-form-item label="添加课程" :label-width="formLabelWidth">
@@ -62,13 +78,12 @@
                     <el-form-item>
                         <el-row :gutter = "12">
                             <el-col :span="3" :offset="8">
-                                <el-button type="info">确认</el-button>
+                                <el-button type="info" @click="confirm()">确认</el-button>
                             </el-col>
                             <el-col :span="3">
                                 <el-button type="danger">取消</el-button>
                             </el-col>
                         </el-row>
-
                     </el-form-item>
                 </el-form>
             </el-dialog>
@@ -76,6 +91,8 @@
     </div>
 </template>
 <script>
+    import {_post} from "../../api/index.js"
+
 export default{
     data(){
         return{
@@ -84,7 +101,8 @@ export default{
             form:{
                 name:'',
                 age:'',
-                date:""
+                inductionDate:"",
+                sex:''
             },
             currentGrade:"",
             currentCourses:"",
@@ -117,7 +135,8 @@ export default{
                         value:'高三',
                         label:'高三'
                     }],
-            coursesTag:[]
+            coursesTag:[],
+            sex:[{ value:'男' , label:'男' },{ value:'女',label:'女'}]
         }
     },
     computed:{
@@ -160,6 +179,23 @@ export default{
     methods:{
         removeCourse:function (index) {
             this.coursesTag.splice(index,1);
+        },
+        confirm(){
+            _post({
+                url:'addTeacher',
+                data:{
+                    name:this.form.name,
+                    age:this.form.age,
+                    sex:this.form.sex,
+                    inductionDate:this.form.inductionDate,
+                }
+            })
+                .then(function (response) {
+
+                })
+                .catch(function (error) {
+
+                })
         }
     }
 }
@@ -180,6 +216,9 @@ export default{
             width: 700px;
             .el-form-item{
                 .el-input{
+                    width: 100%;
+                }
+                .el-select{
                     width: 100%;
                 }
             }
