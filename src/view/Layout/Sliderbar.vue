@@ -26,7 +26,16 @@
 </template>
 
 <script>
-
+export default{
+    methods:{
+        handleOpen(){
+            console.log("open");
+        },
+        handleClose(){
+            console.log("close");
+        }
+    }
+}
 </script>
 
 <style lang="scss" rel="stylesheet/scss" scoped>
