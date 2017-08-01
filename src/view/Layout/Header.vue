@@ -4,7 +4,10 @@
             <span class="el-dropdown-link">{{user}}<i class="el-icon-caret-bottom el-icon--right"></i></span>
             <el-dropdown-menu slot="dropdown">
                 <el-dropdown-item>
-                        <span @click="logout()">退出</span>
+                    <router-link to="userInfo">修改信息</router-link>
+                </el-dropdown-item>
+                <el-dropdown-item>
+                        <span @click="logout()">退出系统</span>
                 </el-dropdown-item>
             </el-dropdown-menu>
         </el-dropdown>
@@ -37,6 +40,13 @@
         background: #20a0ff;
         .el-dropdown {
             float: right;
+        }
+        .el-dropdown-link{
+            display: inline-block;
+            cursor: pointer;
+            font-size:20px;
+            margin-top:10px;
+            margin-right:20px;
         }
     }
 </style>
