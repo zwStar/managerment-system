@@ -4,8 +4,7 @@
             <el-input   icon="search"  placeholder="请输入学生名字"></el-input>
             <span class="addStudnet" @click="dialogVisible=true">新增学生</span>
         </header>
-        <div class="content">
-        </div>
+        <v-table></v-table>
         <el-dialog title="新增学生" :visible.sync="dialogVisible" size="tiny">
             <el-form :model="studentForm" label-width="80px">
                 <el-form-item label="学号">
@@ -36,7 +35,11 @@
 </template>
 
 <script>
+    import vTable from './table.vue'
     export default{
+        components:{
+          vTable
+        },
         data(){
             return {
                 dialogVisible: false,
