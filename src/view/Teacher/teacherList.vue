@@ -188,6 +188,7 @@ export default{
                     age:this.form.age,
                     sex:this.form.sex,
                     inductionDate:this.form.inductionDate,
+                    coursesTag:this.coursesTag
                 }
             })
                 .then(function (response) {
