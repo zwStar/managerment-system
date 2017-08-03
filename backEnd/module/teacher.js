@@ -15,6 +15,10 @@ var teacherSchema = new mongoose.Schema({
     password:{ type:String }
 });
 
+teacherSchema.statics.findCourse = function (data,callback) {
+    
+}
+
 var teacherModel = db.model("teacher",teacherSchema);
 
 module.exports = teacherModel

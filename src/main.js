@@ -7,7 +7,7 @@ import store from './stores'
 Vue.use(Element);
 
 router.beforeEach((to,from,next)=>{
-    if(store.getters.token){
+  /*  if(store.getters.token){
        next();
     }else{
         if(to.path === '/login'){
@@ -15,7 +15,8 @@ router.beforeEach((to,from,next)=>{
         }else{
             next({path:"/login"});
         }
-    }
+    }*/
+    next();
 })
 
 

@@ -12,43 +12,59 @@ router.post("/",function (req,res) {
     var date = new Date(req.body.inductionDate);
     
     new Promise(function (resolve,reject) {
-        
-    })
-    teacher.count({},function (err,count) {
-        if(err){
-            console.log("addTeacher.js===>error")
-            console.log(err);
-        }
-
-        new teacher({
-            workNumber:date.getFullYear().toString() + count.toString(),
-            name:req.body.name,
-            age:req.body.age,
-            sex:req.body.sex,
-            inductionDate:date.getFullYear().toString() + date.getMonth().toString() + date.getDate().toString(),
-            password:md5("123456")
-        }).save(function (err) {
-                if(err){
-                    console.log("*****error in save teacher***********");
-                }
-        })
-
-        teacherCourse.dealWithData(req.body.coursesTag,function (err,courseNo) {
+        teacher.count({},function (err,count) {
             if(err){
-                console.log("*****error in teacherCourse.dealWithData******");
+                console.log("addTeacher.js===>error")
                 console.log(err);
+                reject(err);
             }
 
-            new teacherCourse({
+            new teacher({
                 workNumber:date.getFullYear().toString() + count.toString(),
-                course:courseNo
+                name:req.body.name,
+                age:req.body.age,
+                sex:req.body.sex,
+                inductionDate:date.getFullYear().toString() + date.getMonth().toString() + date.getDate().toString(),
+                password:md5("123456"),
+                unpaidTime:0,
+                paidTime:0
             }).save(function (err) {
                 if(err){
-                    console.log("*****error in save teacherCourse***********");
+                    console.log("*****error in save teacher***********");
+                    reject(err);
                 }
             })
+
+            teacherCourse.dealWithData(req.body.coursesTag,function (err,courseNo) {
+                if(err){
+                    console.log("*****error in teacherCourse.dealWithData******");
+                    console.log(err);
+                    reject(err);
+                }
+
+                new teacherCourse({
+                    workNumber:date.getFullYear().toString() + count.toString(),
+                    course:courseNo
+                }).save(function (err) {
+                    if(err){
+                        console.log("*****error in save teacherCourse***********");
+                        reject(err);
+                    }
+                })
+            });
         });
-    });
+
+        resolve("successful")
+    }).then(function (message) {
+        console.log(message)
+        res.send(message)
+    },function (err) {
+        console.log(err)
+        res.send(err)
+    })
+
+
+
 });
 
 module.exports = router

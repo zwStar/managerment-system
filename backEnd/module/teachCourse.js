@@ -40,7 +40,6 @@ teacherCourseSchema.statics.dealWithData = function (data,callback) {
         }
 
         var promise = new Promise(function (resolve, reject) {
-            console.log(result);
             course.findCourseNo({gradeNo: result[1], courseName: result[2]}, function (err, course) {
                 if (err) {
                     reject(err,null);
@@ -51,7 +50,7 @@ teacherCourseSchema.statics.dealWithData = function (data,callback) {
         })
         promises.push(promise);
     }
-    console.log(promises.length)
+
     Promise.all(promises).then(function (err,courseNo) {
         callback(err,courseNo);
     },function (err) {
