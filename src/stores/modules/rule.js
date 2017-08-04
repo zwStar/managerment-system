@@ -15,10 +15,10 @@ const state = {
         ],
         date:[
             {required:true,message:'请选择日期'}
-        ],
-        course:[
+        ]/*,
+        coursesTag:[
             {required:true,message:'请选择一门课程'}
-        ]
+        ]*/
     }
 }
 

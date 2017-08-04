@@ -9,14 +9,15 @@ var course  = require("../module/course")
 
 router.get("/",function (req,res) {
     /*验证登陆状态*/
-
     teacher.find({},function (err,data) {
         if(err){
             console.log("*******error in getTeacher.js***********");
             console.log(err);
         }
-        teacher.findCourse(data,function () {
-            
+        teacher.findCourse(data,function (data) {
+            res.send(data);
         })
     })
 });
+
+module.exports = router

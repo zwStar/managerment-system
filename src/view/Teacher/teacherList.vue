@@ -60,7 +60,7 @@
                             </el-select></el-col>
                         </el-row>
                     </el-form-item>
-                    <el-form-item label="已选课程" prop="course" :label-width="formLabelWidth">
+                    <el-form-item label="已选课程" prop="coursesTag" :label-width="formLabelWidth">
                         <el-row>
                             <el-col :span="16" :offset="1">
                                 <el-tag
@@ -162,18 +162,7 @@ export default{
                     }],
             coursesTag:[],
             sex:[{ value:'男' , label:'男' },{ value:'女',label:'女'}],
-            teacherList:[
-                {
-                    workNumber:"",
-                    name:"",
-                    age:"",
-                    sex:"",
-                    inductionDate:"",
-                    unpaidTime:"",
-                    paidTime:"",
-                    course:""
-                }
-            ]
+            teacherList:[],
         }
     },
     computed:{
@@ -215,16 +204,11 @@ export default{
     },
     mounted(){
         _get({
-            url:'getTeacherList',
-            data:{
-
-            }
-        })
-            .then(function(){
-
-            })
-            .catch(function(){
-
+            url:'getTeacherList'
+        }).then(function(teacher){
+                this.teacherList = teacher;
+            }).catch(function(err){
+                console.log(err);
             })
     },
     methods:{
