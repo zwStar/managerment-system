@@ -7,15 +7,16 @@ import store from './stores'
 Vue.use(Element);
 
 router.beforeEach((to,from,next)=>{
-    if(store.getters.token){
-       next();
-    }else{
-        if(to.path === '/login'){
-            next();
-        }else{
-            next({path:"/login"});
-        }
-    }
+    // if(store.getters.token){
+    //    next();
+    // }else{
+    //     if(to.path === '/login'){
+    //         next();
+    //     }else{
+    //         next({path:"/login"});
+    //     }
+    // }
+    next();
 })
 
 
