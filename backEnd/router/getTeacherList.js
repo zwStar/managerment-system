@@ -14,8 +14,13 @@ router.get("/",function (req,res) {
             console.log("*******error in getTeacher.js***********");
             console.log(err);
         }
-        teacher.findCourse(data,function (data) {
-            res.send(data);
+        teacher.findCourse(data,function (err,data) {
+            if(err){
+                res.send(err);
+            }else{
+                res.send(data);
+            }
+
         })
     })
 });

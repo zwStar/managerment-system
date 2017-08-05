@@ -36,9 +36,8 @@ teacherSchema.statics.findCourse = function (data,callback) {
     Promise.all(promises).then(function(course){
         var d = 0;
         for( var i = 0 ; i < data.length ; i++ ){
-            console.log(course);
-            for(var k = 0 ; k < data[i].course[k].length ; k++ ){
-                data[i].course[k] = course[d].gradeNo + course[d].courseName;
+            for(var k = 0 ; k < data[i].course.length ; k++ ){
+                data[i].course[k] = course[d][0].gradeNo + course[d][0].courseName;
                 d++;
             }
         }
