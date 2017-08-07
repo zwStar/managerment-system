@@ -1,21 +1,21 @@
 <template>
-    <div class="teacherList">
+    <div id="teacherList">
         <div class="header">
             <el-input  icon="search" placeholder="请输入教师工号"  class="seach"></el-input>
-            <el-button icon="plus" @click="addTeacherForm = true" class="add">新增教师</el-button>
-            <el-dialog title="新增教师" :visible.sync="addTeacherForm">
-                <el-form :model="form">
-                    <el-form-item label="教师姓名" :label-width="formLabelWidth">
+            <el-button icon="plus" @click="showInputForm = true" class="add">新增教师</el-button>
+            <el-dialog title="新增教师" :visible.sync="showInputForm">
+                <el-form :model="form" ref="form" :rules="this.$store.state.rule.rules">
+                    <el-form-item label="教师姓名" prop="name" :label-width="formLabelWidth" >
                         <el-row>
-                            <el-col :span="14" :offset="1"><el-input v-model="form.name" auto-complete="off"></el-input></el-col>
+                            <el-col :span="14" :offset="1"><el-input v-model="form.name" auto-complete="off" ></el-input></el-col>
                         </el-row>
                     </el-form-item>
-                    <el-form-item label="教师年龄" :label-width="formLabelWidth">
+                    <el-form-item label="教师年龄" prop="age" :label-width="formLabelWidth">
                         <el-row>
                             <el-col :span="14" :offset="1"><el-input v-model="form.age" auto-complete="off"></el-input></el-col>
                         </el-row>
                     </el-form-item>
-                    <el-form-item label="教师性别" :label-width="formLabelWidth">
+                    <el-form-item label="教师性别" prop="sex" :label-width="formLabelWidth">
                         <el-row>
                             <el-col :span = '14' :offset="1">
                                 <el-select v-model="form.sex" placeholder="请选择性别">
@@ -29,11 +29,11 @@
                             </el-col>
                         </el-row>
                     </el-form-item>
-                    <el-form-item label="入职日期" :label-width="formLabelWidth">
+                    <el-form-item label="入职日期" prop="date" :label-width="formLabelWidth">
                         <el-row>
                             <el-col :span="14" :offset="1">
                                 <el-date-picker
-                                    v-model="form.inductionDate"
+                                    v-model="form.date"
                                     type="date"
                                     placeholder="选择日期">
                                 </el-date-picker>
@@ -60,7 +60,7 @@
                             </el-select></el-col>
                         </el-row>
                     </el-form-item>
-                    <el-form-item label="已选课程"  :label-width="formLabelWidth">
+                    <el-form-item label="已选课程" prop="coursesTag" :label-width="formLabelWidth">
                         <el-row>
                             <el-col :span="16" :offset="1">
                                 <el-tag
@@ -88,20 +88,44 @@
                 </el-form>
             </el-dialog>
         </div>
+        <div class="teacherList">
+            <el-table
+                    v-if="1"
+                    strip="true"
+                    :data="teacherList"
+                    :default-sort = "{prop: 'workNumber', order: '1'}"
+                    highlight-current-row
+                    @current-change="">
+                <el-table-column property="workNumber" label="工号" width="100px"></el-table-column>
+                <el-table-column property="name" label="姓名" width="100px"></el-table-column>
+                <el-table-column property="sex" label="性别" width="100px"></el-table-column>
+                <el-table-column property="age" label="年龄" width="100px"></el-table-column>
+                <el-table-column property="inductionDate" label="入职日期" width="100px"></el-table-column>
+                <el-table-column property="unpaidTime" label="未结课时" width="100px"></el-table-column>
+                <el-table-column property="paidTime" label="已结课时" width="100px"></el-table-column>
+                <el-table-column property="course"  label="课程" width="448px"></el-table-column>
+                <el-table-column label="操作" width="150px">
+                    <el-button type="text">编辑</el-button>
+                    <el-button type="text">删除</el-button>
+                </el-table-column>
+            </el-table>
+        </div>
+
     </div>
+
 </template>
 <script>
-    import {_post} from "../../api/index.js"
+    import { _post,_get } from "../../api/index.js"
 
 export default{
     data(){
         return{
-            addTeacherForm:false,
+            showInputForm:false,
             formLabelWidth:'140px',
             form:{
                 name:'',
                 age:'',
-                inductionDate:"",
+                date:"",
                 sex:''
             },
             currentGrade:"",
@@ -136,7 +160,8 @@ export default{
                         label:'高三'
                     }],
             coursesTag:[],
-            sex:[{ value:'男' , label:'男' },{ value:'女',label:'女'}]
+            sex:[{ value:'男' , label:'男' },{ value:'女',label:'女'}],
+            teacherList:[],
         }
     },
     computed:{
@@ -176,32 +201,56 @@ export default{
             this.currentCourses = '';
         }
     },
+    mounted(){
+        this.updateTable();
+    },
     methods:{
         removeCourse:function (index) {
             this.coursesTag.splice(index,1);
         },
         confirm(){
-            _post({
-                url:'addTeacher',
-                data:{
-                    name:this.form.name,
-                    age:this.form.age,
-                    sex:this.form.sex,
-                    inductionDate:this.form.inductionDate,
+            var _this = this;
+            this.$refs.form.validate(function (result) {
+                if(result){
+                    _post({
+                        url:'addTeacher',
+                        data:{
+                            name:this.form.name,
+                            age:this.form.age,
+                            sex:this.form.sex,
+                            inductionDate:this.form.date,
+                            coursesTag:this.coursesTag
+                        }
+                    })
+                        .then(function (response) {
+                            _this.showInputForm = false;
+                        })
+                        .catch(function (error) {
+                            console.log(err);
+                        })
                 }
+            }.bind(this))
+
+        },
+        updateTable(){
+            var _this = this;
+            _get({
+                url:'getTeacherList'
+            }).then(function(teacher){
+                _this.teacherList = teacher.data;
+                console.log(_this.teacherList[0].course);
+                for( var i = 0 ; i < _this.teacherList.length ; i++ ){
+                    _this.teacherList[i].course = _this.teacherList[i].course.join(",");
+                }
+            }).catch(function(err){
+                console.log(err);
             })
-                .then(function (response) {
-
-                })
-                .catch(function (error) {
-
-                })
         }
     }
 }
 </script>
 <style lang="scss" rel="stylesheet/scss">
-.teacherList{
+#teacherList{
     .header{
         text-align: center;
         margin-top: 20px;
@@ -223,6 +272,10 @@ export default{
                 }
             }
         }
+    }
+    .teacherList{
+        width: 1300px;
+        margin: auto;
     }
 }
 </style>
