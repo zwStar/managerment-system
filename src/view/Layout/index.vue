@@ -25,7 +25,7 @@
 <style lang="scss" rel="stylesheet/scss" scoped>
 .main{
     width: calc(100% - 300px);
-    margin-left:300px;
     padding-top:80px;
+    display:inline-block;
 }
 </style>

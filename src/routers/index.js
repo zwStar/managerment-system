@@ -5,6 +5,8 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import Login from '../view/Login/index.vue'
 import Layout from '../view/Layout/index.vue'
+import UserInfo from '../view/Layout/UserInfo.vue'
+import Course from '../view/Course/index.vue'
 
 import teacherList from '../view/Teacher/teacherList.vue'
 
@@ -24,7 +26,9 @@ const routes = [
                 component:teacherList
             },
 
-            {path:"student",component:Student}
+            {path:"student",component:Student},
+            {path:"userInfo",component:UserInfo},
+            {path:"course",component:Course}
 
         ]
     },

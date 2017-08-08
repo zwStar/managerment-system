@@ -21,7 +21,6 @@
         name: 'login',
         data(){
             let validatePass = (rule, value, callback) => {
-                console.log(value);
                 if (value.length < 6) {
                     callback(new Error('密码不能小于6位'));
                 } else {
@@ -49,8 +48,8 @@
                             url:"user/login",           //请求登录接口
                             data:_this.loginForm
                         }).then((results)=>{
-                            _this.$store.dispatch("LoginSuccess",results.data);
                             localStorage.setItem('name', _this.loginForm.name);   //把邮箱号保存到localStorage
+                            _this.$store.dispatch("LoginSuccess",results.data);
                             _this.$router.push({path:"/"});    //路由跳转到首页
                         }).catch((err)=>{
                             console.log(err);
