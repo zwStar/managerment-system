@@ -22,6 +22,7 @@ app.use('/', function (req, res, next) {
 
 app.use("/addTeacher",require("./router/addTeacher"));
 app.use("/getTeacherList",require("./router/getTeacherList"))
+app.use("/teacherLogin",require("./router/teacherLogin"))
 
 
 const port = process.env.PORT || 3000;
