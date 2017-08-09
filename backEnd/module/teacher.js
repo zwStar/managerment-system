@@ -47,8 +47,8 @@ teacherSchema.statics.findCourse = function (data,callback) {
     })
 }
 
-teacherSchema.statics.getTeacherInfo = function (workNumber,callback) {
-    this.find({workNumber:workNumber},function (error,teacher) {
+teacherSchema.statics.getTeacherInfo = function (data,callback) {
+    this.find(data,function (error,teacher) {
         if(error){
             callback(error,null);
         }else{

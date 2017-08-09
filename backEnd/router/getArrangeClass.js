@@ -3,12 +3,12 @@
  */
 var express = require("express");
 var router = express.Router();
-var teacher = require("../module/teacher");
+
+var arrangeClass = require("../module/arrangeClass");
 
 router.get("/",function (req,res) {
-    /*登陆*/
 
-    teacher.getTeacherInfo({workNumber:req.workNumber},function (error,data) {
+    arrangeClass.findArrangeClass({workNumber:req.workNumber},function (error,data) {
         if(error){
             res.send(error);
         }else{
@@ -16,6 +16,7 @@ router.get("/",function (req,res) {
         }
     })
 
-})
+});
+
 
 module.exports = router;
