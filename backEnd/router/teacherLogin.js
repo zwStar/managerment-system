@@ -12,7 +12,7 @@ router.post("/",function (req,res) {
 
     //登陆
 
-    res.send();
+    res.send(token);
 });
 
 module.exports =router;
