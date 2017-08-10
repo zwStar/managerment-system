@@ -47,6 +47,17 @@ teacherSchema.statics.findCourse = function (data,callback) {
     })
 }
 
+teacherSchema.statics.getTeacherInfo = function (data,callback) {
+    this.find(data,function (error,teacher) {
+        if(error){
+            callback(error,null);
+        }else{
+            delete teacher[0].password;
+            callback(null,teacher[0]);
+        }
+    })
+}
+
 var teacherModel = db.model("teacher",teacherSchema);
 
 module.exports = teacherModel
