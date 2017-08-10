@@ -1,14 +1,14 @@
 <template>
     <div class="addCourse">
         <el-form>
-            <el-row>
-                <el-col :span="4">
+            <el-row :gutter="20">
+                <el-col :span="3">
                     <el-form-item>
                         <el-input placeholder="请输入学号"></el-input>
                     </el-form-item>
                 </el-col>
 
-                <el-col :span="4">
+                <el-col :span="3">
                     <el-form-item>
                         <el-select v-model="grade" placeholder="请选择年级">
                             <el-option v-for="item in gradeOptions" :key="item" :label="item" :value="item">
@@ -17,7 +17,7 @@
                     </el-form-item>
                 </el-col>
 
-                <el-col :span="4">
+                <el-col :span="3">
                     <el-form-item>
                         <el-select v-model="course" placeholder="请选择课程">
                             <el-option v-for="item in courseOptions" :key="item" :label="item" :value="item">
@@ -26,14 +26,14 @@
                     </el-form-item>
                 </el-col>
 
-                <el-col :span="4">
+                <el-col :span="5">
                     <el-form-item>
                         <el-date-picker v-model='startTime' type="datetime" placeholder="选择日期时间">
                         </el-date-picker>
                     </el-form-item>
                 </el-col>
 
-                <el-col :span="4">
+                <el-col :span="3">
                     <el-form-item>
                         <el-select v-model="courseNumber" placeholder="请选择课时数">
                             <el-option v-for="item in courseNumberOptions" :key="item" :label="item" :value="item">
@@ -42,12 +42,18 @@
                     </el-form-item>
                 </el-col>
 
-                <el-col :span="4">
+                <el-col :span="3">
                     <el-form-item>
                         <el-select v-model="teacher" placeholder="请选择教师">
-                            <el-option v-for="item in teacherOptions" :key="item" :label="item" :value="item">
+                            <el-option v-for="item in teacherOptions" :key="item.workNumber" :label="item.name" :value="item.workNumber">
                             </el-option>
                         </el-select>
+                    </el-form-item>
+                </el-col>
+
+                <el-col :span="3">
+                    <el-form-item>
+                        <el-button type="info" @click="onSubmit()">提交</el-button>
                     </el-form-item>
                 </el-col>
             </el-row>
@@ -61,15 +67,20 @@
     export default{
         data(){
             return {
-                gradeOptions: ['初一', '初二', '高一', '高二'],
+                gradeOptions: ['五年级', '初一', '初二', '高一', '高二'],
                 grade: '',
                 course: "",
-                teacherOptions: ["请先填写前面信息"],
+                teacherOptions: [
+                    {
+                        name: "请先填写前面信息",
+                        workNumber: ""
+                    }
+                ],
                 teacher: "",
                 startTime: "",
                 courseNumberOptions: [1, 2, 3, 4, 5],
                 courseNumber: "",
-                courseHour:45
+                courseHour: 45
             }
         },
         computed: {
@@ -81,7 +92,7 @@
             },
             endTime(){
                 let date = this.startTime.getTime();
-                let add = this.courseHour * 60 * 1000;
+                let add = this.courseNumber * this.courseHour * 60 * 1000;
                 return new Date(date + add);
             }
         },
@@ -90,19 +101,30 @@
                 if (this.courseNumber !== "" && this.course !== "" && this.grade !== "" && this.startTime !== "") {
                     const _this = this;
                     api._get({
-                        url: "user/teacherOptions",
+                        url: "course/teacherOptions",
                         data: {
                             grade: _this.grade,
                             course: _this.course,
-                            startTime:_this.startTime,
-                            endTime:_this.endTime
+                            startTime: _this.startTime,
+                            endTime: _this.endTime
                         }
                     }).then((results) => {
                         console.log(results)
+                        let result = results.data;
+                        _this.teacherOptions = [];
+                       _this.teacherOptions = result.data;
                     }, (error) => {
                         console.log(error)
                     })
                 }
+            }
+        },
+        methods:{
+            onSubmit(){
+
+            },
+            resetForm(formName) {
+                this.$refs[formName].resetFields();
             }
         }
     }
