@@ -58,6 +58,10 @@ teacherSchema.statics.getTeacherInfo = function (data,callback) {
     })
 }
 
+teacherSchema.statics.getName = function (data,callback) {
+    
+}
+
 var teacherModel = db.model("teacher",teacherSchema);
 
 module.exports = teacherModel
