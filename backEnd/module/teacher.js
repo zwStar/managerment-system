@@ -53,6 +53,7 @@ teacherSchema.statics.getTeacherInfo = function (data,callback) {
         if(error){
             callback(error,null);
         }else{
+
             delete teacher[0].password;
             callback(null,teacher[0]);
         }
