@@ -2,17 +2,21 @@
  * Created by Administrator on 2017/8/8.
  */
 var express = require("express");
-var Router = express.Router();
+var router = express.Router();
 
 var md5 =require("../module/md5");
 
+var teacher = require("../module/teacher");
+
 router.post("/",function (req,res) {
-    var userName = req.body.userName;
-    var password = md5(req.body.password);
+    teacher.login(req,res)
+})
 
-    //登陆
 
-    res.send(token);
-});
+
+
+
+
+
 
 module.exports =router;

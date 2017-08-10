@@ -4,11 +4,15 @@
 var express = require("express");
 var router = express.Router();
 
-var arrangeClass = require("../module/arrangeClass");
+import Model from '../module'
+
+let StudentModel = Model.admin.StudentModel;
+
+var courseArrangedModel = require("../module/admin").CourseArrangedModel;
 
 router.get("/",function (req,res) {
 
-    arrangeClass.findArrangeClass({workNumber:req.workNumber},function (error,data) {
+    courseArrangedModel.findArrangeClass({workNumber:req.workNumber},function (error,data) {
         if(error){
             res.send(error);
         }else{

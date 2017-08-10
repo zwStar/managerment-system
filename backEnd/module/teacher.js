@@ -2,8 +2,9 @@
  * Created by Administrator on 2017/7/31.
  */
 var mongoose = require("mongoose");
-var db = require("./db.js")
+var db =require("./db.js")
 var course = require("./course.js")
+import $ from '../utils'
 
 var teacherSchema = new mongoose.Schema({
     workNumber:{ type:String },
@@ -61,6 +62,21 @@ teacherSchema.statics.getTeacherInfo = function (data,callback) {
 teacherSchema.statics.getName = function (data,callback) {
     
 }
+
+teacherSchema.statics.login = function (req, res, next) {     //注册
+
+    let LoginPromise = this.find({"workNumber": req.body.workNumber, "password": $.md5(req.body.password)});    //返回一个promise对象
+    LoginPromise.then((documents) => {
+        if (!documents) {                        //如果为空 登录失败 返回login failed
+
+            return $.result(res, 'login failed');
+        }
+        //登录成功
+        console.log(documents);
+        let workNumber = documents.workNumber;
+        return $.result(res, {success: true, "message": "登录成功", workNumber: workNumber, token: $.createToken(workNumber)});           //返回
+    })
+};
 
 var teacherModel = db.model("teacher",teacherSchema);
 

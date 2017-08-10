@@ -1,9 +1,13 @@
 /**
  * Created by Administrator on 2017/7/31.
  */
+require('babel-core/register');
+require("babel-polyfill");
+
 const express = require("express")
 const bodyParser = require("body-parser")
 const app = express()
+const routers = require("./router").default;
 
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({extended:false}))
@@ -26,7 +30,10 @@ app.use("/teacherLogin",require("./router/teacherLogin"));
 app.use("/getTeacherInfo",require("./router/getTeacherInfo"));
 app.use("/getArrangeClass",require("./router/getArrangeClass"));
 
+app.use('/user',routers.admin);    //请求路由
+app.use('/course',routers.course);  //课程相关操作路由
 
+var db = require("./module/db.js")
 const port = process.env.PORT || 3000;
 app.listen(port,()=>{
     console.log(`server running @${port} `);

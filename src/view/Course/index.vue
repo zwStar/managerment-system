@@ -4,7 +4,7 @@
             <el-row :gutter="20">
                 <el-col :span="3">
                     <el-form-item>
-                        <el-input placeholder="请输入学号"></el-input>
+                        <el-input @blur="getGrade()" placeholder="请输入学号"></el-input>
                     </el-form-item>
                 </el-col>
 
@@ -125,6 +125,10 @@
             },
             resetForm(formName) {
                 this.$refs[formName].resetFields();
+            },
+            getGrade(){         //输入学号后获取数据
+                console.log("aaa");
+                api._get()
             }
         }
     }
