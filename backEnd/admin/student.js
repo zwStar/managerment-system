@@ -11,6 +11,27 @@ let StudentAPI = new Base({
    model:StudentModel
 });
 
-
+StudentAPI.methods.getNamesBySnoOneTime = function (data,callback) {//通过多个学号一次获取多个学生姓名
+    var promises = [];
+    for( var i = 0 ; i < data.length ; i++ ){
+        promises.push(new Promise(function (resolve,reject) {
+            StudentModel.findOne({sno:data[i].sno},"name",function (error,student) {
+                if(error)
+                    reject(error);
+                else
+                    resolve(student.name)
+            })
+        }))
+    }
+    Promise.all(promises).then(function (student) {
+        for(var i = 0 ; i < result.length ; i++ ){
+            delete data[i].sno;
+            data[i].studentName = data[i];
+        }
+        callback(null,data);
+    },function (error) {
+       callback(error,null);
+    })
+}
 
 export default StudentAPI.methods;

@@ -1,0 +1,53 @@
+/**
+ * Created by Administrator on 2017/8/11.
+ */
+import Base from './base'
+import Models from '../module'
+import student from "./student"
+import course from '../module/course'
+
+const CourseArrangedModel = Models.admin.CourseArrangedModel;
+const StudentModel = Model.admin.StudentModel;
+import $ from '../utils'
+
+let CourseArrangedAPI = new Base({
+    model: CourseArrangedModel
+});
+
+CourseArrangedAPI.methods.findArrangeClass = function (data,callback) {
+    CourseArrangedModel.find(data,function (error,result) {
+        if(error)
+            callback(error,null);
+        else{
+            new Promise((response,reject)=>{
+                student.getNamesBySnoOneTime(data,function (error,data) { //获取所有排课记录中的学生姓名，将其添加到数据库返回的记录中
+                    if(error)
+                        reject(error);
+                    else
+                        resolve(data);
+                })
+                    .then(function (data) {
+                        result = data;
+                        return new Promise((response,reject) =>{
+                            course.getCourseNamesOneTime(result,function (error,data) {
+                                if(error)
+                                    reject(error);
+                                else
+                                    resolve(result);
+                            })
+                        })//获取所有排课记录中的课程名，将其添加到数据库返回记录中
+                    },function (error) {
+                        callback(error,null);
+                    })
+                    .then(function (data) {
+                        callback(null,data);
+                    },function (error) {
+                        callback(error,null);
+                    })
+            })
+
+        }
+    })
+}
+
+export default CourseArrangedAPI.methods;

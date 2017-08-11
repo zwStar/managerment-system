@@ -3,8 +3,10 @@
  */
 import User from './user'
 import Student from './student'
+import courseArranged from "./courseArranged"
 
 export default {
     User,
-    Student
+    Student,
+    courseArranged
 }

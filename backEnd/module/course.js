@@ -180,6 +180,28 @@ courseSchema.statics.findCourseNo = function (data,callback) {
      this.find(data,callback)
 }
 
+courseSchema.statics.getCourseNamesOneTime = function (data,callback) { //通过多个课程号一次获取多个课程名
+    var promises = [];
+    for(var i = 0 ; i < data.length ; i++ ){
+        promises.push(new Promise(function (resolve,reject) {
+            this.findOne({courseNo:data[i].courseNo},function (error,course) {
+                if(error)
+                    reject(error);
+                else
+                    resolve(course.courseName);
+            })
+        }))
+    }
+    promises.all(promises).then(function (course) {
+        for(var i = 0 ; i < data.length ; i++ ){
+            delete data[i].courseNo;
+            data[i].courseName = course[i];
+        }
+        callback(null,data);
+    },function (error) {
+        callback(error,null);
+    })
+}
 
 var courseModel = mongoose.model("course",courseSchema);
 

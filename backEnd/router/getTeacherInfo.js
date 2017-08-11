@@ -11,7 +11,6 @@ router.get("/",function (req,res) {
         if(error){
             res.send(error);
         }else{
-            console.log(data)
             res.send(data);
         }
     })
