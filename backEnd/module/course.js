@@ -43,7 +43,7 @@ courseSchema.statics.dealWithData = function (data,callback) {
 
         var _this = this;
         var promise = new Promise(function (resolve, reject) {
-            _this.find({gradeNo: result[1], courseName: result[2]}, function (err, course) {
+            _this.find ({gradeNo: result[1], courseName: result[2]}, function (err, course) {
                 if (err) {
                     reject(err);
                 }else{
@@ -118,7 +118,7 @@ courseSchema.statics.teacherOptions = function (req, res, next) {
         }
     });
 }
-courseSchema.statics.findArrangeClass = function(data,callback){
+/* courseSchema.statics.findArrangeClass = function(data,callback){
 
     CourseArrangedModel.find(data,null,{sort:[["beginTime",1]]},function (error,result) {
         if(error)
@@ -163,7 +163,7 @@ courseSchema.statics.findArrangeClass = function(data,callback){
 
         })
 
-}
+} */
 
 //筛选出年纪
 courseSchema.statics.findGrade = function(req,res,next){
@@ -182,23 +182,25 @@ courseSchema.statics.findCourseNo = function (data,callback) {
 
 courseSchema.statics.getCourseNamesOneTime = function (data,callback) { //通过多个课程号一次获取多个课程名
     var promises = [];
+    var _this = this;
     for(var i = 0 ; i < data.length ; i++ ){
         promises.push(new Promise(function (resolve,reject) {
-            this.findOne({courseNo:data[i].courseNo},function (error,course) {
+            _this.find({courseNo:data[i].courseNo},function (error,course) {
                 if(error)
                     reject(error);
                 else
-                    resolve(course.courseName);
-            })
+                    resolve(course[0].courseName);
+            }) 
         }))
     }
-    promises.all(promises).then(function (course) {
+    promises[0].then(function(course){
         for(var i = 0 ; i < data.length ; i++ ){
             delete data[i].courseNo;
             data[i].courseName = course[i];
         }
         callback(null,data);
-    },function (error) {
+    },function(error) {
+        console.log(error);
         callback(error,null);
     })
 }

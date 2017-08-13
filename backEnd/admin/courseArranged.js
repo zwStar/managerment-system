@@ -6,8 +6,10 @@ import Models from '../module'
 import student from "./student"
 import course from '../module/course'
 
-const CourseArrangedModel = Models.admin.CourseArrangedModel;
-const StudentModel = Model.admin.StudentModel;
+/* const CourseArrangedModel = Models.admin.CourseArrangedModel; */
+const CourseArrangedModel = require("../module/courseArrange");
+
+const StudentModel = Models.admin.StudentModel;
 import $ from '../utils'
 
 let CourseArrangedAPI = new Base({
@@ -15,27 +17,66 @@ let CourseArrangedAPI = new Base({
 });
 
 CourseArrangedAPI.methods.findArrangeClass = function (data,callback) {
+    
+    /* CourseArrangedModel.all(data).then(function(result){
+        new Promise((resolve,reject)=>{
+            
+            student.getNamesBySnoOneTime(data,function (error,data) { //获取所有排课记录中的学生姓名，将其添加到数据库返回的记录中
+                if(error)
+                    reject(error);
+                else
+                    resolve(data);
+            })
+        }).then(function (data) {
+                    result = data;
+                    console.log(data);
+                    return new Promise((response,reject) =>{
+                        course.getCourseNamesOneTime(result,function (error,data) {
+                            if(error)
+                                reject(error);
+                            else
+                                resolve(result);
+                        })
+                    })//获取所有排课记录中的课程名，将其添加到数据库返回记录中
+                },function (error) {
+                    callback(error,null);
+                })
+                .then(function (data) {
+                    callback(null,data);
+                },function (error) {
+                    callback(error,null);
+                })
+        
+    },function(error){
+        callback(error,null)
+    }) */
+
     CourseArrangedModel.find(data,function (error,result) {
         if(error)
             callback(error,null);
         else{
-            new Promise((response,reject)=>{
-                student.getNamesBySnoOneTime(data,function (error,data) { //获取所有排课记录中的学生姓名，将其添加到数据库返回的记录中
+            new Promise((resolve,reject)=>{
+                
+                student.getNamesBySnoOneTime(result,function (error,data) { //获取所有排课记录中的学生姓名，将其添加到数据库返回的记录中
                     if(error)
                         reject(error);
                     else
                         resolve(data);
                 })
-                    .then(function (data) {
-                        result = data;
+            }).then(function (data) {
+                        for( var i = 0 ; i < result.length ; i++ ){
+                            delete result[i].sno;
+                            result[i].studentName = data[i];
+                        }
+                        //result = data;
                         return new Promise((response,reject) =>{
-                            course.getCourseNamesOneTime(result,function (error,data) {
+                            course.getCourseNamesOneTime(result,function (error,data) {//获取所有排课记录中的课程名，将其添加到数据库返回记录中
                                 if(error)
                                     reject(error);
                                 else
                                     resolve(result);
                             })
-                        })//获取所有排课记录中的课程名，将其添加到数据库返回记录中
+                        })
                     },function (error) {
                         callback(error,null);
                     })
@@ -44,9 +85,7 @@ CourseArrangedAPI.methods.findArrangeClass = function (data,callback) {
                     },function (error) {
                         callback(error,null);
                     })
-            })
-
-        }
+            }
     })
 }
 

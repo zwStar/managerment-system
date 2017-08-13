@@ -5,7 +5,8 @@ import Model from '../module'
 
 import Base from './base'
 
-let StudentModel = Model.admin.StudentModel;
+/* let StudentModel = Model.admin.StudentModel; */
+let StudentModel = require("../module/student")
 
 let StudentAPI = new Base({
    model:StudentModel
@@ -24,13 +25,13 @@ StudentAPI.methods.getNamesBySnoOneTime = function (data,callback) {//通过多�
         }))
     }
     Promise.all(promises).then(function (student) {
-        for(var i = 0 ; i < result.length ; i++ ){
-            delete data[i].sno;
-            data[i].studentName = data[i];
+        for(var i = 0 ; i < student.length ; i++ ){
+            //delete data[i].sno;
+            data[i].studentName = student[i];
         }
-        callback(null,data);
+        callback(null,student);
     },function (error) {
-       callback(error,null);
+        callback(error,null);
     })
 }
 
