@@ -25,10 +25,10 @@ StudentAPI.methods.getNamesBySnoOneTime = function (data,callback) {//通过多�
         }))
     }
     Promise.all(promises).then(function (student) {
-        for(var i = 0 ; i < student.length ; i++ ){
-            //delete data[i].sno;
+        /* for(var i = 0 ; i < student.length ; i++ ){
+            delete data[i].sno;
             data[i].studentName = student[i];
-        }
+        } */
         callback(null,student);
     },function (error) {
         callback(error,null);

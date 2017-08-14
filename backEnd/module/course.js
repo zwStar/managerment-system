@@ -2,6 +2,7 @@
  * Created by Administrator on 2017/8/1.
  */
 var mongoose = require("mongoose");
+var db =require("./db.js")
 import Model from '../module'
 let CourseArrangedModel = Model.admin.CourseArrangedModel;  //课程安排表
 let StudentModel = Model.admin.StudentModel;
@@ -183,28 +184,29 @@ courseSchema.statics.findCourseNo = function (data,callback) {
 courseSchema.statics.getCourseNamesOneTime = function (data,callback) { //通过多个课程号一次获取多个课程名
     var promises = [];
     var _this = this;
+
     for(var i = 0 ; i < data.length ; i++ ){
         promises.push(new Promise(function (resolve,reject) {
-            _this.find({courseNo:data[i].courseNo},function (error,course) {
+            _this.findOne({courseNo:data[i].courseNo},function (error,course) {
                 if(error)
                     reject(error);
                 else
-                    resolve(course[0].courseName);
+                    resolve(course.gradeNo + course.courseName);
             }) 
         }))
     }
-    promises[0].then(function(course){
+    
+    Promise.all(promises).then(function(course){
         for(var i = 0 ; i < data.length ; i++ ){
             delete data[i].courseNo;
             data[i].courseName = course[i];
         }
-        callback(null,data);
+        callback(null,course);
     },function(error) {
-        console.log(error);
         callback(error,null);
     })
 }
 
-var courseModel = mongoose.model("course",courseSchema);
+var courseModel = db.model("course",courseSchema);
 
 module.exports = courseModel
