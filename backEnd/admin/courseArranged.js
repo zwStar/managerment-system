@@ -57,32 +57,34 @@ CourseArrangedAPI.methods.findArrangeClass = function (data,callback) {
         else{
             new Promise((resolve,reject)=>{
                 
-                student.getNamesBySnoOneTime(result,function (error,student) { //获取所有排课记录中的学生姓名，将其添加到数据库返回的记录中
+                student.getNamesBySnoOneTime(result,function (error,data) { //获取所有排课记录中的学生姓名，将其添加到数据库返回的记录中
                     if(error)
                         reject(error);
                     else
-                        resolve(student);
+                        resolve(data);
                 })
-            }).then(function (student) {
-                        for( var i = 0 ; i < student.length ; i++ ){
+            }).then(function (data) {
+                        result = data;
+                        /* for( var i = 0 ; i < student.length ; i++ ){
                             delete result[i].sno;
                             result[i].studentName = student[i];
-                        }
+                        } */
                         return new Promise((resolve,reject) =>{
-                            course.getCourseNamesOneTime(result,function (error,course) {//获取所有排课记录中的课程名，将其添加到数据库返回记录中
+                            course.getCourseNamesOneTime(result,function (error,data) {//获取所有排课记录中的课程名，将其添加到数据库返回记录中
                                 if(error)
                                     reject(error);
                                 else
-                                    resolve(course);                                                                
+                                    resolve(data);                                                                
                             })
                         })
                     },function (error) {
                         callback(error,null);
                     })
-                    .then(function (course) {
-                        for(var i = 0 ; i < course.length ; i++ ){
+                    .then(function (data) {
+                        /* for(var i = 0 ; i < course.length ; i++ ){
                             result[i].courseName = course[i];
-                        }
+                        } */
+                        result = data;
                         callback(null,result);
                     },function (error) {
                         callback(error,null);
