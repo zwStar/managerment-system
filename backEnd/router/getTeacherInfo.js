@@ -7,8 +7,7 @@ var teacher = require("../module/teacher");
 
 router.get("/",function (req,res) {
     /*登陆*/
-
-    teacher.getTeacherInfo({workNumber:req.workNumber},function (error,data) {
+    teacher.getTeacherInfo({workNumber:"20170"},function (error,data) {
         if(error){
             res.send(error);
         }else{

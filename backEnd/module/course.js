@@ -2,7 +2,10 @@
  * Created by Administrator on 2017/8/1.
  */
 var mongoose = require("mongoose");
-var db = require("./db.js")
+var db =require("./db.js")
+import Model from '../module'
+let CourseArrangedModel = Model.admin.CourseArrangedModel;  //课程安排表
+let StudentModel = Model.admin.StudentModel;
 
 var courseSchema = new mongoose.Schema({
     gradeNo:{ type:String },
@@ -41,7 +44,7 @@ courseSchema.statics.dealWithData = function (data,callback) {
 
         var _this = this;
         var promise = new Promise(function (resolve, reject) {
-            _this.find({gradeNo: result[1], courseName: result[2]}, function (err, course) {
+            _this.find ({gradeNo: result[1], courseName: result[2]}, function (err, course) {
                 if (err) {
                     reject(err);
                 }else{
@@ -62,11 +65,147 @@ courseSchema.statics.dealWithData = function (data,callback) {
 
 }
 
+//筛选出能教课的老师
+courseSchema.statics.teacherOptions = function (req, res, next) {
+    let query = req.query;
+    let FindCourseNoPromise = CourseModel.findOne({courseNo: query.courseNo, gradeNo: query.gradeNo});  //找出课程号
+    FindCourseNoPromise.then((result) => {
+        if (result != null) {
+            TeacherModel.find({}, "_id workNumber name")
+                .populate({
+                    path: 'course',
+                    match: {_id: result._id},
+                    // Explicitly exclude `_id`, see http://bit.ly/2aEfTdB
+                    // options: { limit: 5 }
+                    // select: 'workNumber -_id',   //这里是select Course表中的内容
+                })
+                .then((results) => {
+                    let PromiseAll = [];
+                    results.forEach(function (el) {
+                        console.log(query.startTime);
+                        console.log(query.endTime);
+                        PromiseAll.push(CourseArrangedModel.findOne({
+                            workNumber: el.workNumber,
+                            $or: [
+                                {$and: [{startTime: {$gt: query.startTime}}, {startTime: {$lt: query.endTime}}]},
+                                {$and: [{startTime: {$lt: query.startTime}}, {endTime: {$gt: query.endTime}}]},
+                                {$and: [{endTime: {$gt: query.startTime}}, {endTime: {$lt: query.endTime}}]},
+                                {$and: [{startTime: {$gt: query.startTime}}, {endTime: {$lt: query.endTime}}]},
+                            ]
+                        }));
+                    });
+                    Promise.all(PromiseAll).then((documents) => {
+                        console.log(documents);
+                        let options = results.filter(function (el) {
+                            let flag = true;
+                            for (let i = 0; i < documents.length; i++) {
+                                if (documents[i] !== null) {
+                                    if (documents[i].workNumber === el.workNumber) {
+                                        flag = false;
+                                        break;
+                                    }
+                                }
+                            }
+                            if (flag)
+                                return true;
+                            else
+                                return false;
+                        })
+                        $.result(res, {success: true, data: options});
+                    });
+                }), (error) => {
+                console.log(error);
+            }
+        }
+    });
+}
+/* courseSchema.statics.findArrangeClass = function(data,callback){
+
+    CourseArrangedModel.find(data,null,{sort:[["beginTime",1]]},function (error,result) {
+        if(error)
+            callback(error,null)
+        else{
+            var promises = [];
+            var nameAndClass = [];
+            for( var i = 0 ; i < result.length ; i++ ){
+                promises.push(new Promise(function (resolve,reject) {
+                    student.getName({studentNumber:result[i].studentNumber},function (error,result) {
+                        if(error)
+                            reject(error);
+                    });
+                }).then(function () {
+
+                },function (error) {
+
+                }))
+            }
+        }
+    })
+    new Promise(function (resolve,reject) {
+        this.find(data,null,{sort:[["beginTime",1]]},function (error,result) {
+            if(error)
+                reject(error);
+            else{
+                resolve(result);
+            }
+        })
+    })
+        .then(function (data) {
+            return new Promise(function (resolve,reject) {
+                teacher.find
+            })
+            callback(null,result);
+        },function (error) {
+            callback(error,null)
+        })
+        .then(function () {
+
+        },function () {
+
+        })
+
+} */
+
+//筛选出年纪
+courseSchema.statics.findGrade = function(req,res,next){
+    let query = req.query;
+    let findGradePromise = StudentModel.find({sno:query.sno});
+    findGradePromise.then((doc)=>{
+        $.result(res,{gradeNo:doc.gradeNo});
+    },(err)=>{
+        console.log(err);
+    })
+}
 
 courseSchema.statics.findCourseNo = function (data,callback) {
      this.find(data,callback)
 }
 
+courseSchema.statics.getCourseNamesOneTime = function (data,callback) { //通过多个课程号一次获取多个课程名
+    var promises = [];
+    var _this = this;
+
+    for(var i = 0 ; i < data.length ; i++ ){
+        promises.push(new Promise(function (resolve,reject) {
+            _this.findOne({courseNo:data[i].courseNo},function (error,course) {
+                if(error)
+                    reject(error);
+                else
+                    resolve(course.gradeNo + course.courseName);
+            }) 
+        }))
+    }
+    
+    Promise.all(promises).then(function(course){
+        for(var i = 0 ; i < data.length ; i++ ){
+            /* delete data[i].courseNo; */
+            data[i].courseNo = course[i];
+        }
+        callback(null,data);
+    },function(error) {
+        callback(error,null);
+    })
+}
 
 var courseModel = db.model("course",courseSchema);
 

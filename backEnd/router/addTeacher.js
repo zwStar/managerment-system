@@ -10,8 +10,6 @@ var router = express.Router();
 
 router.post("/",function (req,res) {
     var date = new Date(req.body.inductionDate);
-
-
     teacher.count({}, function (err, count) {
         if (err) {
             console.log("addTeacher.js===>error")

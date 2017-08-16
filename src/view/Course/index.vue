@@ -3,8 +3,13 @@
         <el-form>
             <el-row :gutter="20">
                 <el-col :span="3">
+<<<<<<< HEAD
                     <el-form-item  >
                         <el-input v-model="sno" placeholder="请输入学号" @blur="getGrade()"></el-input>
+=======
+                    <el-form-item>
+                        <el-input @blur="getGrade()" placeholder="请输入学号"></el-input>
+>>>>>>> 7e2743bccd35e55ddaff2f0220cabd6783287b56
                     </el-form-item>
                 </el-col>
 
@@ -147,6 +152,7 @@
             resetForm(formName) {
                 this.$refs[formName].resetFields();
             },
+<<<<<<< HEAD
             getGrade(){
                 let _this = this;
                 api._get({
@@ -162,6 +168,11 @@
                 }, (error) => {
                     console.log(error)
                 })
+=======
+            getGrade(){         //输入学号后获取数据
+                console.log("aaa");
+                api._get()
+>>>>>>> 7e2743bccd35e55ddaff2f0220cabd6783287b56
             }
         }
     }
