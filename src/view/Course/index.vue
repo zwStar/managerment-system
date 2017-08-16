@@ -3,8 +3,8 @@
         <el-form>
             <el-row :gutter="20">
                 <el-col :span="3">
-                    <el-form-item>
-                        <el-input placeholder="请输入学号"></el-input>
+                    <el-form-item  >
+                        <el-input v-model="sno" placeholder="请输入学号" @blur="getGrade()"></el-input>
                     </el-form-item>
                 </el-col>
 
@@ -67,7 +67,7 @@
     export default{
         data(){
             return {
-                gradeOptions: ['五年级', '初一', '初二', '高一', '高二'],
+                gradeOptions: [],
                 grade: '',
                 course: "",
                 teacherOptions: [
@@ -76,6 +76,7 @@
                         workNumber: ""
                     }
                 ],
+                sno:"",
                 teacher: "",
                 startTime: "",
                 courseNumberOptions: [1, 2, 3, 4, 5],
@@ -112,7 +113,14 @@
                         console.log(results)
                         let result = results.data;
                         _this.teacherOptions = [];
-                       _this.teacherOptions = result.data;
+                        let list = {};
+                        result.data.forEach((el)=>{
+                            list = {};
+                            list.name = el.name;
+                            list.workNumber = el.workNumber;
+                            _this.teacherOptions.push(list);
+                            console.log(_this.teacherOptions)
+                        })
                     }, (error) => {
                         console.log(error)
                     })
@@ -121,10 +129,39 @@
         },
         methods:{
             onSubmit(){
-
+                let _this = this;
+                api._get({
+                    url:'course/courseArranged',
+                    data:{
+                        sno:_this.sno,
+                        grade:_this.grade,
+                        course:_this.course,
+                        startTime:_this.startTime,
+                        endTime:_this.endTime,
+                        courseNumber:_this.courseNumber,
+                        courseHour:_this.courseHour,
+                        workNumber:_this.teacher
+                    }
+                })
             },
             resetForm(formName) {
                 this.$refs[formName].resetFields();
+            },
+            getGrade(){
+                let _this = this;
+                api._get({
+                    url: "course/findGrade",
+                    data: {
+                        sno:_this.sno
+                    }
+                }).then((results) => {
+                    console.log(results)
+                    let result = results.data;
+                    _this.gradeOptions = result.grade;
+
+                }, (error) => {
+                    console.log(error)
+                })
             }
         }
     }
