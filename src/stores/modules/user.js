@@ -5,11 +5,17 @@ import Cookies from 'js-cookie';
 
 const user = {
     state:{
-        token: Cookies.get('Admin-Token')
+        token: Cookies.get('Admin-Token'),
+        adminItems:[]
     },
     mutations:{
         SET_TOKEN:(state,token)=>{
             state.token = token;
+        },
+        SET_ITEM:(state,obj)=>{
+
+            state[obj.key] = obj.val
+            console.log(state.adminItems)
         }
     },
     actions:{
@@ -26,5 +32,5 @@ const user = {
             Cookies.remove("Admin-Token");
         }
     }
-}
+};
 export default user;

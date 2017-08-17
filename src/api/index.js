@@ -27,10 +27,12 @@ import store from '../stores';
 //     }],
 // });
 const axios = require('axios').create({
-    baseURL:baseURL,            //api请求的baseURL
-    timeout:5000
+    baseURL: baseURL,            //api请求的baseURL
+    timeout: 5000,
+    withCredentials: true, // 允许跨域 cookie
+    headers: {'X-Requested-With': 'XMLHttpRequest'},
 });
-
+// request拦截器
 axios.interceptors.request.use(config => {
     // Do something before request is sent
     if (store.getters.token) {
@@ -43,12 +45,20 @@ axios.interceptors.request.use(config => {
     Promise.reject(error);
 });
 
+// respone拦截器
+axios.interceptors.response.use(response=>{
+   return response;
+})
+
+
+
+
 //get
-export const _get = (req)=>{
+export const _get = (req) => {
     return axios.get(req.url, {params: req.data})
 };
 
 // post
 export const _post = (req) => {
-    return axios({ method: 'post', url: `/${req.url}`, data: req.data })
+    return axios({method: 'post', url: `/${req.url}`, data: req.data})
 };

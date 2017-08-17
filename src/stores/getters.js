@@ -4,7 +4,8 @@
 
 const getters = {
     token: state => state.user.token,
-    rules: state => state.rules
+    rules: state => state.rules.rules,
+    adminItems:state=>state.user.adminItems
 
 };
 export default getters
