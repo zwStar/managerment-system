@@ -29,12 +29,13 @@ app.use("/getTeacherList",require("./router/getTeacherList"));
 app.use("/teacherLogin",require("./router/teacherLogin"));
 app.use("/getTeacherInfo",require("./router/getTeacherInfo"));
 app.use("/getArrangeClass",require("./router/getArrangeClass"));
+app.use("/audit",require("./router/submitAudit"))
 
 app.use('/user',routers.admin);    //请求路由
 app.use('/course',routers.course);  //课程相关操作路由
 
 //处理上传的图片
-app.use("/photoEvidence",require("./router/photoEvidence"))
+app.use("/photo",require("./router/photo"))
 
 var db = require("./module/db.js")
 const port = process.env.PORT || 3000;
