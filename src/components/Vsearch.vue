@@ -1,8 +1,6 @@
 <template>
     <div id="vsearch">
-        <el-input placeholder='请输入搜索内容' icon='search' v-model='searchVal' :on-icon-click='handleSearch'>
-
-        </el-input>
+        <el-input placeholder='请输入搜索内容' icon='search' v-model='searchVal' :on-icon-click='handleSearch'></el-input>
     </div>
 </template>
 
@@ -15,7 +13,7 @@
                 searchVal: ''
             }
         },
-        props: ['model', 'searchKey'],
+        props: ['model', 'searchKey'],  //传入model 和 要查找的关键字
         methods:{
             handleSearch(){
                 const _this = this;
@@ -27,7 +25,7 @@
                         searchVal: _this.searchVal
                     }
                 }).then((results)=>{
-                    if(results.status === 200){
+                    if(results.status === 200){     //查找成功 就添加到adminItems adminItems改变就会触发相应的computed 视图内容改变
                         _this.$store.commit('SET_ITEM', {key: 'adminItems', val: results.data })
                     }
                 },(err)=>{
