@@ -17,7 +17,7 @@
                     </el-submenu>
                     <el-submenu index="4">
                         <template slot="title"><i class="el-icon-message"></i>教师管理</template>
-                        <el-menu-item index="/teacher">教师列表</el-menu-item>
+                        <el-menu-item index="/teacherList">教师列表</el-menu-item>
                     </el-submenu>
                 </el-menu>
             </el-col>

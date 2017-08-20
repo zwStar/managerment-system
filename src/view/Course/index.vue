@@ -3,8 +3,8 @@
         <el-form>
             <el-row :gutter="20">
                 <el-col :span="3">
-                    <el-form-item>
-                        <el-input @blur="getGrade()" placeholder="请输入学号"></el-input>
+                    <el-form-item >
+                        <el-input v-model="sno" @blur="getGrade()" placeholder="请输入学号"></el-input>
                     </el-form-item>
                 </el-col>
 
@@ -129,7 +129,7 @@
             }
         },
         methods: {
-            onSubmit(){
+            onSubmit(){ //提交
                 let _this = this;
                 api._get({
                     url: 'course/courseArranged',
@@ -143,12 +143,27 @@
                         courseHour: _this.courseHour,
                         workNumber: _this.teacher
                     }
+                }).then((result)=>{
+                    console.log(result)
+                    if(result.status === 200){  //添加成功
+                        this.$message({
+                            message: '添加成功',
+                            type: 'success'
+                        });
+                    }else{      //添加失败
+                        this.$message({
+                            message: '添加失败',
+                            type: 'error'
+                        });
+                    }
+                },(err)=>{
+                    console.log(err);
                 })
             },
             resetForm(formName) {
                 this.$refs[formName].resetFields();
             },
-            getGrade(){
+            getGrade(){     //根据学号找年级
                 let _this = this;
                 api._get({
                     url: "course/findGrade",
@@ -158,8 +173,8 @@
                 }).then((results) => {
                     console.log(results)
                     let result = results.data;
-                    _this.gradeOptions = result.grade;
-
+                    _this.gradeOptions = [];
+                    _this.gradeOptions.push(result.grade);
                 }, (error) => {
                     console.log(error)
                 })
