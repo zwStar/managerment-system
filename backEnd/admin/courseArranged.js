@@ -52,6 +52,9 @@ CourseArrangedAPI.methods.findArrangeClass = function (data,callback) {
     }) */
 
     CourseArrangedModel.find(data,function (error,result) {
+        var returnData = new Object();
+        returnData.result = result;
+
         if(error)
             callback(error,null);
         else{
@@ -64,11 +67,8 @@ CourseArrangedAPI.methods.findArrangeClass = function (data,callback) {
                         resolve(data);
                 })
             }).then(function (data) {
-                        result = data;
-                        /* for( var i = 0 ; i < student.length ; i++ ){
-                            delete result[i].sno;
-                            result[i].studentName = student[i];
-                        } */
+                        returnData.studentName =  data;
+
                         return new Promise((resolve,reject) =>{
                             course.getCourseNamesOneTime(result,function (error,data) {//获取所有排课记录中的课程名，将其添加到数据库返回记录中
                                 if(error)
@@ -81,11 +81,8 @@ CourseArrangedAPI.methods.findArrangeClass = function (data,callback) {
                         callback(error,null);
                     })
                     .then(function (data) {
-                        /* for(var i = 0 ; i < course.length ; i++ ){
-                            result[i].courseName = course[i];
-                        } */
-                        result = data;
-                        callback(null,result);
+                        returnData.courseName = data;
+                        callback(null,returnData);
                     },function (error) {
                         callback(error,null);
                     })
