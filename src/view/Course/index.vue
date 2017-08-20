@@ -1,9 +1,19 @@
 <template>
+<<<<<<< HEAD
     <div class="course-info">
         <header>
             <el-row>
                 <el-col :span="18">
                     <vsearch model='Course' searchKey='name'></vsearch>
+=======
+    <div class="addCourse">
+        <el-form>
+            <el-row :gutter="20">
+                <el-col :span="3">
+                    <el-form-item >
+                        <el-input v-model="sno" @blur="getGrade()" placeholder="请输入学号"></el-input>
+                    </el-form-item>
+>>>>>>> 25420e979a42df570664b9a339a5820d9ce8ba34
                 </el-col>
                 <el-col :offset="1" :span="4">
                     <span  @click="dialogVisible=true">新增排课</span>
