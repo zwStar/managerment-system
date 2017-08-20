@@ -1,28 +1,27 @@
 <template>
-<<<<<<< HEAD
     <div class="course-info">
         <header>
             <el-row>
                 <el-col :span="18">
                     <vsearch model='Course' searchKey='name'></vsearch>
-=======
-    <div class="addCourse">
-        <el-form>
-            <el-row :gutter="20">
-                <el-col :span="3">
-                    <el-form-item >
-                        <el-input v-model="sno" @blur="getGrade()" placeholder="请输入学号"></el-input>
-                    </el-form-item>
->>>>>>> 25420e979a42df570664b9a339a5820d9ce8ba34
-                </el-col>
-                <el-col :offset="1" :span="4">
-                    <span  @click="dialogVisible=true">新增排课</span>
-                </el-col>
-            </el-row>
+
+                    <div class="addCourse">
+                        <el-form>
+                            <el-row :gutter="20">
+                                <el-col :span="3">
+                                    <el-form-item>
+                                        <el-input v-model="sno" @blur="getGrade()" placeholder="请输入学号"></el-input>
+                                    </el-form-item>
+
+                                </el-col>
+                                <el-col :offset="1" :span="4">
+                                    <span @click="dialogVisible=true">新增排课</span>
+                                </el-col>
+                            </el-row>
         </header>
         <v-table :data="items"></v-table>
         <el-dialog title="新增排课" :visible.sync="dialogVisible" size="small">
-            <el-form  :label-width="formLabelWidth">
+            <el-form :label-width="formLabelWidth">
                 <el-form-item label="学号">
                     <el-row>
                         <el-col :span="16">
@@ -33,52 +32,51 @@
 
                 <el-form-item label="年级">
                     <el-row>
-                       <el-col :span="16">
-                           <el-select v-model="grade" placeholder="请选择年级">
-                               <el-option v-for="item in gradeOptions" :key="item" :label="item" :value="item">
-                               </el-option>
-                           </el-select>
-                       </el-col>
+                        <el-col :span="16">
+                            <el-select v-model="grade" placeholder="请选择年级">
+                                <el-option v-for="item in gradeOptions" :key="item" :label="item" :value="item">
+                                </el-option>
+                            </el-select>
+                        </el-col>
                     </el-row>
                 </el-form-item>
 
                 <el-form-item label="课程">
                     <el-row>
-                       <el-col :span="16">
-                           <el-select v-model="course" placeholder="请选择课程">
-                               <el-option v-for="item in courseOptions" :key="item" :label="item" :value="item">
-                               </el-option>
-                           </el-select>
-                       </el-col>
+                        <el-col :span="16">
+                            <el-select v-model="course" placeholder="请选择课程">
+                                <el-option v-for="item in courseOptions" :key="item" :label="item" :value="item">
+                                </el-option>
+                            </el-select>
+                        </el-col>
                     </el-row>
                 </el-form-item>
 
                 <el-form-item label="时间">
                     <el-row>
-                      <el-col :span="16">
-                          <el-date-picker v-model='startTime' type="datetime" placeholder="选择日期时间">
-                          </el-date-picker>
-                      </el-col>
+                        <el-col :span="16">
+                            <el-date-picker v-model='startTime' type="datetime" placeholder="选择日期时间">
+                            </el-date-picker>
+                        </el-col>
                     </el-row>
                 </el-form-item>
 
                 <el-form-item label="课时数">
                     <el-row>
-                     <el-col :span="16">
-                         <el-select v-model="courseNumber" placeholder="请选择课时数">
-                             <el-option v-for="item in courseNumberOptions" :key="item" :label="item" :value="item">
-                             </el-option>
-                         </el-select>
-                     </el-col>
+                        <el-col :span="16">
+                            <el-select v-model="courseNumber" placeholder="请选择课时数">
+                                <el-option v-for="item in courseNumberOptions" :key="item" :label="item" :value="item">
+                                </el-option>
+                            </el-select>
+                        </el-col>
                     </el-row>
                 </el-form-item>
 
                 <el-form-item label="教师">
                     <el-row>
-                        <el-col  :span="16">
+                        <el-col :span="16">
                             <el-select v-model="teacher" placeholder="请选择教师">
-                                <el-option v-for="item in teacherOptions" :key="item.workNumber" :label="item.name"
-                                           :value="item.workNumber">
+                                <el-option v-for="item in teacherOptions" :key="item.workNumber" :label="item.name" :value="item.workNumber">
                                 </el-option>
                             </el-select>
                         </el-col>
@@ -87,73 +85,73 @@
 
             </el-form>
             <span slot="footer" class="dialog-footer">
-                <el-button @click="dialogVisible = false">取 消</el-button>
-                <el-button type="primary" @click="onSubmit(); dialogVisible = false" >确 定</el-button>
-            </span>
+                        <el-button @click="dialogVisible = false">取 消</el-button>
+                        <el-button type="primary" @click="onSubmit(); dialogVisible = false" >确 定</el-button>
+                    </span>
         </el-dialog>
-    </div>
-    <!--<div class="addCourse">-->
-        <!--<el-form>-->
-            <!--<el-row :gutter="20">-->
-                <!--<el-col :span="3">-->
-                    <!--<el-form-item >-->
-                        <!--<el-input v-model="sno" @blur="getGrade()" placeholder="请输入学号"></el-input>-->
-                    <!--</el-form-item>-->
-                <!--</el-col>-->
+        </div>
+            <!--<div class="addCourse">-->
+                <!--<el-form>-->
+                    <!--<el-row :gutter="20">-->
+                        <!--<el-col :span="3">-->
+                            <!--<el-form-item >-->
+                                <!--<el-input v-model="sno" @blur="getGrade()" placeholder="请输入学号"></el-input>-->
+                            <!--</el-form-item>-->
+                        <!--</el-col>-->
 
-                <!--<el-col :span="3">-->
-                    <!--<el-form-item>-->
-                        <!--<el-select v-model="grade" placeholder="请选择年级">-->
-                            <!--<el-option v-for="item in gradeOptions" :key="item" :label="item" :value="item">-->
-                            <!--</el-option>-->
-                        <!--</el-select>-->
-                    <!--</el-form-item>-->
-                <!--</el-col>-->
+                        <!--<el-col :span="3">-->
+                            <!--<el-form-item>-->
+                                <!--<el-select v-model="grade" placeholder="请选择年级">-->
+                                    <!--<el-option v-for="item in gradeOptions" :key="item" :label="item" :value="item">-->
+                                    <!--</el-option>-->
+                                <!--</el-select>-->
+                            <!--</el-form-item>-->
+                        <!--</el-col>-->
 
-                <!--<el-col :span="3">-->
-                    <!--<el-form-item>-->
-                        <!--<el-select v-model="course" placeholder="请选择课程">-->
-                            <!--<el-option v-for="item in courseOptions" :key="item" :label="item" :value="item">-->
-                            <!--</el-option>-->
-                        <!--</el-select>-->
-                    <!--</el-form-item>-->
-                <!--</el-col>-->
+                        <!--<el-col :span="3">-->
+                            <!--<el-form-item>-->
+                                <!--<el-select v-model="course" placeholder="请选择课程">-->
+                                    <!--<el-option v-for="item in courseOptions" :key="item" :label="item" :value="item">-->
+                                    <!--</el-option>-->
+                                <!--</el-select>-->
+                            <!--</el-form-item>-->
+                        <!--</el-col>-->
 
-                <!--<el-col :span="5">-->
-                    <!--<el-form-item>-->
-                        <!--<el-date-picker v-model='startTime' type="datetime" placeholder="选择日期时间">-->
-                        <!--</el-date-picker>-->
-                    <!--</el-form-item>-->
-                <!--</el-col>-->
+                        <!--<el-col :span="5">-->
+                            <!--<el-form-item>-->
+                                <!--<el-date-picker v-model='startTime' type="datetime" placeholder="选择日期时间">-->
+                                <!--</el-date-picker>-->
+                            <!--</el-form-item>-->
+                        <!--</el-col>-->
 
-                <!--<el-col :span="3">-->
-                    <!--<el-form-item>-->
-                        <!--<el-select v-model="courseNumber" placeholder="请选择课时数">-->
-                            <!--<el-option v-for="item in courseNumberOptions" :key="item" :label="item" :value="item">-->
-                            <!--</el-option>-->
-                        <!--</el-select>-->
-                    <!--</el-form-item>-->
-                <!--</el-col>-->
+                        <!--<el-col :span="3">-->
+                            <!--<el-form-item>-->
+                                <!--<el-select v-model="courseNumber" placeholder="请选择课时数">-->
+                                    <!--<el-option v-for="item in courseNumberOptions" :key="item" :label="item" :value="item">-->
+                                    <!--</el-option>-->
+                                <!--</el-select>-->
+                            <!--</el-form-item>-->
+                        <!--</el-col>-->
 
-                <!--<el-col :span="3">-->
-                    <!--<el-form-item>-->
-                        <!--<el-select v-model="teacher" placeholder="请选择教师">-->
-                            <!--<el-option v-for="item in teacherOptions" :key="item.workNumber" :label="item.name"-->
-                                       <!--:value="item.workNumber">-->
-                            <!--</el-option>-->
-                        <!--</el-select>-->
-                    <!--</el-form-item>-->
-                <!--</el-col>-->
+                        <!--<el-col :span="3">-->
+                            <!--<el-form-item>-->
+                                <!--<el-select v-model="teacher" placeholder="请选择教师">-->
+                                    <!--<el-option v-for="item in teacherOptions" :key="item.workNumber" :label="item.name"-->
+                                            <!--:value="item.workNumber">-->
+                                    <!--</el-option>-->
+                                <!--</el-select>-->
+                            <!--</el-form-item>-->
+                        <!--</el-col>-->
 
-                <!--<el-col :span="3">-->
-                    <!--<el-form-item>-->
-                        <!--<el-button type="info" @click="onSubmit()">提交</el-button>-->
-                    <!--</el-form-item>-->
-                <!--</el-col>-->
-            <!--</el-row>-->
-        <!--</el-form>-->
-        <!---->
-    <!--</div>-->
+                        <!--<el-col :span="3">-->
+                            <!--<el-form-item>-->
+                                <!--<el-button type="info" @click="onSubmit()">提交</el-button>-->
+                            <!--</el-form-item>-->
+                        <!--</el-col>-->
+                    <!--</el-row>-->
+                <!--</el-form>-->
+                <!---->
+            <!--</div>-->
 </template>
 
 <script>
