@@ -9,6 +9,7 @@ import UserInfo from '../view/Layout/UserInfo.vue'
 import Course from '../view/Course/index.vue'
 
 import teacherList from '../view/Teacher/teacherList.vue'
+import audit from "../view/audit/index.vue"
 
 
 
@@ -28,7 +29,8 @@ const routes = [
 
             {path:"student",component:Student},
             {path:"userInfo",component:UserInfo},
-            {path:"course",component:Course}
+            {path:"course",component:Course},
+            {path:"audit",component:audit}
 
         ]
     },

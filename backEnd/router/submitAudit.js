@@ -4,6 +4,7 @@ var router = express.Router();
 var audit = require("../module/audit")
 
 router.post("/",function(req,res){
+    console.log(222)
     new audit(req.body).save(function(error){
         if(error){
             console.log("提交审核课程时失败，router/submitAudit.js");

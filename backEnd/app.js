@@ -26,6 +26,8 @@ app.use('/', function (req, res, next) {
 
 app.use("/addTeacher",require("./router/addTeacher"));
 app.use("/getTeacherList",require("./router/getTeacherList"));
+app.use("/getAuditTable",require("./router/getAuditTable"));//获取老师提交的审核记录
+
 app.use("/teacherLogin",require("./router/teacherLogin"));
 app.use("/getTeacherInfo",require("./router/getTeacherInfo"));
 app.use("/getArrangeClass",require("./router/getArrangeClass"));

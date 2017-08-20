@@ -61,7 +61,15 @@ teacherSchema.statics.getTeacherInfo = function (data,callback) {
 }
 
 teacherSchema.statics.getName = function (data,callback) {
-    
+}
+
+teacherSchema.statics.getTeacherNamesOneTime = function(data,callback){
+    this.find(data,function(error,result){
+        if(error)
+            callback(error,null);
+        else
+            callback(null,result);
+    })
 }
 
 teacherSchema.statics.login = function (req, res, next) {     //注册
