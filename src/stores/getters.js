@@ -3,9 +3,9 @@
  */
 
 const getters = {
-    token: state => state.user.token,
-    rules: state => state.rules.rules,
-    adminItems:state=>state.user.adminItems
+    token: state => state.user.token,   //token
+    rules: state => state.rules.rules,  //规则
+    adminItems:state=>state.user.adminItems     //列表
 
 };
 export default getters
