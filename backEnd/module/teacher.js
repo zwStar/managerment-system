@@ -64,11 +64,27 @@ teacherSchema.statics.getName = function (data,callback) {
 }
 
 teacherSchema.statics.getTeacherNamesOneTime = function(data,callback){
-    this.find(data,function(error,result){
-        if(error)
-            callback(error,null);
-        else
-            callback(null,result);
+
+    var promises = [];
+    var _this = this;
+    for( var i = 0 ; i < data.length ; i++ ){
+        promises.push(new Promise(function(resolve,reject){
+            _this.findOne({workNumber:data[i].workNumber},'name',function(error,teacher){
+                if(error)
+                    reject(error);
+                else
+                    resolve(teacher.name);
+            })
+        }))
+    }
+
+    Promise.all(promises).then(function(teacher){
+        for( var i = 0 ; i < teacher.length ; i++ ){
+            data[i].teacherName = teacher[i];
+        }
+        callback(null,data);
+    },function(error){
+        callback(error,null);
     })
 }
 

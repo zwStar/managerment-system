@@ -4,20 +4,19 @@
 import Base from '../base'
 
 const courseArranged = new Base("CourseArranged",{
-    // workNumber: {type:Base.ObjectId(),ref:'Teacher'},  //可教课程 },      //入职时间
-    // sno:{type:Base.ObjectId(),ref:'Student'},
-    // courseNo:{type:Base.ObjectId(),ref:"Course"},
-    // startTime:{ type: Date},
-    // endTime:{type:Date},
-    // courseNumber:String,
-    // courseHour:Number
-    workNumber: String,  //可教课程 },      //入职时间
+
+    workNumber: String,  
     sno:String,
     courseNo:String,
     startTime:{ type: Date},
     endTime:{type:Date},
     courseNumber:String,
-    courseHour:Number
+    courseHour:Number,
+    status:{type:String,default:'未审核'},
+    realCourseTime:{type:Number},//实际课时
+    remark:{type:String},       //备注
+    photoEvidencePath:{type:String},//拍照取证图片名称
+    returnVisitPath:{type:String}   //微信回访图片名称
 })
 
 

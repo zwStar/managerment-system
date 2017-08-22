@@ -197,10 +197,10 @@ courseSchema.statics.getCourseNamesOneTime = function (data,callback) { //通过
     }
     
     Promise.all(promises).then(function(course){
-        /* for(var i = 0 ; i < data.length ; i++ ){
-            data[i].courseNo = course[i];
-        } */
-        callback(null,course);
+        for(var i = 0 ; i < data.length ; i++ ){
+            data[i].courseName = course[i];
+        }
+        callback(null,data);
     },function(error) {
         callback(error,null);
     })
