@@ -11,64 +11,9 @@ export default class Base{
             toJSON: {virtuals: true},
         });
         this.model = mongoose.model(name, schema);
-        this.methods = addMethods(this);
     }
 
     static ObjectId(){
         return mongoose.Schema.ObjectId;
     }
-
-    create(query) {
-        try {
-            return this.model.create(query);//创建用户
-        } catch (e) {
-            console.error(e);
-        }
-    }
-
-    find(query, options) {
-        try {
-            return this.model.findOne(query)
-        } catch (e) {
-            console.error(e);
-        }
-    };
-
-    all(query, selectQuery) {
-        try {
-            return this.model.find(query).select(selectQuery)
-        } catch (e) {
-            console.error(e);
-        }
-    };
-
-    update(query,info){
-        try{
-            return this.model.update(query,{$set:info});
-        }catch (e){
-            console.error(e);
-        }
-    }
-}
-
-function addMethods(_this) {
-    let methods = {};
-
-    methods.find = function (query) {
-        return _this.find(query);
-    };
-
-    methods.update = function (query,info) {
-        return _this.update(query,info);
-    }
-
-    methods.create = function(query){
-        return _this.create(query);
-    }
-
-    methods.all = function(query,selectQuery){
-        return _this.all(query,selectQuery);
-    }
-    return methods;
-
 }

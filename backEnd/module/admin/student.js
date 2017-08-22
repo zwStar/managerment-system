@@ -14,4 +14,4 @@ const Student = new Base("Student",{
 })
 
 
-export default Student.methods
+export default Student.model

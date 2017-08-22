@@ -68,23 +68,24 @@ courseSchema.statics.dealWithData = function (data,callback) {
 //筛选出能教课的老师
 courseSchema.statics.teacherOptions = function (req, res, next) {
     let query = req.query;
-    let FindCourseNoPromise = CourseModel.findOne({courseNo: query.courseNo, gradeNo: query.gradeNo});  //找出课程号
+    let FindCourseNoPromise = CourseModel.findOne({course: query.course, grade: query.grade});  //找出课程号
     FindCourseNoPromise.then((result) => {
+        console.log("result id ")
+        console.log(result._id);
         if (result != null) {
-            TeacherModel.find({}, "_id workNumber name")
+            TeacherModel.find({course:result._id})
+                .select("_id workNumber name course")
                 .populate({
                     path: 'course',
-                    match: {_id: result._id},
-                    // Explicitly exclude `_id`, see http://bit.ly/2aEfTdB
-                    // options: { limit: 5 }
-                    // select: 'workNumber -_id',   //这里是select Course表中的内容
+                    // match: {_id: result._id},            //这些选择都是针对population find找到内容只与find里面的参数有关
+                    //     // Explicitly exclude `_id`, see http://bit.ly/2aEfTdB
+                    // options: { limit: 1 },
+                    select: ' grade course',   //这里是select Course表中的内容
                 })
                 .then((results) => {
                     let PromiseAll = [];
                     results.forEach(function (el) {
-                        console.log(query.startTime);
-                        console.log(query.endTime);
-                        PromiseAll.push(CourseArrangedModel.findOne({
+                        PromiseAll.push(CourseArrangedModel.find({
                             workNumber: el.workNumber,
                             $or: [
                                 {$and: [{startTime: {$gt: query.startTime}}, {startTime: {$lt: query.endTime}}]},
@@ -95,7 +96,7 @@ courseSchema.statics.teacherOptions = function (req, res, next) {
                         }));
                     });
                     Promise.all(PromiseAll).then((documents) => {
-                        console.log(documents);
+                        // console.log(documents);
                         let options = results.filter(function (el) {
                             let flag = true;
                             for (let i = 0; i < documents.length; i++) {
@@ -169,10 +170,12 @@ courseSchema.statics.teacherOptions = function (req, res, next) {
 //筛选出年纪
 courseSchema.statics.findGrade = function(req,res,next){
     let query = req.query;
-    let findGradePromise = StudentModel.find({sno:query.sno});
-    findGradePromise.then((doc)=>{
-        $.result(res,{gradeNo:doc.gradeNo});
-    },(err)=>{
+    let findGradePromise = StudentModel.findOne({sno: query.sno});
+    findGradePromise.then((doc) => {
+        if ($.isEmpty(doc))
+            $.result(res, "error");
+        $.result(res, {grade: doc.grade});
+    }, (err) => {
         console.log(err);
     })
 }

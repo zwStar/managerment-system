@@ -21,4 +21,4 @@ const courseArranged = new Base("CourseArranged",{
 
 
 
-export default courseArranged.methods;
+export default courseArranged.model;
