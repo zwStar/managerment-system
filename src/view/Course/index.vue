@@ -4,7 +4,6 @@
             <el-row>
                 <el-col :span="18">
                     <vsearch model='Course' searchKey='name'></vsearch>
-
                     <div class="addCourse">
                         <el-form>
                             <el-row :gutter="20">
@@ -18,6 +17,10 @@
                                     <span @click="dialogVisible=true">新增排课</span>
                                 </el-col>
                             </el-row>
+                        </el-form>
+                    </div>
+                </el-col>
+            </el-row>
         </header>
         <v-table :data="items"></v-table>
         <el-dialog title="新增排课" :visible.sync="dialogVisible" size="small">

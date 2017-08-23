@@ -16,6 +16,7 @@ router.get("/",function(req,res){
                     console.log(error);
                     res.send("error in teacher.getTeacherNamesOneTime")
                 }else{
+                    console.log(data)
                     res.send(data);
                 }
             })

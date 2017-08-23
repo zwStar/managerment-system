@@ -6,8 +6,8 @@ import Models from '../module'
 import student from "./student"
 import course from '../module/course'
 
-const CourseArrangedModel = Models.admin.CourseArrangedModel;
-/* const CourseArrangedModel = require("../module/courseArrange"); */
+/* const CourseArrangedModel = Models.admin.CourseArrangedModel; */
+ const CourseArrangedModel = require("../module/courseArrange"); 
 
 const StudentModel = Models.admin.StudentModel;
 import $ from '../utils'
@@ -50,8 +50,8 @@ CourseArrangedAPI.methods.findArrangeClass = function (data,callback) {
     },function(error){
         callback(error,null)
     }) */
-    CourseArrangedModel.all(data,function (error,result) {
-        console.log(2)
+    
+    CourseArrangedModel.find({},function (error,result) {
         for( var i = 0 ; i < result.length ; i++ ){
             var obj = {
                 workNumber:result[i].workNumber,
@@ -68,7 +68,6 @@ CourseArrangedAPI.methods.findArrangeClass = function (data,callback) {
                 returnVisitPath:result[i].returnVisitPath
             }   
             result[i] = obj;
-            console.log(result[i].status);
         }
         if(error)
             callback(error,null);
@@ -82,7 +81,6 @@ CourseArrangedAPI.methods.findArrangeClass = function (data,callback) {
                         resolve(data);
                 })
             }).then(function (data) {
-                        result = data;
                         return new Promise((resolve,reject) =>{
                             course.getCourseNamesOneTime(result,function (error,data) {//获取所有排课记录中的课程名，将其添加到数据库返回记录中
                                 if(error)

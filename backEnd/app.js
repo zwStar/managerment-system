@@ -39,7 +39,7 @@ app.use('/course',routers.course);  //课程相关操作路由
 //处理上传的图片
 app.use("/photo",require("./router/photo"))
 
-var db = require("./module/db.js")
+/* var db = require("./module/db.js") */
 const port = process.env.PORT || 3000;
 app.listen(port,()=>{
     console.log(`server running @${port} `);
