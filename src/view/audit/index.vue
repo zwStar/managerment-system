@@ -39,7 +39,7 @@
                     </template>
                 </el-table-column>
         </el-table>
-        <el-dialog title="课程详情" :visible.sync="detailShow" size="small" :before-close="handleClose" :close-on-click-modal="false">
+        <el-dialog title="课程详情" :visible.sync="detailShow" size="small" :close-on-click-modal="false">
             <div class="left">
                 <div>
                     <span class="title"><i class="iconfont">&#xe604;</i>工号</span>
@@ -85,20 +85,31 @@
          --><div class="right">
                 <div class="title">拍照取证</div>
                 <div class="photo">
-                    <img src="" alt="">
+                    <img :src="img[0]" alt="" @click="amplification(0)">
                 </div>
                 <div class="title">微信回访</div>
                 <div class="photo">
-                    <img src="" alt="">
+                    <img :src="img[1]" alt="" @click="amplification(1)">
                 </div>
             </div>
             <span slot="footer" class="dialog-footer">
-                <el-button type="danger" @click="refuse()">退回重交</el-button>
+                <el-popover ref="reason" placement="top" width="180" v-model="inputReason">
+                    <el-input v-model="reason" icon="edit" placeholder="告诉他/她错在哪吧" @click="refuse()"></el-input>
+                    <div style="text-align: right; margin-top: 10px">
+                        <el-button size="mini" type="text" @click="inputReason = false">取消</el-button>
+                        <el-button type="text" size="mini" @click="refuse()">退回</el-button>
+                    </div>
+                </el-popover>
+                <el-button type="danger" v-popover:reason>退回重交</el-button>
                 <el-button type="primary" @click="through()">通过审核</el-button>
             </span>
         </el-dialog>
-        <el-dialog :visible.sync='show' size="small" >
-            dasdasd
+        <el-dialog :visible.sync='showBigPicture' size="tiny" :show-close="false" custom-class="bigPhoto">
+            <el-carousel  ref="carousel" :interval="5000" height="550px" arrow="always" :autoplay="false" :initial-index="initialIndex" indicator-position="none">
+                <el-carousel-item v-for="item in 2" :key="item">
+                    <img :src="img[item-1]" alt="">
+                </el-carousel-item>
+            </el-carousel>
         </el-dialog>
     </div>
 </template>
@@ -108,9 +119,13 @@
         data(){
             return {
                 auditList:[],
-                detailShow:false,
-                detail:"",
-                show:true
+                detailShow:false,           //详情页显示
+                detail:"",                  //当前显示的详情页的具体信息
+                img:[],                     //详情页显示的两张图片
+                showBigPicture:false,       //回访图片大图显示
+                initialIndex:-1,            //回访大图显示的卡片的初始index
+                reason:"",                  //退回重新审核的原因
+                inputReason:false           //是否显示输入退出原因的输入框
             }
         },
         mounted(){
@@ -127,6 +142,11 @@
         },
         methods:{
             refuse(){
+                this.inputReason = false;
+                this.showBigPicture = false;
+                this.detailShow = false;
+                this.detail.status = "未通过";
+                this.detail.reason = this.reason;
 
             },
             through(){
@@ -134,11 +154,36 @@
             },
             review(rowIndex,info){
                 this.detail = info;
-                this.showPhoto();
+                this.showPhoto(info);
                 this.detailShow = true;
             },
-            showPhoto(){
-                _get()
+            showPhoto(info){
+                var _this = this;
+                _get({
+                    url:"getPhoto",
+                    data:{
+                        photoEvidence:info.photoEvidencePath,
+                        returnVisit:info.returnVisitPath
+                    }
+                })
+                .then(function(response){
+                    for( var i = 0 ; i < response.data.length ; i++ ){
+                        _this.$set(_this.img,i,"data:image;base64,"+response.data[i]);
+                    }
+                })
+                .catch(function(){
+
+                });
+            },
+            amplification(index){
+                this.showBigPicture = true;
+                if( this.initialIndex == -1 ){
+                    this.initialIndex = index;
+                    console.log(this.initialIndex);
+                }
+                else
+                    this.$refs.carousel.setActiveItem(index);
+                
             }
         }
     }
@@ -183,7 +228,28 @@
             }
             
         }
-        
     }
+    .bigPhoto{
+        width: 310px;
+        height: 550px;
+        div{
+            padding: 0 !important ;
+        }
+        img{
+            width: 100%;
+            height: 100%;
+        }
+    }
+}
+.el-popover{
+    height: 70px;
+    .el-input{
+        input{
+            border-top:none;
+            border-left: none;
+            border-right: none;
+        }
+    }
+    
 }
 </style>
