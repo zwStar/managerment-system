@@ -15,7 +15,8 @@ var CourseArrangedSchema = new mongoose.Schema({
     realCourseTime:{type:Number},//实际课时
     remark:{type:String},       //备注
     photoEvidencePath:{type:String},//拍照取证图片名称
-    returnVisitPath:{type:String}   //微信回访图片名称
+    returnVisitPath:{type:String},   //微信回访图片名称
+    reason:String                   //被撤回的原因
 });
 
 /* CourseArrangedModel.statics.getAudit = function(data,callback){

@@ -96,7 +96,7 @@
                 <el-popover ref="reason" placement="top" width="180" v-model="inputReason">
                     <el-input v-model="reason" icon="edit" placeholder="告诉他/她错在哪吧" @click="refuse()"></el-input>
                     <div style="text-align: right; margin-top: 10px">
-                        <el-button size="mini" type="text" @click="inputReason = false">取消</el-button>
+                        <el-button size="mini" type="text" @click="cancelInput()">取消</el-button>
                         <el-button type="text" size="mini" @click="refuse()">退回</el-button>
                     </div>
                 </el-popover>
@@ -142,15 +142,57 @@
         },
         methods:{
             refuse(){
-                this.inputReason = false;
-                this.showBigPicture = false;
-                this.detailShow = false;
                 this.detail.status = "未通过";
                 this.detail.reason = this.reason;
-
+                var _this = this;
+                _post({
+                    url:"refuseAudit",
+                    data:{
+                        detail:this.detail
+                    }
+                })
+                .then(function(response){
+                    if(response.data == 'successful'){
+                        _this.$message({
+                            message: '退回审核成功',
+                            type: 'success'
+                        });
+                        _this.reason = "";
+                        _this.inputReason = false;
+                        _this.detailShow = false;
+                    }else{
+                        _this.$message.error('退回审核失败，请检查输入或稍后重试');
+                    }
+                })
+                .catch(function(error){
+                    _this.$message.error('退回审核失败，请检查输入或稍后重试');
+                })
             },
             through(){
-
+                this.detail.status = "已通过";
+                var _this = this;
+                _post({
+                    url:"throughAudit",
+                    data:{
+                        detail:this.detail
+                    }
+                })
+                .then(function(response){
+                    if(response.data == "successful"){
+                        _this.$message({
+                            message:"审批成功",
+                            type:'success'
+                        });
+                        _this.reason = "";
+                        _this.inputReason = false;
+                        _this.detailShow = false;
+                    }else{
+                        _this.$message.error("提交失败，请重试");
+                    }
+                })
+                .catch(function(){
+                    _this.$message.error("提交失败，请重试");
+                })
             },
             review(rowIndex,info){
                 this.detail = info;
@@ -184,6 +226,10 @@
                 else
                     this.$refs.carousel.setActiveItem(index);
                 
+            },
+            cancelInput(){
+                this.reason = "";
+                this.inputReason = false;
             }
         }
     }
