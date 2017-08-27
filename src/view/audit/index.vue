@@ -87,7 +87,7 @@
                 <div class="photo">
                     <img :src="img[0]" alt="" @click="amplification(0)">
                 </div>
-                <div class="title">微信回访</div>
+                <div class="title">{{returnWay}}</div>
                 <div class="photo">
                     <img :src="img[1]" alt="" @click="amplification(1)">
                 </div>
@@ -114,11 +114,12 @@
     </div>
 </template>
 <script>
-    import { _get } from "../../api/index.js"
+    import { _get ,_post } from "../../api/index.js"
     export default{
         data(){
             return {
                 auditList:[],
+                returnWay:"",               //回访方式，查看详情页时，当某位老师为某位学生上课是3的倍数时，微信回访改为电话回访
                 detailShow:false,           //详情页显示
                 detail:"",                  //当前显示的详情页的具体信息
                 img:[],                     //详情页显示的两张图片
@@ -126,6 +127,40 @@
                 initialIndex:-1,            //回访大图显示的卡片的初始index
                 reason:"",                  //退回重新审核的原因
                 inputReason:false           //是否显示输入退出原因的输入框
+            }
+        },
+        watch:{
+            detailShow:function(newValue,oldValue){
+                var _this = this;
+                if(newValue){
+                    _get({
+                        url:"getClassCount",
+                        data:{
+                            workNumber:this.detail.workNumber,
+                            sno:this.detail.sno
+                        }
+                    })
+                    .then(function(response){
+                        if(typeof response.data.count == 'number'){
+                            if( (response.data.count+1)%3 == 0 ){
+                                _this.returnWay = "电话回访";
+                                _this.$notify.info({
+                                    title: '提示',
+                                    message: '此次'+_this.detail.teacherName+'老师需要提交电话回访记录哦~~'
+                                });
+                            }else{
+                                _this.returnWay = "微信回访";
+                            }
+                        }else{
+                            _this.$message.error('未知错误，请重试');
+                            _this.detailShow = false;
+                        }
+                    })
+                    .catch(function(){
+                        _this.$message.error('未知错误，请重试');
+                        _this.detailShow = false;
+                    })
+                }
             }
         },
         mounted(){
@@ -169,7 +204,7 @@
                 })
             },
             through(){
-                this.detail.status = "已通过";
+                this.detail.status = "已审核";
                 var _this = this;
                 _post({
                     url:"throughAudit",

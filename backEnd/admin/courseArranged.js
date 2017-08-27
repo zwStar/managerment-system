@@ -64,6 +64,7 @@ CourseArrangedAPI.methods.findArrangeClass = function (data,callback) {
                 status:result[i].status,
                 realCourseTime:result[i].realCourseTime,
                 remark:result[i].remark,
+                reason:result[i].reason,
                 photoEvidencePath:result[i].photoEvidencePath,
                 returnVisitPath:result[i].returnVisitPath
             }   
