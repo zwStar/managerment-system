@@ -9,14 +9,16 @@ const bodyParser = require("body-parser")
 const app = express()
 const routers = require("./router").default;
 
-app.use(bodyParser.json())
-app.use(bodyParser.urlencoded({extended:false}))
+/* app.use(bodyParser.json())
+app.use(bodyParser.urlencoded({extended:false})) */
+app.use(bodyParser.json({limit: '50mb'}));
+app.use(bodyParser.urlencoded({limit: '50mb', extended: true}));
 
 
 //跨域
 app.use('/', function (req, res, next) {
     res.header("Access-Control-Allow-Credentials", true)
-    res.header("Access-Control-Allow-Origin", "http://127.0.0.1:8080")
+    res.header("Access-Control-Allow-Origin", req.headers.origin)
     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept")
     res.header("Access-Control-Allow-Methods", "PUT,POST,GET,DELETE,OPTIONS")
     res.header("X-Powered-By", ' 3.2.1')

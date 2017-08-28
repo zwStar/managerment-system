@@ -1,5 +1,6 @@
 .DS_Store
 node_modules/
+photo/
 data/
 dist/
 npm-debug.log
