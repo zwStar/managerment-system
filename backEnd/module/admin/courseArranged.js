@@ -18,7 +18,4 @@ const courseArranged = new Base("CourseArranged",{
     photoEvidencePath:{type:String},//拍照取证图片名称
     returnVisitPath:{type:String}   //微信回访图片名称
 })
-
-
-
 export default courseArranged.model;
