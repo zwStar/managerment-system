@@ -39,7 +39,7 @@
 
             <el-table-column label="一对一剩余课时" width="180px">
                 <template scope="scope" >
-                    <span>{{scope.row.courseTime}}</span>
+                    <span>{{scope.row.remainCourse}}</span>
                 </template>
             </el-table-column>
 
@@ -68,14 +68,7 @@ export default{
     },
     props:["data"],
     beforeMount(){
-        let _this = this;
-        api._get({
-            url:"user/students",
-            data:{}
-        }).then((results)=>{
-            console.log(results.data)
-            _this.$store.commit("SET_ITEM",{key: 'adminItems', val: results.data });
-        })
+
     }
 }
 </script>

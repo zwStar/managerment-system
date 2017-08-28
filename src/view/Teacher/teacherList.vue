@@ -275,7 +275,7 @@ export default{
     }
     .teacherList{
         width: 1300px;
-        margin: auto;
+        margin: 50px auto;
     }
 }
 </style>
