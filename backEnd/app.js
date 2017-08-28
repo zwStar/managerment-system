@@ -26,8 +26,11 @@ app.use('/', function (req, res, next) {
 
 app.use("/addTeacher",require("./router/addTeacher"));
 app.use("/getTeacherList",require("./router/getTeacherList"));
-app.use("/getAuditTable",require("./router/getAuditTable"));//获取老师提交的审核记录
-app.use("/getPhoto",require("./router/getPhoto"));//获取审核记录的照片
+app.use("/getAuditTable",require("./router/getAuditTable"));    //获取老师提交的审核记录
+app.use("/getPhoto",require("./router/getPhoto"));              //获取审核记录的照片
+app.use("/refuseAudit",require("./router/refuseAudit"));        //不通过审核
+app.use("/throughAudit",require("./router/throughAudit"));      //通过审核
+app.use("/getClassCount",require("./router/getClassCount"));    //统计某一位老师对某一位学生上过的课的数量
 
 app.use("/teacherLogin",require("./router/teacherLogin"));
 app.use("/getTeacherInfo",require("./router/getTeacherInfo"));

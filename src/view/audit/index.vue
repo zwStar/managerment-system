@@ -87,7 +87,7 @@
                 <div class="photo">
                     <img :src="img[0]" alt="" @click="amplification(0)">
                 </div>
-                <div class="title">微信回访</div>
+                <div class="title">{{returnWay}}</div>
                 <div class="photo">
                     <img :src="img[1]" alt="" @click="amplification(1)">
                 </div>
@@ -96,7 +96,7 @@
                 <el-popover ref="reason" placement="top" width="180" v-model="inputReason">
                     <el-input v-model="reason" icon="edit" placeholder="告诉他/她错在哪吧" @click="refuse()"></el-input>
                     <div style="text-align: right; margin-top: 10px">
-                        <el-button size="mini" type="text" @click="inputReason = false">取消</el-button>
+                        <el-button size="mini" type="text" @click="cancelInput()">取消</el-button>
                         <el-button type="text" size="mini" @click="refuse()">退回</el-button>
                     </div>
                 </el-popover>
@@ -114,11 +114,12 @@
     </div>
 </template>
 <script>
-    import { _get } from "../../api/index.js"
+    import { _get ,_post } from "../../api/index.js"
     export default{
         data(){
             return {
                 auditList:[],
+                returnWay:"",               //回访方式，查看详情页时，当某位老师为某位学生上课是3的倍数时，微信回访改为电话回访
                 detailShow:false,           //详情页显示
                 detail:"",                  //当前显示的详情页的具体信息
                 img:[],                     //详情页显示的两张图片
@@ -126,6 +127,40 @@
                 initialIndex:-1,            //回访大图显示的卡片的初始index
                 reason:"",                  //退回重新审核的原因
                 inputReason:false           //是否显示输入退出原因的输入框
+            }
+        },
+        watch:{
+            detailShow:function(newValue,oldValue){
+                var _this = this;
+                if(newValue){
+                    _get({
+                        url:"getClassCount",
+                        data:{
+                            workNumber:this.detail.workNumber,
+                            sno:this.detail.sno
+                        }
+                    })
+                    .then(function(response){
+                        if(typeof response.data.count == 'number'){
+                            if( (response.data.count+1)%3 == 0 ){
+                                _this.returnWay = "电话回访";
+                                _this.$notify.info({
+                                    title: '提示',
+                                    message: '此次'+_this.detail.teacherName+'老师需要提交电话回访记录哦~~'
+                                });
+                            }else{
+                                _this.returnWay = "微信回访";
+                            }
+                        }else{
+                            _this.$message.error('未知错误，请重试');
+                            _this.detailShow = false;
+                        }
+                    })
+                    .catch(function(){
+                        _this.$message.error('未知错误，请重试');
+                        _this.detailShow = false;
+                    })
+                }
             }
         },
         mounted(){
@@ -142,15 +177,57 @@
         },
         methods:{
             refuse(){
-                this.inputReason = false;
-                this.showBigPicture = false;
-                this.detailShow = false;
                 this.detail.status = "未通过";
                 this.detail.reason = this.reason;
-
+                var _this = this;
+                _post({
+                    url:"refuseAudit",
+                    data:{
+                        detail:this.detail
+                    }
+                })
+                .then(function(response){
+                    if(response.data == 'successful'){
+                        _this.$message({
+                            message: '退回审核成功',
+                            type: 'success'
+                        });
+                        _this.reason = "";
+                        _this.inputReason = false;
+                        _this.detailShow = false;
+                    }else{
+                        _this.$message.error('退回审核失败，请检查输入或稍后重试');
+                    }
+                })
+                .catch(function(error){
+                    _this.$message.error('退回审核失败，请检查输入或稍后重试');
+                })
             },
             through(){
-
+                this.detail.status = "已审核";
+                var _this = this;
+                _post({
+                    url:"throughAudit",
+                    data:{
+                        detail:this.detail
+                    }
+                })
+                .then(function(response){
+                    if(response.data == "successful"){
+                        _this.$message({
+                            message:"审批成功",
+                            type:'success'
+                        });
+                        _this.reason = "";
+                        _this.inputReason = false;
+                        _this.detailShow = false;
+                    }else{
+                        _this.$message.error("提交失败，请重试");
+                    }
+                })
+                .catch(function(){
+                    _this.$message.error("提交失败，请重试");
+                })
             },
             review(rowIndex,info){
                 this.detail = info;
@@ -184,6 +261,10 @@
                 else
                     this.$refs.carousel.setActiveItem(index);
                 
+            },
+            cancelInput(){
+                this.reason = "";
+                this.inputReason = false;
             }
         }
     }
