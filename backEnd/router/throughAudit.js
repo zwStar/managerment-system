@@ -5,22 +5,30 @@ var historyList = require("../module/historyList")
 
 router.post("/",function(req,res){
     var detail = req.body.detail;
-    courseArranged.remove({
+    courseArranged.findOne({
+        /* workNumber:detail.workNumber,
+        sno:detail.sno, */
+        startTime:new Date(detail.startTime)
+    },function(error,result){
+        console.log(new Date(detail.startTime));
+        console.log(result);
+    })
+    /* courseArranged.remove({
         workNumber:detail.workNumber,
         sno:detail.sno,
-        startTime:detail.startTime
+        startTime:new Date(detail.startTime)
     },function(error,doc){
+        //console.log(doc)
         if(error)
             res.send(error)
         else
-            historyList.save(detail,function(error){
+            new historyList(detail).save((error)=>{
                 if(error)
                     res.send(error);
                 else
                     res.send("successful");
-            })
-
-    })
+            });
+    }); */
 });
 
 module.exports = router;

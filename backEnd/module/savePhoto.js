@@ -13,7 +13,7 @@ export const savePhoto = function(req,res,path){
         if(err){
             console.log(err);
         }else{
-            res.send({name:name});
+            res.send({name:name+"."+req.body.type});
         }
     })
 
