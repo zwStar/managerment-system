@@ -59,6 +59,8 @@ CourseArrangedAPI.methods.findArrangeClass = function (data,callback) {
                 courseNo:result[i].courseNo,
                 startTime:result[i].startTime,
                 endTime:result[i].endTime,
+                /* startTime:new Date(result[i].startTime).toLocaleString(),
+                endTime:new Date(result[i].endTime).toLocaleString(), */
                 courseNumber:result[i].courseNumber,
                 courseHour:result[i].courseHour,
                 status:result[i].status,
@@ -67,7 +69,11 @@ CourseArrangedAPI.methods.findArrangeClass = function (data,callback) {
                 reason:result[i].reason,
                 photoEvidencePath:result[i].photoEvidencePath,
                 returnVisitPath:result[i].returnVisitPath
-            }   
+            }
+           /*  if( i == 0 ){
+                result[i].startTime = new Date(result[i].startTime).toUTCString();
+                console.log(result[i].startTime);
+            } */
             result[i] = obj;
         }
         if(error)

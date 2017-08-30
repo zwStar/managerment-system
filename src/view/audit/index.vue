@@ -17,7 +17,7 @@
                     width="160">
                 </el-table-column>
                 <el-table-column
-                    prop="startTime"
+                    prop="time"
                     label="时间"
                     width="160">
                 </el-table-column>
@@ -169,6 +169,12 @@
                 url:"getAuditTable",
             })
             .then(function(response){
+                response.data.forEach(function(el){
+                    var startTime = new Date(el.startTime);
+                    var endTime = new Date(el.endTime);
+                    el.time = startTime.toLocaleTimeString() + "~" + endTime.toLocaleTimeString();
+                    /* el.time = startTime.getHours() + ":"+startTime.getMinutes() + "~" + endTime.getHours() + ":" + endTime.getMinutes(); */
+                })
                 _this.auditList = response.data;
             })
             .catch(function(error){

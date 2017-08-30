@@ -10,16 +10,16 @@ Vue.use(Element);
 Vue.component(Vsearch.name,   Vsearch);
 
 router.beforeEach((to,from,next)=>{
-    if(store.getters.token){
-       next();
-    }else{
-        if(to.path === '/login'){
-            next();
-        }else{
-            next({path:"/login"});
-        }
-    }
-    // next();
+    // if(store.getters.token){
+    //    next();
+    // }else{
+    //     if(to.path === '/login'){
+    //         next();
+    //     }else{
+    //         next({path:"/login"});
+    //     }
+    // }
+    next();
 })
 
 

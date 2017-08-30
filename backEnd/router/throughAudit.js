@@ -6,17 +6,17 @@ var historyList = require("../module/historyList")
 router.post("/",function(req,res){
     var detail = req.body.detail;
     courseArranged.findOne({
-        /* workNumber:detail.workNumber,
-        sno:detail.sno, */
-        startTime:new Date(detail.startTime)
+        workNumber:detail.workNumber,
+        sno:detail.sno,
+        startTime:detail.startTime
     },function(error,result){
         console.log(new Date(detail.startTime));
         console.log(result);
     })
-    /* courseArranged.remove({
+    courseArranged.remove({
         workNumber:detail.workNumber,
         sno:detail.sno,
-        startTime:new Date(detail.startTime)
+        startTime:detail.startTime
     },function(error,doc){
         //console.log(doc)
         if(error)
@@ -28,7 +28,7 @@ router.post("/",function(req,res){
                 else
                     res.send("successful");
             });
-    }); */
+    });
 });
 
 module.exports = router;

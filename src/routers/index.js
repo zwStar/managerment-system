@@ -33,11 +33,11 @@ const routes = [
             {path:"audit",component:audit}
 
         ]
-    },
+    }/* ,
     {
         path: "/login",
         component: Login
-    }
+    } */
 ]
 
 export default new Router({
