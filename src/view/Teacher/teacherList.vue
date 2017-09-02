@@ -90,23 +90,23 @@
         </div>
         <div class="teacherList">
             <el-table
-                    v-if="1"
                     strip="true"
                     :data="teacherList"
                     :default-sort = "{prop: 'workNumber', order: '1'}"
                     highlight-current-row
                     @current-change="">
-                <el-table-column property="workNumber" label="工号" width="100px"></el-table-column>
-                <el-table-column property="name" label="姓名" width="100px"></el-table-column>
-                <el-table-column property="sex" label="性别" width="100px"></el-table-column>
-                <el-table-column property="age" label="年龄" width="100px"></el-table-column>
-                <el-table-column property="inductionDate" label="入职日期" width="100px"></el-table-column>
-                <el-table-column property="unpaidTime" label="未结课时" width="100px"></el-table-column>
-                <el-table-column property="paidTime" label="已结课时" width="100px"></el-table-column>
-                <el-table-column property="course"  label="课程" width="448px"></el-table-column>
+                <el-table-column property="workNumber" label="工号" width="120px"></el-table-column>
+                <el-table-column property="name" label="姓名" width="120px"></el-table-column>
+                <el-table-column property="sex" label="性别" width="120px"></el-table-column>
+                <el-table-column property="age" label="年龄" width="120px"></el-table-column>
+                <el-table-column property="inductionDate" label="入职日期" width="120px"></el-table-column>
+                <el-table-column property="unpaidTime" label="未结课时" width="120px"></el-table-column>
+                <el-table-column property="paidTime" label="已结课时" width="120px"></el-table-column>
+                <!-- <el-table-column property="course"  label="课程" width="448px"></el-table-column> -->
                 <el-table-column label="操作" width="150px">
-                    <el-button type="text">编辑</el-button>
-                    <el-button type="text">删除</el-button>
+                    <template scope="scope">
+                        <el-button type="text" @click="showDetail(scope.row)">详情</el-button>
+                    </template>
                 </el-table-column>
             </el-table>
         </div>
@@ -208,6 +208,8 @@ export default{
         removeCourse:function (index) {
             this.coursesTag.splice(index,1);
         },
+        showDetail(content){
+        },
         confirm(){
             var _this = this;
             this.$refs.form.validate(function (result) {
@@ -274,7 +276,7 @@ export default{
         }
     }
     .teacherList{
-        width: 1300px;
+        width: 992px;
         margin: 50px auto;
     }
 }

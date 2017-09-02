@@ -18,7 +18,6 @@ router.post("/",function(req,res){
             }
         },
         (error,rec)=>{
-            console.log(rec)
             if(error)
                 res.send(error);
             else

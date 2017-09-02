@@ -36,8 +36,9 @@ app.use("/getClassCount",require("./router/getClassCount"));    //统计某一�
 
 app.use("/teacherLogin",require("./router/teacherLogin"));
 app.use("/getTeacherInfo",require("./router/getTeacherInfo"));
-app.use("/getArrangeClass",require("./router/getArrangeClass"));
-app.use("/audit",require("./router/submitAudit"))
+app.use("/getArrangeClass",require("./router/getArrangeClass"));//获取某位教师的课程表
+app.use("/audit",require("./router/submitAudit"))           //老师上完课提交审核
+app.use("/changePassword",require("./router/changePassword"))
 
 app.use('/user',routers.admin);    //请求路由
 app.use('/course',routers.course);  //课程相关操作路由

@@ -12,7 +12,8 @@ var auditSchema = new mongoose.Schema({
     realCourseTime:{type:Number},//实际课时
     remark:{type:String},       //备注
     photoEvidencePath:{type:String},//拍照取证图片名称
-    returnVisitPath:{type:String}   //微信回访图片名称
+    returnVisitPath:{type:String},   //微信回访图片名称
+    status:{type:String}
 })
 
 var auditModel = db.model("audit",auditSchema);
