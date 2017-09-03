@@ -11,26 +11,26 @@ router.post("/",function(req,res){
             res.send("error");
         }else{
             var oldPassword = md5(req.body.oldPassword);
-            if( result == oldPassword ){
+            if( result.password == oldPassword ){        
                 teacher.update(
                     {workNumber:req.body.workNumber},
                     {$set:{
-                        password:md5(req.body.newPassword);
+                        password:md5(req.body.newPassword)
                     }},
                     (error,rec)=>{
                         if(error){
                             console.log("error in update teacher's password (router/changePassword.js)");
                             console.log(error);
-                            res.send(error);
+                            res.send("error");
                         }else{
                             res.send("successful");
                         }
                     })
-            }else{
-
+            }else{                  //旧密码有误
+                res.send("oldPassword error");
             }
         }
     })
 });
 
-export default router;
+module.exports = router;
