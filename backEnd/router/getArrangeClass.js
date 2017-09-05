@@ -13,7 +13,9 @@ var courseArranged = require("../admin").default.courseArranged;
 router.get("/",function (req,res) {
     courseArranged.findArrangeClass({workNumber:'20170'},function (error,data) {
         if(error){
-            res.send(error);
+            console.log("error in ./router/getArrangeClass.js");
+            console.log(error);
+            res.send("error");
         }else{
             res.send(data);
         }
