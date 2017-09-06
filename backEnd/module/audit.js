@@ -1,6 +1,6 @@
 var mongoose = require("mongoose");
 var db = require("./db");
-var student = require("./admin/student");
+var student = require("../admin/student").default;
 var course = require("./course")
 
 var auditSchema = new mongoose.Schema({
@@ -25,7 +25,7 @@ auditSchema.statics.findAuditedClass = function(data,callback){
             "$gte":data.startTime
         },
         endTime:{
-            "$lt":data.endTime
+            "$lte":data.endTime
         }
     },function(error,result){
         if(error)

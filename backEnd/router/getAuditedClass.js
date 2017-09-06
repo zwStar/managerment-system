@@ -4,7 +4,7 @@ var audit = require("../module/audit");
 
 
 router.get("/",function(req,res){
-    audit.findAuditedClass(req.body,function(error,data){
+    audit.findAuditedClass(req.query,function(error,data){
         if(error){
             console.log("error in ./router/getArrangeClass.js");
             console.log(error);

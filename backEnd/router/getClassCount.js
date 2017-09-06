@@ -7,7 +7,7 @@ var courseArranged = require("../module/courseArrange");
 router.get("/",function(req,res){
     var promises = [];
     promises.push(new Promise(function(resolve,reject){
-        historyList.count(req.body.data,function(error,result){
+        historyList.count(req.query,function(error,result){
             if(error)
                 reject(error);
             else
