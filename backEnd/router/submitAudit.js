@@ -1,7 +1,8 @@
 var express = require("express");
 var router = express.Router();
 
-var courseArranged = require("../module/courseArrange")
+var teacher = require("../module/teacher");
+var courseArranged = require("../module/couseArrange");
 
 router.post("/",function(req,res){
     courseArranged.update({
@@ -20,8 +21,20 @@ router.post("/",function(req,res){
         (error,rec)=>{
             if(error)
                 res.send(error);
-            else
-                res.send("successful");
+            else{
+                teacher.update(
+                    {workNumber:req.body.workNumber},
+                    {'$inc':{'unpaidTime':req.body.realCourseTime}},
+                (error) =>{
+                    if(error){
+                        console.log("error in ./router/submitAudit.js")
+                        res.send(error);
+                    }else{
+                        res.send("successful");
+                    }  
+                })    
+            }
+                
         }
     );
 })
