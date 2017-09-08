@@ -2,7 +2,7 @@ var express = require("express");
 var router = express.Router();
 
 var teacher = require("../module/teacher");
-var courseArranged = require("../module/couseArrange");
+var courseArranged = require("../module/courseArrange");
 
 router.post("/",function(req,res){
     courseArranged.update({

@@ -22,7 +22,7 @@
                     width="160">
                 </el-table-column>
                 <el-table-column
-                    prop="courseNumber"
+                    prop="courseNumber | explain"
                     label="计划课时"
                     width="160">
                 </el-table-column>
@@ -129,6 +129,17 @@
                 inputReason:false           //是否显示输入退出原因的输入框
             }
         },
+        filter:{
+            explain:function(value){
+                if(value == -1 ){
+                    return "学生请假";
+                }else if(value == -2 ){
+                    return "老师请假";
+                }else{
+                    return value;
+                }
+            }
+        },
         watch:{
             detailShow:function(newValue,oldValue){
                 var _this = this;
@@ -173,7 +184,6 @@
                     var startTime = new Date(el.startTime);
                     var endTime = new Date(el.endTime);
                     el.time = startTime.toLocaleTimeString() + "~" + endTime.toLocaleTimeString();
-                    /* el.time = startTime.getHours() + ":"+startTime.getMinutes() + "~" + endTime.getHours() + ":" + endTime.getMinutes(); */
                 })
                 _this.auditList = response.data;
             })
@@ -212,6 +222,9 @@
             through(){
                 this.detail.status = "已审核";
                 var _this = this;
+                if(this.detail.realCourseTime == -1 || this.detail.realCourseTime == -2){
+                    this.detail.realCourseTime = 0;
+                }
                 _post({
                     url:"throughAudit",
                     data:{
