@@ -3,8 +3,9 @@
  */
 import admin from './admin'
 import course from './course'
-
+import statis from './statis'
 export default {
     admin,
-    course
+    course,
+    statis
 }

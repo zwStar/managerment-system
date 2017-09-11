@@ -2,6 +2,7 @@
  * Created by 郭泽伟 on 2017/7/30.
  */
 import config from '../config'
+import router from '../routers'
 const baseURL = config.host;
 import store from '../stores';
 // const axios = require('axios').create({
@@ -46,11 +47,12 @@ axios.interceptors.request.use(config => {
 });
 
 // respone拦截器
-axios.interceptors.response.use(response=>{
-   return response;
+axios.interceptors.response.use(response => {
+    if (response.data.status == -1) {
+        router.push('/login');
+    }
+    return response;
 })
-
-
 
 
 //get

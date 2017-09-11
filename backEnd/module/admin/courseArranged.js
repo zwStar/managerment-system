@@ -3,7 +3,7 @@
  */
 import Base from '../base'
 
-const courseArranged = new Base("CourseArranged",{
+const courseArranged = new Base("CourseArranged1",{
 
     workNumber: String,  
     sno:String,

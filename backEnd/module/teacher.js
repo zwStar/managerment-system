@@ -18,7 +18,7 @@ var teacherSchema = new mongoose.Schema({
     course:{type:Array}
 });
 
-teacherSchema.statics.findCourse = function (data,callback) {
+teacherSchema.statics.findCourse = function (data,callback) {//根据课程号找出课程名字和年级
     var promises = [];
     var q = 0;
     for( var i = 0 ; i < data.length ; i++){
@@ -53,31 +53,29 @@ teacherSchema.statics.getTeacherInfo = function (data,callback) {
         if(error){
             callback(error,null);
         }else{
-
             delete teacher[0].password;
             callback(null,teacher[0]);
         }
     })
-}
+};
 
-teacherSchema.statics.getName = function (data,callback) {
-}
 
-teacherSchema.statics.getTeacherNamesOneTime = function(data,callback){
 
+teacherSchema.statics.getTeacherNamesOneTime = function(data,callback){//找出教师名字
     var promises = [];
     var _this = this;
     for( var i = 0 ; i < data.length ; i++ ){
         promises.push(new Promise(function(resolve,reject){
             _this.findOne({workNumber:data[i].workNumber},'name',function(error,teacher){
-                if(error)
+                if(error){
+                    console.log("error in module teacher.js")
                     reject(error);
+                }
                 else
                     resolve(teacher.name);
             })
         }))
     }
-
     Promise.all(promises).then(function(teacher){
         for( var i = 0 ; i < teacher.length ; i++ ){
             data[i].teacherName = teacher[i];
@@ -86,24 +84,21 @@ teacherSchema.statics.getTeacherNamesOneTime = function(data,callback){
     },function(error){
         callback(error,null);
     })
-}
+};
 
 teacherSchema.statics.login = function (req, res, next) {     //注册
-
     let LoginPromise = this.find({"workNumber": req.body.workNumber, "password": $.md5(req.body.password)});    //返回一个promise对象
     LoginPromise.then((documents) => {
         if (!documents) {                        //如果为空 登录失败 返回login failed
-
             return $.result(res, 'login failed');
         }
         //登录成功
-        console.log(documents);
         let workNumber = documents.workNumber;
         return $.result(res, {success: true, "message": "登录成功", workNumber: workNumber, token: $.createToken(workNumber)});           //返回
     })
 };
 
-var teacherModel = db.model("teacher",teacherSchema);
+var teacherModel = mongoose.model("teacher",teacherSchema);
 
 module.exports = teacherModel
 

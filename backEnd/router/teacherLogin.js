@@ -10,6 +10,6 @@ var teacher = require("../module/teacher");
 
 router.post("/",function (req,res) {
     teacher.login(req,res)
-})
+});
 
 module.exports =router;

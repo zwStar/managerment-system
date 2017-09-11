@@ -81,7 +81,7 @@
                                 <el-button type="info" @click="confirm()">确认</el-button>
                             </el-col>
                             <el-col :span="3">
-                                <el-button type="danger">取消</el-button>
+                                <el-button type="danger" @click="showInputForm=false;">取消</el-button>
                             </el-col>
                         </el-row>
                     </el-form-item>
@@ -184,7 +184,7 @@ export default{
     watch:{
         currentCourses:function (newVal,oldVal) {
             if(!newVal)
-                return
+                return;
             var temp = {
                 name:this.currentGrade + newVal,
                 type:'gray'

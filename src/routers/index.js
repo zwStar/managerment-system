@@ -12,7 +12,6 @@ import teacherList from '../view/Teacher/teacherList.vue'
 import audit from "../view/audit/index.vue"
 
 
-
 import Student from '../view/Student/index.vue'
 
 Vue.use(Router);
@@ -23,21 +22,21 @@ const routes = [
         children: [
 
             {
-                path:"/teacherList",
-                component:teacherList
+                path: "/teacherList",
+                component: teacherList
             },
 
-            {path:"student",component:Student},
-            {path:"userInfo",component:UserInfo},
-            {path:"course",component:Course},
-            {path:"audit",component:audit}
+            {path: "student", component: Student},
+            {path: "userInfo", component: UserInfo},
+            {path: "course", component: Course},
+            {path: "audit", component: audit}
 
         ]
-    }/* ,
+    },
     {
         path: "/login",
         component: Login
-    } */
+    }
 ]
 
 export default new Router({

@@ -3,21 +3,20 @@
  */
 var express = require("express");
 var teacher = require("../module/teacher");
-var course = require("../module/course")
-var md5 = require("../module/md5")
+var course = require("../module/course");
+var md5 = require("../module/md5");
 
 var router = express.Router();
 
-router.post("/",function (req,res) {
-    var date = new Date(req.body.inductionDate);
-    teacher.count({}, function (err, count) {
+router.post("/", function (req, res) {
+    var date = new Date(req.body.inductionDate);//入职日期
+    teacher.count({}, function (err, count) {//找出已有教师数量
         if (err) {
             console.log("addTeacher.js===>error")
             console.log(err);
             res.send(err);
         }
-
-        course.dealWithData(req.body.coursesTag, function (err, courseNo) {
+        course.dealWithData(req.body.coursesTag, function (err, courseNo) {//找课程号
             if (err) {
                 console.log("*****error in course.dealWithData******");
                 res.send(err);
@@ -42,9 +41,6 @@ router.post("/",function (req,res) {
             })
         });
     });
-
-
-
 });
 
 module.exports = router

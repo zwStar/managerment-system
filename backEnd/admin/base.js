@@ -18,6 +18,24 @@ function addMethods(_this) {
         })
     };
 
+    methods.total = async function (req, res, next) {
+        try{
+            let count = await _this.model.count({});
+            console.log(count)
+            res.send({
+                status: 1,
+                success: '获取总数成功',
+                count: count
+            })
+        }catch (err){
+            console.log(err);
+            res.send({
+                status:0,
+                message: '获取总数失败'
+            })
+        }
+    }
+
     methods.all = function (req, res, next) {
         let allInfoPromise = _this.model.find({});
         allInfoPromise.then((docs) => {

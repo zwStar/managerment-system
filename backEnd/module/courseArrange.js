@@ -46,6 +46,6 @@ var CourseArrangedSchema = new mongoose.Schema({
     })
 } */
 
-var CourseArrangedModel = db.model("CourseArranged",CourseArrangedSchema);
+var CourseArrangedModel = mongoose.model("CourseArranged",CourseArrangedSchema);
 
 module.exports = CourseArrangedModel

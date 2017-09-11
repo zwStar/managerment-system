@@ -17,6 +17,6 @@ var historyListSchema = new mongoose.Schema({
     reason:String
 })
 
-var historyListModel = db.model("historyList",historyListSchema);
+var historyListModel = mongoose.model("historyList",historyListSchema);
 
 module.exports = historyListModel

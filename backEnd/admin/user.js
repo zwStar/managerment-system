@@ -3,6 +3,7 @@
  */
 import Base from './base'
 import Models from '../module'
+
 const UserModel = Models.admin.UserModel;
 import $ from '../utils'
 

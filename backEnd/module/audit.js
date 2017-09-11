@@ -78,6 +78,6 @@ auditSchema.statics.findAuditedClass = function(data,callback){
 }
 
 
-var auditModel = db.model("audit",auditSchema);
+var auditModel = mongoose.model("audit",auditSchema);
 
 module.exports = auditModel;

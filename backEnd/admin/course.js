@@ -1,73 +1,19 @@
 /**
- * Created by Administrator on 2017/8/1.
+ * Created by admin on 2017/8/5.
  */
-import mongoose from 'mongoose'
-
-let db = require("./db.js")
 import Model from '../module'
 import $ from '../utils'
+import Base from './base'
 
-//let  CourseArrangedModel= Model.admin.CourseArrangedModel;  //课程安排表
-// let StudentModel = Model.admin.StudentModel;
-import StudentModel from './student'
-import TeacherModel from './teacher'            //教师表
-import CourseArrangedModel from './courseArrange'   //课程安排表
-
-
-var courseSchema = new mongoose.Schema({
-    gradeNo: {type: String},
-    courseNo: {type: String},
-    courseName: {type: String},
+let CourseModel = Model.admin.CourseModel;          //课程表
+let TeacherModel = Model.admin.TeacherModel         //教师表
+let CourseArrangedModel = Model.admin.CourseArrangedModel;  //课程安排表
+let StudentModel = Model.admin.StudentModel;
+let CourseAPI = new Base({
+    model: CourseModel
 });
-
-var PRIMARY_REG = /(小学)([\u4e00-\u9fa5]{2})/
-var JUNIOR_REG = /(初中)([\u4e00-\u9fa5]{2})/
-var HIGH_REG = /(高中)([\u4e00-\u9fa5]{2})/
-var CONVENTIONAL_REG = /([\u4e00-\u9fa5]{2})([\u4e00-\u9fa5]{2})/
-
-courseSchema.statics.dealWithData = function (data, callback) {
-    var courseNo = new Array();
-    var promises = new Array();
-    for (var i = 0; i < data.length; i++) {
-        var result = data[i].name.match(PRIMARY_REG) || data[i].name.match(JUNIOR_REG) || data[i].name.match(HIGH_REG);
-        if (!result)
-            result = data[i].name.match(CONVENTIONAL_REG);
-        if (result[1] == '初中') {
-            if (result[2] != '物理' && result[2] != '化学')
-                data.push({name: "初一" + result[2]});
-            if (result[2] != '化学')
-                data.push({name: "初二" + result[2]});
-            data.push({name: "初三" + result[2]});
-            continue;
-        } else if (result[1] == '高中') {
-            data.push({name: "高一" + result[2]});
-            data.push({name: "高二" + result[2]});
-            data.push({name: "高三" + result[2]});
-            continue;
-        }
-        var _this = this;
-        var promise = new Promise(function (resolve, reject) {
-            _this.find({gradeNo: result[1], courseName: result[2]}, function (err, course) {
-                if (err) {
-                    reject(err);
-                } else {
-                    resolve(course[0].courseNo);
-                }
-            })
-        })
-        promises.push(promise);
-    }
-
-    Promise.all(promises).then(function (courseNo) {
-        callback(null, courseNo);
-    }, function (err) {
-        callback(err);
-    })
-
-}
-
 //筛选出能教课的老师
-courseSchema.statics.teacherOptions = function (req, res, next) {
+CourseAPI.methods.teacherOptions = function (req, res, next) {
     let query = req.query;
     let FindCourseNoPromise = CourseModel.findOne({course: query.course, grade: query.grade});  //找出课程号
     FindCourseNoPromise.then((result) => {
@@ -118,55 +64,9 @@ courseSchema.statics.teacherOptions = function (req, res, next) {
         }
     });
 }
-/* courseSchema.statics.findArrangeClass = function(data,callback){
-
-    CourseArrangedModel.find(data,null,{sort:[["beginTime",1]]},function (error,result) {
-        if(error)
-            callback(error,null)
-        else{
-            var promises = [];
-            var nameAndClass = [];
-            for( var i = 0 ; i < result.length ; i++ ){
-                promises.push(new Promise(function (resolve,reject) {
-                    student.getName({studentNumber:result[i].studentNumber},function (error,result) {
-                        if(error)
-                            reject(error);
-                    });
-                }).then(function () {
-
-                },function (error) {
-
-                }))
-            }
-        }
-    })
-    new Promise(function (resolve,reject) {
-        this.find(data,null,{sort:[["beginTime",1]]},function (error,result) {
-            if(error)
-                reject(error);
-            else{
-                resolve(result);
-            }
-        })
-    })
-        .then(function (data) {
-            return new Promise(function (resolve,reject) {
-                teacher.find
-            })
-            callback(null,result);
-        },function (error) {
-            callback(error,null)
-        })
-        .then(function () {
-
-        },function () {
-
-        })
-
-} */
 
 //筛选出年级
-courseSchema.statics.findGrade = function (req, res, next) {
+CourseAPI.methods.findGrade = function (req, res, next) {
     let query = req.query;
     let findGradePromise = StudentModel.findOne({sno: query.sno});//根据学生学号找出他的年级
     findGradePromise.then((doc) => {
@@ -176,39 +76,10 @@ courseSchema.statics.findGrade = function (req, res, next) {
     }, (err) => {
         console.log(err);
     })
-}
-//找出课程号
-courseSchema.statics.findCourseNo = function (data, callback) {
-    this.find(data, callback)
-}
-
-courseSchema.statics.getCourseNamesOneTime = function (data, callback) { //通过多个课程号一次获取多个课程名
-    var promises = [];
-    var _this = this;
-
-    for (var i = 0; i < data.length; i++) {
-        promises.push(new Promise(function (resolve, reject) {
-            _this.findOne({courseNo: data[i].courseNo}, function (error, course) {
-                if (error)
-                    reject(error);
-                else
-                    resolve(course.gradeNo + course.courseName);
-            })
-        }))
-    }
-
-    Promise.all(promises).then(function (course) {
-        for (var i = 0; i < data.length; i++) {
-            data[i].courseName = course[i];
-        }
-        callback(null, data);
-    }, function (error) {
-        callback(error, null);
-    })
-}
+};
 
 //安排课程
-courseSchema.statics.courseArranged = function (req, res, next) {
+CourseAPI.methods.courseArranged = function (req, res, next) {
     let query = req.query;
     //找出课程号
     let findCourseNoPromise = CourseModel.findOne({grade: query.grade, course: query.course});
@@ -231,7 +102,7 @@ courseSchema.statics.courseArranged = function (req, res, next) {
 }
 
 //获得已经安排总课程的总量
-courseSchema.statics.total = function (req, res, next) {
+CourseAPI.methods.total = function (req, res, next) {
     let totalPromise = CourseArrangedModel.count({});
     totalPromise.then(results => {
         res.send({
@@ -243,21 +114,18 @@ courseSchema.statics.total = function (req, res, next) {
 }
 
 //安排课程列表
-courseSchema.statics.arrangedLists = async function (req, res, next) {
-    let _this = this;
+CourseAPI.methods.arrangedLists = async function (req, res, next) {
     let {limit = 10, start = 0} = req.query;
     try {
-        let Courses = await CourseArrangedModel.find({}).limit(Number(limit)).skip(Number(limit * start));//已经安排的课程
+        let Courses = await CourseArrangedModel.find({}).limit(Number(limit)).skip(Number(limit * start));
         let results = [];
         for (let i = 0; i < Courses.length; i++) {
             //根据学号 在学生表中查找该学生姓名
             let StudentName = await StudentModel.findOne({sno: Courses[i].sno}, 'name');
-            // //根据教师工号 找出教师名字
-            console.log("StudentName",StudentName)
+            //根据教师工号 找出教师名字
             let TeacherName = await TeacherModel.findOne({workNumber: Courses[i].workNumber}, 'name');
-
             //根据课程号 找出年级
-            let Course = await _this.findOne({courseNo: Courses[i].courseNo}, 'course grade');
+            let Course = await CourseModel.findOne({courseNo: Courses[i].courseNo}, 'course grade');
             if (StudentName !== null && TeacherName !== null && Course !== null) {
                 let dateformat = {  //对时间进行格式化
                     startTime: $.dateformat(Courses[i].startTime, 'YYYY-MM-DD HH:mm:ss'),
@@ -282,7 +150,108 @@ courseSchema.statics.arrangedLists = async function (req, res, next) {
     }
 
 }
+export default CourseAPI.methods;
 
-var courseModel = mongoose.model("course", courseSchema);
 
-module.exports = courseModel
+/*忽略下面的课程添加程序*/
+
+// CourseAPI.methods.createCourse=()=>{
+//     let data = [
+/**********小学*******/
+// {courseNo:"0101",grade:"一年级",course:"语文"},
+// {courseNo:"0102",grade:"一年级",course:"数学"},
+// {courseNo:"0103",grade:"一年级",course:"英语"},
+//
+// {courseNo:"0201",grade:"二年级",course:"语文"},
+// {courseNo:"0202",grade:"二年级",course:"数学"},
+// {courseNo:"0203",grade:"二年级",course:"英语"},
+//
+// {courseNo:"0301",grade:"三年级",course:"语文"},
+// {courseNo:"0302",grade:"三年级",course:"数学"},
+// {courseNo:"0303",grade:"三年级",course:"英语"},
+//
+// {courseNo:"0401",grade:"四年级",course:"语文"},
+// {courseNo:"0402",grade:"四年级",course:"数学"},
+// {courseNo:"0403",grade:"四年级",course:"英语"},
+//
+// {courseNo:"0501",grade:"五年级",course:"语文"},
+// {courseNo:"0502",grade:"五年级",course:"数学"},
+// {courseNo:"0503",grade:"五年级",course:"英语"},
+//
+// {courseNo:"0601",grade:"六年级",course:"语文"},
+// {courseNo:"0602",grade:"六年级",course:"数学"},
+// {courseNo:"0603",grade:"六年级",course:"英语"}
+/**********小学*******/
+
+/**********初中**********/
+//         {courseNo:"0701",grade:"初一",course:"语文"},
+//         {courseNo:"0702",grade:"初一",course:"数学"},
+//         {courseNo:"0703",grade:"初一",course:"英语"},
+//         {courseNo:"0704",grade:"初一",course:"历史"},
+//         {courseNo:"0705",grade:"初一",course:"地理"},
+//         {courseNo:"0706",grade:"初一",course:"生物"},
+//         {courseNo:"0707",grade:"初一",course:"政治"},
+//
+//         {courseNo:"0801",grade:"初二",course:"语文"},
+//         {courseNo:"0802",grade:"初二",course:"数学"},
+//         {courseNo:"0803",grade:"初二",course:"英语"},
+//         {courseNo:"0804",grade:"初二",course:"历史"},
+//         {courseNo:"0805",grade:"初二",course:"地理"},
+//         {courseNo:"0806",grade:"初二",course:"生物"},
+//         {courseNo:"0807",grade:"初二",course:"政治"},
+//         {courseNo:"0808",grade:"初二",course:"物理"},
+//
+//         {courseNo:"0901",grade:"初三",course:"语文"},
+//         {courseNo:"0902",grade:"初三",course:"数学"},
+//         {courseNo:"0903",grade:"初三",course:"英语"},
+//         {courseNo:"0904",grade:"初三",course:"历史"},
+//         {courseNo:"0905",grade:"初三",course:"地理"},
+//         {courseNo:"0906",grade:"初三",course:"生物"},
+//         {courseNo:"0907",grade:"初三",course:"政治"},
+//         {courseNo:"0908",grade:"初三",course:"物理"},
+//         {courseNo:"0909",grade:"初三",course:"化学"},
+//         /**********初中**********/
+//
+//         /*********高中*************/
+//         {courseNo:"1001",grade:"高一",course:"语文"},
+//         {courseNo:"1002",grade:"高一",course:"数学"},
+//         {courseNo:"1003",grade:"高一",course:"英语"},
+//         {courseNo:"1004",grade:"高一",course:"历史"},
+//         {courseNo:"1005",grade:"高一",course:"地理"},
+//         {courseNo:"1006",grade:"高一",course:"生物"},
+//         {courseNo:"1007",grade:"高一",course:"政治"},
+//         {courseNo:"1008",grade:"高一",course:"物理"},
+//         {courseNo:"1009",grade:"高一",course:"化学"},
+//
+//         {courseNo:"1101",grade:"高二",course:"语文"},
+//         {courseNo:"1102",grade:"高二",course:"数学"},
+//         {courseNo:"1103",grade:"高二",course:"英语"},
+//         {courseNo:"1104",grade:"高二",course:"历史"},
+//         {courseNo:"1105",grade:"高二",course:"地理"},
+//         {courseNo:"1106",grade:"高二",course:"生物"},
+//         {courseNo:"1107",grade:"高二",course:"政治"},
+//         {courseNo:"1108",grade:"高二",course:"物理"},
+//         {courseNo:"1109",grade:"高二",course:"化学"},
+//
+//         {courseNo:"1201",grade:"高三",course:"语文"},
+//         {courseNo:"1202",grade:"高三",course:"数学"},
+//         {courseNo:"1203",grade:"高三",course:"英语"},
+//         {courseNo:"1204",grade:"高三",course:"历史"},
+//         {courseNo:"1205",grade:"高三",course:"地理"},
+//         {courseNo:"1206",grade:"高三",course:"生物"},
+//         {courseNo:"1207",grade:"高三",course:"政治"},
+//         {courseNo:"1208",grade:"高三",course:"物理"},
+//         {courseNo:"1209",grade:"高三",course:"化学"},
+//         /*********高中*************/
+//     ]
+//
+//     for(let i=0;i<data.length;i++){
+//         CourseModel.create(data[i]).then((results)=>{
+//             console.logs(results);
+//         },(err)=>{
+//             console.logs(err);
+//         });
+//     }
+// }
+
+

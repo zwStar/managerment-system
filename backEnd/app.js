@@ -8,13 +8,13 @@ const express = require("express")
 const bodyParser = require("body-parser")
 const app = express()
 const routers = require("./router").default;
+const cookieParser = require('cookie-parser')
 
 /* app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({extended:false})) */
 app.use(bodyParser.json({limit: '50mb'}));
 app.use(bodyParser.urlencoded({limit: '50mb', extended: true}));
-
-
+app.use(cookieParser());
 //跨域
 app.use('/', function (req, res, next) {
     res.header("Access-Control-Allow-Credentials", true)
@@ -26,8 +26,9 @@ app.use('/', function (req, res, next) {
     next()
 })
 
-app.use("/addTeacher",require("./router/addTeacher"));
-app.use("/getTeacherList",require("./router/getTeacherList"));
+app.use("/addTeacher",require("./router/addTeacher"));      //添加老师
+app.use("/getTeacherList",require("./router/getTeacherList"));  //获取教师列表
+
 app.use("/getAuditTable",require("./router/getAuditTable"));    //获取老师提交的审核记录
 app.use("/getPhoto",require("./router/getPhoto"));              //获取审核记录的照片
 app.use("/refuseAudit",require("./router/refuseAudit"));        //不通过审核
@@ -43,9 +44,11 @@ app.use("/changePassword",require("./router/changePassword"))       //老师修�
 
 app.use('/user',routers.admin);    //请求路由
 app.use('/course',routers.course);  //课程相关操作路由
-
+app.use("/statis",routers.statis)   //获取每天新增学员 新增教师 新增订单
 //处理上传的图片
 app.use("/photo",require("./router/photo"))
+
+app.use('/user',routers.admin);    //请求路由
 
 /* var db = require("./module/db.js") */
 const port = process.env.PORT || 3000;
