@@ -17,9 +17,10 @@ let CourseArrangedAPI = new Base({
 });
 
 CourseArrangedAPI.methods.findArrangeClass = function (data,callback) {
+    console.log(data.startTime);
     
     CourseArrangedModel.find({
-        workNumber:"20170",
+        workNumber:data.workNumber,
         startTime:{
             "$gte":data.startTime
         },
@@ -27,6 +28,7 @@ CourseArrangedAPI.methods.findArrangeClass = function (data,callback) {
             "$lte":data.endTime
         }
     } ,function (error,result) {
+
         for( var i = 0 ; i < result.length ; i++ ){
             var obj = {
                 workNumber:result[i].workNumber,

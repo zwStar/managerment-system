@@ -1,6 +1,5 @@
 var mongoose = require("mongoose");
 var db =require("./db.js")
-
 var teacher = require("./teacher")
 
 var CourseArrangedSchema = new mongoose.Schema({
@@ -18,7 +17,6 @@ var CourseArrangedSchema = new mongoose.Schema({
     returnVisitPath:{type:String},   //微信回访图片名称
     reason:String                   //被撤回的原因
 });
-
 
 
 var CourseArrangedModel = mongoose.model("CourseArranged",CourseArrangedSchema);
