@@ -15,7 +15,7 @@ function createToken(name){     //创建token
             name
         },
         config.secret, {
-            expiresIn: '24h' // 过期时间 这里只设置10s
+            expiresIn: '24h' // 过期时间
         });
     return token;
 }

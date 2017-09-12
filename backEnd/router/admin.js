@@ -7,7 +7,8 @@ import Admin from '../admin'
 import $ from '../utils'
 import Captchas from '../admin/captchas'
 
-router.post("/login",Admin.User.login)
+router.post("/register",Admin.User.register);
+router.post("/login",Admin.User.login);
 router.post("/changeInfo",$.checkToken,Admin.User.update);
 
 

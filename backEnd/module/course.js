@@ -253,7 +253,6 @@ courseSchema.statics.arrangedLists = async function (req, res, next) {
             //根据学号 在学生表中查找该学生姓名
             let StudentName = await StudentModel.findOne({sno: Courses[i].sno}, 'name');
             // //根据教师工号 找出教师名字
-            console.log("StudentName",StudentName)
             let TeacherName = await TeacherModel.findOne({workNumber: Courses[i].workNumber}, 'name');
 
             //根据课程号 找出年级

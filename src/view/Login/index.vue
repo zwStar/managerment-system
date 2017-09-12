@@ -72,7 +72,8 @@
                 const _this = this;
                 this.$refs.loginForm.validate(valid => {
                     if (valid) {
-                       if(_this.cap === _this.imgCode){
+
+                       if(_this.cap == _this.loginForm.code){
                            api._post({
                                url: "user/login",           //请求登录接口
                                data: _this.loginForm
