@@ -19,32 +19,7 @@ var CourseArrangedSchema = new mongoose.Schema({
     reason:String                   //被撤回的原因
 });
 
-/* CourseArrangedModel.statics.getAudit = function(data,callback){
-    this.find(data,function(error,result){
-        if(error){
-            console.log("error in get the audit by status");
-            console.log(error);
-            callback(error,null);
-        }else{
-            for(var i = 0 ; i < result.length ; i++ ){
-                result[i] = new Object(result[i]);
-            }
-            new Promise(function(resolve,reject){
-                teacher.getTeacherNamesOneTime(result,function(error,teacher){
-                    if(error)
-                        reject(error)
-                    else{
 
-                        resolve(teacher)
-                    }
-                        
-                })
-            })
-            .then(function(){},function(){})
-            
-        }
-    })
-} */
 
 var CourseArrangedModel = mongoose.model("CourseArranged",CourseArrangedSchema);
 

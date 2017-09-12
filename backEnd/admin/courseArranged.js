@@ -18,40 +18,15 @@ let CourseArrangedAPI = new Base({
 
 CourseArrangedAPI.methods.findArrangeClass = function (data,callback) {
     
-    /* CourseArrangedModel.all(data).then(function(result){
-        new Promise((resolve,reject)=>{
-            
-            student.getNamesBySnoOneTime(data,function (error,data) { //获取所有排课记录中的学生姓名，将其添加到数据库返回的记录中
-                if(error)
-                    reject(error);
-                else
-                    resolve(data);
-            })
-        }).then(function (data) {
-                    result = data;
-                    console.log(data);
-                    return new Promise((response,reject) =>{
-                        course.getCourseNamesOneTime(result,function (error,data) {
-                            if(error)
-                                reject(error);
-                            else
-                                resolve(result);
-                        })
-                    })//获取所有排课记录中的课程名，将其添加到数据库返回记录中
-                },function (error) {
-                    callback(error,null);
-                })
-                .then(function (data) {
-                    callback(null,data);
-                },function (error) {
-                    callback(error,null);
-                })
-        
-    },function(error){
-        callback(error,null)
-    }) */
-    
-    CourseArrangedModel.find({},function (error,result) {
+    CourseArrangedModel.find({
+        workNumber:"20170",
+        startTime:{
+            "$gte":data.startTime
+        },
+        endTime:{
+            "$lte":data.endTime
+        }
+    } ,function (error,result) {
         for( var i = 0 ; i < result.length ; i++ ){
             var obj = {
                 workNumber:result[i].workNumber,
