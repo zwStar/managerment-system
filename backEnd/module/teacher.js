@@ -2,10 +2,10 @@
  * Created by Administrator on 2017/7/31.
  */
 var mongoose = require("mongoose");
-var db =require("./db.js")
-var course = require("./course.js")
-import $ from '../utils'
+var db =require("./db.js");
+var course = require("./course.js");
 
+import $ from '../utils'
 var teacherSchema = new mongoose.Schema({
     workNumber:{ type:String },
     name:{ type:String },
@@ -45,6 +45,7 @@ teacherSchema.statics.findCourse = function (data,callback) {//根据课程号�
         }
         callback(null,data);
     },function (err) {
+        console.log(err);
         callback(err,null);
     })
 }

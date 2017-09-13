@@ -5,18 +5,17 @@ var express = require("express");
 var router = express.Router();
 
 import Model from '../module'
+import StudentModel from '../module/student'
 
-let StudentModel = Model.admin.StudentModel;
+var courseArranged = require("../admin").default.courseArranged;
 
- var courseArranged = require("../admin").default.courseArranged;
-
-router.get("/",function (req,res) {
-    courseArranged.findArrangeClass(req.query,function (error,data) {
-        if(error){
+router.get("/", function (req, res) {
+    courseArranged.findArrangeClass(req.query, function (error, data) {
+        if (error) {
             console.log("error in ./router/getArrangeClass.js");
             console.log(error);
             res.send("error");
-        }else{
+        } else {
             res.send(data);
         }
     })

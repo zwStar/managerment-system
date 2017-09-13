@@ -3,8 +3,6 @@ var util = require('util');
 var fs = require('fs');
 
 export const savePhoto = function(req,res,path){
-
-
     var base64 = req.body.base64.replace(/^data:image\/\w+;base64,/, "");//去掉图片base64码前面部分data:image/png;base64
     var dataBuffer = new Buffer(base64, 'base64'); //把base64码转成buffer对象，
     var name = Date.now();
@@ -16,9 +14,6 @@ export const savePhoto = function(req,res,path){
             res.send({name:name+"."+req.body.type});
         }
     })
-
-
-
    // var form = new multiparty.Form({uploadDir: '../backEnd/photo/'+path+'/'});
     //上传完成后处理
     /* form.parse(req, function(err, fields, files) {

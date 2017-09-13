@@ -1,7 +1,8 @@
 var mongoose = require("mongoose");
 var db = require("./db");
 var student = require("../admin/student").default;
-var course = require("./course")
+var course = require("./course");
+
 
 var auditSchema = new mongoose.Schema({
     workNumber: {type: String},
