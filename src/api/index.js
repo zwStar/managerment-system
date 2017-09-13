@@ -48,9 +48,10 @@ axios.interceptors.request.use(config => {
 
 // respone拦截器
 axios.interceptors.response.use(response => {
-    if (response.data.status == -1) {
-        router.push('/login');
-    }
+    console.log(response.data)
+    // if (response.data.status == -1) {
+    //     router.push('/login');
+    // }
     return response;
 })
 

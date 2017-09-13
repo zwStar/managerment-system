@@ -89,8 +89,13 @@ teacherSchema.statics.getTeacherNamesOneTime = function(data,callback){//找出�
 teacherSchema.statics.login = function (req, res, next) {     //注册
     let LoginPromise = this.find({"workNumber": req.body.workNumber, "password": $.md5(req.body.password)});    //返回一个promise对象
     LoginPromise.then((documents) => {
-        if (!documents) {                        //如果为空 登录失败 返回login failed
-            return $.result(res, 'login failed');
+        if (!documents.length) {                        //如果为空 登录失败 返回login failed
+            // $.result(res, 'login failed');
+            res.send({
+                status:401,
+                msg:"params error",
+                success:false
+            })
         }
         //登录成功
         let workNumber = documents.workNumber;

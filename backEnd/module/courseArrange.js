@@ -1,8 +1,6 @@
 var mongoose = require("mongoose");
 var db =require("./db.js")
 
-var teacher = require("./teacher")
-
 var CourseArrangedSchema = new mongoose.Schema({
     workNumber: String,  
     sno:String,
@@ -19,8 +17,6 @@ var CourseArrangedSchema = new mongoose.Schema({
     reason:String                   //被撤回的原因
 });
 
-
-
-var CourseArrangedModel = mongoose.model("CourseArranged",CourseArrangedSchema);
+let CourseArrangedModel = mongoose.model("CourseArranged",CourseArrangedSchema);
 
 module.exports = CourseArrangedModel

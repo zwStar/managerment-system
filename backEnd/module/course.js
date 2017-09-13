@@ -4,15 +4,12 @@
 import mongoose from 'mongoose'
 
 let db = require("./db.js")
-import Model from '../module'
+
 import $ from '../utils'
 
-//let  CourseArrangedModel= Model.admin.CourseArrangedModel;  //课程安排表
-// let StudentModel = Model.admin.StudentModel;
 import StudentModel from './student'
 import TeacherModel from './teacher'            //教师表
 import CourseArrangedModel from './courseArrange'   //课程安排表
-
 
 var courseSchema = new mongoose.Schema({
     gradeNo: {type: String},

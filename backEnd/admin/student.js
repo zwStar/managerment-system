@@ -7,7 +7,8 @@ import Base from './base'
 
 /* let StudentModel = Model.admin.StudentModel; */
 let StudentModel = require("../module/student")
-
+import CourseArrangedModel from '../module/courseArrange'
+import $ from '../utils'
 let StudentAPI = new Base({
    model:StudentModel
 });

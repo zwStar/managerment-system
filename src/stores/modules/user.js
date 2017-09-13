@@ -13,16 +13,13 @@ const user = {
             state.token = token;
         },
         SET_ITEM:(state,obj)=>{
-
             state[obj.key] = obj.val
-            console.log(state.adminItems)
         }
     },
     actions:{
         "LoginSuccess":({commit},data)=>{
             commit("SET_TOKEN",data.token);
             Cookies.set('Admin-Token', data.token);
-
         },
         "Logout":({commit})=>{
             Cookies.remove("Admin-Token");
