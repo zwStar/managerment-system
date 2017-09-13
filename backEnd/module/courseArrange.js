@@ -1,5 +1,9 @@
 var mongoose = require("mongoose");
 var db =require("./db.js")
+<<<<<<< HEAD
+=======
+var teacher = require("./teacher")
+>>>>>>> e5d45a64e216d0094773bf6d9e9a5b2a84e24cec
 
 var CourseArrangedSchema = new mongoose.Schema({
     workNumber: String,  
@@ -19,4 +23,10 @@ var CourseArrangedSchema = new mongoose.Schema({
 
 let CourseArrangedModel = mongoose.model("CourseArranged",CourseArrangedSchema);
 
+<<<<<<< HEAD
 module.exports = CourseArrangedModel
+=======
+var CourseArrangedModel = mongoose.model("CourseArranged",CourseArrangedSchema);
+
+module.exports = CourseArrangedModel
+>>>>>>> e5d45a64e216d0094773bf6d9e9a5b2a84e24cec

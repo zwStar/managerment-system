@@ -14,8 +14,11 @@ let options = {
     server: {poolSize: 5}
 };
 
-//zwVic:adgjmp123@119.29.82.47:27017/example
 
+<<<<<<< HEAD
+=======
+//127.0.0.1:27017/data
+>>>>>>> e5d45a64e216d0094773bf6d9e9a5b2a84e24cec
 mongoose.connect("mongodb://zwVic:adgjmp123@119.29.82.47:27017/example", options).then(() => {
     console.log(`数据库连接成功`);
 }, (err) => {

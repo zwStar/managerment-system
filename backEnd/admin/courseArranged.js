@@ -18,6 +18,7 @@ let CourseArrangedAPI = new Base({
 });
 
 CourseArrangedAPI.methods.findArrangeClass = function (data,callback) {
+<<<<<<< HEAD
 
     CourseArrangedModel.find({
         // workNumber:"20170",
@@ -29,6 +30,20 @@ CourseArrangedAPI.methods.findArrangeClass = function (data,callback) {
         // }
     } ,function (error,result) {
         console.log("result",result.length)
+=======
+    console.log(data.startTime);
+    
+    CourseArrangedModel.find({
+        workNumber:data.workNumber,
+        startTime:{
+            "$gte":data.startTime
+        },
+        endTime:{
+            "$lte":data.endTime
+        }
+    } ,function (error,result) {
+
+>>>>>>> e5d45a64e216d0094773bf6d9e9a5b2a84e24cec
         for( var i = 0 ; i < result.length ; i++ ){
             var obj = {
                 workNumber:result[i].workNumber,
