@@ -7,8 +7,9 @@ import student from "./student"
 import course from '../module/course'
 
 /* const CourseArrangedModel = Models.admin.CourseArrangedModel; */
- const CourseArrangedModel = require("../module/courseArrange"); 
+ // const CourseArrangedModel = require("../module/courseArrange");
 
+import CourseArrangedModel from '../module/courseArrange'   //课程安排表
 const StudentModel = Models.admin.StudentModel;
 import $ from '../utils'
 
@@ -17,6 +18,19 @@ let CourseArrangedAPI = new Base({
 });
 
 CourseArrangedAPI.methods.findArrangeClass = function (data,callback) {
+<<<<<<< HEAD
+
+    CourseArrangedModel.find({
+        // workNumber:"20170",
+        // startTime:{
+        //     "$gte":data.startTime
+        // },
+        // endTime:{
+        //     "$lte":data.endTime
+        // }
+    } ,function (error,result) {
+        console.log("result",result.length)
+=======
     console.log(data.startTime);
     
     CourseArrangedModel.find({
@@ -29,6 +43,7 @@ CourseArrangedAPI.methods.findArrangeClass = function (data,callback) {
         }
     } ,function (error,result) {
 
+>>>>>>> e5d45a64e216d0094773bf6d9e9a5b2a84e24cec
         for( var i = 0 ; i < result.length ; i++ ){
             var obj = {
                 workNumber:result[i].workNumber,
@@ -51,7 +66,7 @@ CourseArrangedAPI.methods.findArrangeClass = function (data,callback) {
             callback(error,null);
         else{
             new Promise((resolve,reject)=>{
-                
+
                 student.getNamesBySnoOneTime(result,function (error,data) { //获取所有排课记录中的学生姓名，将其添加到数据库返回的记录中
                     if(error)
                         reject(error);
@@ -64,7 +79,7 @@ CourseArrangedAPI.methods.findArrangeClass = function (data,callback) {
                                 if(error)
                                     reject(error);
                                 else
-                                    resolve(data);                                                                
+                                    resolve(data);
                             })
                         })
                     },function (error) {

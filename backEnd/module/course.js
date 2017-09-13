@@ -4,15 +4,12 @@
 import mongoose from 'mongoose'
 
 let db = require("./db.js")
-import Model from '../module'
+
 import $ from '../utils'
 
-//let  CourseArrangedModel= Model.admin.CourseArrangedModel;  //课程安排表
-// let StudentModel = Model.admin.StudentModel;
 import StudentModel from './student'
 import TeacherModel from './teacher'            //教师表
 import CourseArrangedModel from './courseArrange'   //课程安排表
-
 
 var courseSchema = new mongoose.Schema({
     gradeNo: {type: String},
@@ -43,6 +40,14 @@ courseSchema.statics.dealWithData = function (data, callback) {
             data.push({name: "高一" + result[2]});
             data.push({name: "高二" + result[2]});
             data.push({name: "高三" + result[2]});
+            continue;
+        }else if(result[1] == "小学"){
+            data.push({name: "小一" + result[2]});
+            data.push({name: "小二" + result[2]});
+            data.push({name: "小三" + result[2]});
+            data.push({name: "小四" + result[2]});
+            data.push({name: "小五" + result[2]});
+            data.push({name: "小六" + result[2]});
             continue;
         }
         var _this = this;
@@ -253,7 +258,6 @@ courseSchema.statics.arrangedLists = async function (req, res, next) {
             //根据学号 在学生表中查找该学生姓名
             let StudentName = await StudentModel.findOne({sno: Courses[i].sno}, 'name');
             // //根据教师工号 找出教师名字
-            console.log("StudentName",StudentName)
             let TeacherName = await TeacherModel.findOne({workNumber: Courses[i].workNumber}, 'name');
 
             //根据课程号 找出年级

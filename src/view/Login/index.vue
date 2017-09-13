@@ -29,6 +29,7 @@
 </template>
 
 <script>
+    import Cookies from 'js-cookie'
     import * as api from '../../api'
 
     export default {
@@ -72,12 +73,14 @@
                 const _this = this;
                 this.$refs.loginForm.validate(valid => {
                     if (valid) {
-                       if(_this.cap === _this.imgCode){
+
+                       if(_this.cap == _this.loginForm.code){
                            api._post({
                                url: "user/login",           //请求登录接口
                                data: _this.loginForm
                            }).then((results) => {
                                localStorage.setItem('name', _this.loginForm.name);   //把邮箱号保存到localStorage
+
                                _this.$store.dispatch("LoginSuccess", results.data);
                                _this.$router.push({path: "/"});    //路由跳转到首页
                            }).catch((err) => {

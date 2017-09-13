@@ -29,7 +29,7 @@
                             </el-col>
                         </el-row>
                     </el-form-item>
-                    <el-form-item label="联系电话" prop="age" :label-width="formLabelWidth">
+                    <el-form-item label="手机号码" prop="tel" :label-width="formLabelWidth">
                         <el-row>
                             <el-col :span="14" :offset="1"><el-input v-model="form.tel" auto-complete="off"></el-input></el-col>
                         </el-row>
@@ -107,7 +107,6 @@
                 <el-table-column property="inductionDate" label="入职日期" width="120px"></el-table-column>
                 <el-table-column property="unpaidTime" label="未结课时" width="120px"></el-table-column>
                 <el-table-column property="paidTime" label="已结课时" width="120px"></el-table-column>
-                <!-- <el-table-column property="course"  label="课程" width="448px"></el-table-column> -->
                 <el-table-column label="操作" width="150px">
                     <template scope="scope">
                         <el-button type="text" @click="showDetail(scope.row)">详情</el-button>
@@ -226,6 +225,7 @@ export default{
                             age:this.form.age,
                             sex:this.form.sex,
                             inductionDate:this.form.date,
+                            tel:this.form.tel,
                             coursesTag:this.coursesTag
                         }
                     })

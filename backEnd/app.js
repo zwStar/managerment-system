@@ -17,6 +17,7 @@ app.use(bodyParser.urlencoded({limit: '50mb', extended: true}));
 app.use(cookieParser());
 //跨域
 app.use('/', function (req, res, next) {
+<<<<<<< HEAD
     res.header("Access-Control-Allow-Credentials", true);
     res.header("Access-Control-Allow-Origin", req.headers.origin);
     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
@@ -27,6 +28,15 @@ app.use('/', function (req, res, next) {
         res.end("OK");
     }else
         next()
+=======
+    res.header("Access-Control-Allow-Credentials", true)
+    res.header("Access-Control-Allow-Origin", req.headers.origin)
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept,X-Token")
+    res.header("Access-Control-Allow-Methods", "PUT,POST,GET,DELETE,OPTIONS")
+    res.header("X-Powered-By", ' 3.2.1')
+    res.header("Content-Type", "application/x-www-form-urlencoded")
+    next()
+>>>>>>> 183cf6881653639af17b0baa383799b4530b83ee
 })
 
 app.use("/addTeacher",require("./router/addTeacher"));      //添加老师

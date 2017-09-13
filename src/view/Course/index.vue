@@ -248,6 +248,7 @@
             }
         },
         mounted() {//页面加载后获取总数量 和 抓取限量内容
+            console.log("token",this.$store.state.user.token);
             this.count();
             this.fetch();
         }
