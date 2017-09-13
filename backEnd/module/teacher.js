@@ -15,7 +15,8 @@ var teacherSchema = new mongoose.Schema({
     unpaidTime:{ type:Number },
     paidTime:{ type:Number },
     password:{ type:String },
-    course:{type:Array}
+    course:{type:Array},
+    tel:{type:String}
 });
 
 teacherSchema.statics.findCourse = function (data,callback) {//根据课程号找出课程名字和年级

@@ -29,6 +29,11 @@
                             </el-col>
                         </el-row>
                     </el-form-item>
+                    <el-form-item label="联系电话" prop="age" :label-width="formLabelWidth">
+                        <el-row>
+                            <el-col :span="14" :offset="1"><el-input v-model="form.tel" auto-complete="off"></el-input></el-col>
+                        </el-row>
+                    </el-form-item>
                     <el-form-item label="入职日期" prop="date" :label-width="formLabelWidth">
                         <el-row>
                             <el-col :span="14" :offset="1">
@@ -110,7 +115,6 @@
                 </el-table-column>
             </el-table>
         </div>
-
     </div>
 
 </template>
@@ -126,7 +130,8 @@ export default{
                 name:'',
                 age:'',
                 date:"",
-                sex:''
+                sex:'',
+                tel:""
             },
             currentGrade:"",
             currentCourses:"",
