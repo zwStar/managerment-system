@@ -5,10 +5,10 @@ import Model from '../module'
 import $ from '../utils'
 import Base from './base'
 
-let CourseModel = Model.admin.CourseModel;          //课程表
-let TeacherModel = Model.admin.TeacherModel         //教师表
-let CourseArrangedModel = Model.admin.CourseArrangedModel;  //课程安排表
-let StudentModel = Model.admin.StudentModel;
+import CourseModel from '../module/course'         //课程表
+import TeacherModel from '../module/teacher'        //教师表
+import CourseArrangedModel from '../module/courseArrange'//课程安排表
+import StudentModel from '../module/student'        //学生表
 let CourseAPI = new Base({
     model: CourseModel
 });

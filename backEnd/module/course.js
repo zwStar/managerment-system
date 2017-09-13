@@ -10,7 +10,6 @@ import $ from '../utils'
 import StudentModel from './student'
 import TeacherModel from './teacher'            //教师表
 import CourseArrangedModel from './courseArrange'   //课程安排表
-
 var courseSchema = new mongoose.Schema({
     gradeNo: {type: String},
     courseNo: {type: String},
@@ -254,6 +253,7 @@ courseSchema.statics.arrangedLists = async function (req, res, next) {
 
             //根据课程号 找出年级
             let Course = await _this.findOne({courseNo: Courses[i].courseNo}, 'course grade');
+            console.log("Course",Course)
             if (StudentName !== null && TeacherName !== null && Course !== null) {
                 let dateformat = {  //对时间进行格式化
                     startTime: $.dateformat(Courses[i].startTime, 'YYYY-MM-DD HH:mm:ss'),
@@ -261,8 +261,8 @@ courseSchema.statics.arrangedLists = async function (req, res, next) {
                 }
                 let CourseArranged = {//组成一个前端数据需要的对象
                     ...Courses[i]._doc, ...{StudentName: StudentName.name}, ...{TeacherName: TeacherName.name}, ...{
-                        course: Course.course,
-                        grade: Course.grade
+                        course: Course.courseName,
+                        grade: Course.gradeNo
                     }, ...dateformat
                 };
                 results.push(CourseArranged);

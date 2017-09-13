@@ -1,5 +1,8 @@
-import M from '../module/admin/index'
 import $ from '../utils'
+import StudentModel from '../module/student'
+import TeacherModel from '../module/teacher'
+import CourseArrangedModel from '../module/courseArrange'
+
 
 class Statis {
     constructor() {
@@ -17,7 +20,7 @@ class Statis {
         }
         try {
             let obj = $.todayAndTomorrow(date);
-            const count = await M.StudentModel.find({$and: [{sendAt: {$gte: obj.today}}, {sendAt: {$lt: obj.nextDay}}]}).count();
+            const count = await StudentModel.find({$and: [{sendAt: {$gte: obj.today}}, {sendAt: {$lt: obj.nextDay}}]}).count();
             res.send({
                 status: 1,
                 count,
@@ -48,7 +51,7 @@ class Statis {
         }
         try {
             let obj = $.todayAndTomorrow(date);
-            const count = await M.TeacherModel.find({$and: [{inductionDate: {$gte: obj.today}}, {inductionDate: {$lt: obj.nextDay}}]}).count();
+            const count = await TeacherModel.find({$and: [{inductionDate: {$gte: obj.today}}, {inductionDate: {$lt: obj.nextDay}}]}).count();
             res.send({
                 status: 1,
                 count,
@@ -77,7 +80,7 @@ class Statis {
         }
         try {
             let obj = $.todayAndTomorrow(date);
-            const count = await M.CourseArrangedModel.find({$and: [{startTime: {$gte: obj.today}}, {startTime: {$lt: obj.nextDay}}]}).count();
+            const count = await CourseArrangedModell.find({$and: [{startTime: {$gte: obj.today}}, {startTime: {$lt: obj.nextDay}}]}).count();
             res.send({
                 status: 1,
                 count,

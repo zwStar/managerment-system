@@ -3,10 +3,9 @@
  */
 import Base from './base'
 import $ from '../utils'
-import Models from '../module'
 
-let TeacherModel = Models.admin.TeacherModel;
-let CourseModel = Models.admin.CourseModel;
+import TeacherModel from '../module/teacher'
+import CourseModel from '../module/course'
 
 let TeacherAPI = new Base({
     model: TeacherModel

@@ -11,7 +11,7 @@
             <el-form-item prop="code">
                 <el-row>
                     <el-col :span="15">
-                        <el-input type="password" placeholder="请输入验证码" v-model="loginForm.code" @keyup.enter.native="onSubmit()"></el-input>
+                        <el-input placeholder="请输入验证码" v-model="loginForm.code" @keyup.enter.native="onSubmit()"></el-input>
                     </el-col>
                     <el-col :span="6" offset="3">
                        <div class="Code" @click="reloadCode">
