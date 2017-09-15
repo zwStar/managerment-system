@@ -22,7 +22,7 @@ var JUNIOR_REG = /(初中)([\u4e00-\u9fa5]{2})/
 var HIGH_REG = /(高中)([\u4e00-\u9fa5]{2})/
 var CONVENTIONAL_REG = /([\u4e00-\u9fa5]{2})([\u4e00-\u9fa5]{2})/
 
-courseSchema.statics.dealWithData = function (data, callback) {
+/* courseSchema.statics.dealWithData = function (data, callback) {
     var courseNo = new Array();
     var promises = new Array();
     for (var i = 0; i < data.length; i++) {
@@ -69,7 +69,7 @@ courseSchema.statics.dealWithData = function (data, callback) {
         callback(err);
     })
 
-}
+} */
 
 //筛选出能教课的老师
 courseSchema.statics.teacherOptions = function (req, res, next) {
@@ -137,11 +137,11 @@ courseSchema.statics.findGrade = function (req, res, next) {
     })
 }
 //找出课程号
-courseSchema.statics.findCourseNo = function (data, callback) {
+/* courseSchema.statics.findCourseNo = function (data, callback) {
     this.find(data, callback)
-}
+} */
 
-courseSchema.statics.getCourseNamesOneTime = function (data, callback) { //通过多个课程号一次获取多个课程名
+/* courseSchema.statics.getCourseNamesOneTime = function (data, callback) { //通过多个课程号一次获取多个课程名
     var promises = [];
     var _this = this;
 
@@ -164,7 +164,7 @@ courseSchema.statics.getCourseNamesOneTime = function (data, callback) { //通�
     }, function (error) {
         callback(error, null);
     })
-}
+} */
 
 //安排课程
 courseSchema.statics.courseArranged = function (req, res, next) {

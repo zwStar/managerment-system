@@ -1,10 +1,10 @@
 var express = require("express");
 var router = express.Router();
-var audit = require("../module/audit");
+var admin = require("../admin");
 
 
 router.get("/",function(req,res){
-    audit.findAuditedClass(req.query,function(error,data){
+    admin.audit.findAuditedClass(req,res,function(error,data){
         if(error){
             console.log("error in ./router/getArrangeClass.js");
             console.log(error);

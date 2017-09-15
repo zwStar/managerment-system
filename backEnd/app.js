@@ -32,7 +32,7 @@ app.use('/', function (req, res, next) {
 app.use("/addTeacher",require("./router/addTeacher"));      //添加老师
 app.use("/getTeacherList",require("./router/getTeacherList"));  //获取教师列表
 
-app.use("/getAuditTable",require("./router/getAuditTable"));    //获取老师提交的审核记录
+app.use("/getAuditTable",require("./router/getAuditingTable"));    //获取老师提交的审核记录
 app.use("/getPhoto",require("./router/getPhoto"));              //获取审核记录的照片
 app.use("/refuseAudit",require("./router/refuseAudit"));        //不通过审核
 app.use("/throughAudit",require("./router/throughAudit"));      //通过审核
@@ -51,7 +51,7 @@ app.use("/statis",routers.statis)   //获取每天新增学员 新增教师 新�
 //处理上传的图片
 app.use("/photo",require("./router/photo"))
 
-app.use('/user',routers.admin);    //请求路由
+
 
 /* var db = require("./module/db.js") */
 const port = process.env.PORT || 3000;

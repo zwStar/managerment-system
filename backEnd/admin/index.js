@@ -8,6 +8,7 @@ import Teacher from './teacher'
 import Search from './search'
 import Course from './course'
 import Statis from './statis'
+import audit from "./audit"
 export default {
     User,
     Student,
@@ -15,5 +16,6 @@ export default {
     Teacher,
     Search,
     Course,
-    Statis
+    Statis,
+    audit
 }

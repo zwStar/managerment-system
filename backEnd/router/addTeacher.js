@@ -1,15 +1,18 @@
 /**
  * Created by Administrator on 2017/7/31.
  */
+import admin from "../admin"
 var express = require("express");
-var teacher = require("../module/teacher");
-var course = require("../module/course");
 var md5 = require("../module/md5");
 
 var router = express.Router();
 
 router.post("/", function (req, res) {
-    var date = new Date(req.body.inductionDate);//入职日期
+
+    admin.Teacher.addTeacher(req,res);
+
+
+    /* var date = new Date(req.body.inductionDate);//入职日期
     teacher.count({}, function (err, count) {//找出已有教师数量
         if (err) {
             console.log("addTeacher.js===>error")
@@ -40,7 +43,7 @@ router.post("/", function (req, res) {
                 res.send("successful");
             })
         });
-    });
+    }); */
 });
 
 module.exports = router

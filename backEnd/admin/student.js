@@ -13,7 +13,7 @@ let StudentAPI = new Base({
    model:StudentModel
 });
 
-StudentAPI.methods.getNamesBySnoOneTime = function (data,callback) {//通过多个学号一次获取多个学生姓名
+/* StudentAPI.methods.getNamesBySnoOneTime = function (data,callback) {//通过多个学号一次获取多个学生姓名
     var promises = [];
     for( var i = 0 ; i < data.length ; i++ ){
         promises.push(new Promise(function (resolve,reject) {
@@ -33,7 +33,7 @@ StudentAPI.methods.getNamesBySnoOneTime = function (data,callback) {//通过多�
     },function (error) {
         callback(error,null);
     })
-}
+} */
 
 //创建学生
 StudentAPI.methods.createStudent = async function (req,res,next) {

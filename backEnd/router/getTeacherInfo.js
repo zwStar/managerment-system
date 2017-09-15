@@ -3,18 +3,11 @@
  */
 var express = require("express");
 var router = express.Router();
-var teacher = require("../module/teacher");
+import admin from "../admin"
 
 router.get("/",function (req,res) {
     /*登陆*/
-    teacher.getTeacherInfo({workNumber:req.query.workNumber},function (error,data) {
-        if(error){
-            res.send(error);
-        }else{
-            res.send(data);
-        }
-    })
-
+    admin.Teacher.getTeacherInfo(req,res);
 })
 
 module.exports = router;

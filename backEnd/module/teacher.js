@@ -19,7 +19,7 @@ var teacherSchema = new mongoose.Schema({
     tel:{type:String}
 });
 
-teacherSchema.statics.findCourse = function (data,callback) {//根据课程号找出课程名字和年级
+/* teacherSchema.statics.findCourse = function (data,callback) {//根据课程号找出课程名字和年级
     var promises = [];
     var q = 0;
     for( var i = 0 ; i < data.length ; i++){
@@ -60,8 +60,6 @@ teacherSchema.statics.getTeacherInfo = function (data,callback) {
     })
 };
 
-
-
 teacherSchema.statics.getTeacherNamesOneTime = function(data,callback){//找出教师名字
     var promises = [];
     var _this = this;
@@ -85,7 +83,7 @@ teacherSchema.statics.getTeacherNamesOneTime = function(data,callback){//找出�
     },function(error){
         callback(error,null);
     })
-};
+}; */
 
 teacherSchema.statics.login = function (req, res, next) {     //注册
     let LoginPromise = this.find({"workNumber": req.body.workNumber, "password": $.md5(req.body.password)});    //返回一个promise对象

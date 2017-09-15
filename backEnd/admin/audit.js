@@ -1,32 +1,20 @@
-var mongoose = require("mongoose");
-var db = require("./db");
-/* var student = require("../admin/student").default;
-var course = require("./course"); */
+import Base from './base'
+import { getNamesBySnoOneTime,getCourseNamesOneTime } from "../utils/commonFunction"
 
+let auditModel = require("../module/audit");
 
-var auditSchema = new mongoose.Schema({
-    workNumber: {type: String},
-    sno: {type:String},
-    courseNo: {type:String},
-    startTime:{ type: Date},
-    endTime:{type:Date},
-    courseNumber:{type:String},
-    courseHour:{type:Number},
-    realCourseTime:{type:Number},//实际课时
-    remark:{type:String},       //备注
-    photoEvidencePath:{type:String},//拍照取证图片名称
-    returnVisitPath:{type:String},   //微信回访图片名称
-    status:{type:String}
-})
+let auditAPI = new Base({
+   model:auditModel
+});
 
-/* auditSchema.statics.findAuditedClass = function(data,callback){
-    this.find({
-        workNumber:data.workNumber,
+auditAPI.methods.findAuditedClass = function(req,res,callback){
+    auditModel.find({
+        workNumber:req.query.workNumber,
         startTime:{
-            "$gte":data.startTime
+            "$gte":req.query.startTime
         },
         endTime:{
-            "$lte":data.endTime
+            "$lte":req.query.endTime
         }
     },function(error,result){
         if(error)
@@ -50,7 +38,7 @@ var auditSchema = new mongoose.Schema({
                 result[i] = obj;
             }
             new Promise((resolve,reject)=>{             
-                student.getNamesBySnoOneTime(result,function (error,data) { //获取所有排课记录中的学生姓名，将其添加到数据库返回的记录中
+                getNamesBySnoOneTime(result,function (error,data) { //获取所有排课记录中的学生姓名，将其添加到数据库返回的记录中
                     if(error)
                         reject(error);
                     else
@@ -58,7 +46,7 @@ var auditSchema = new mongoose.Schema({
                 })
             }).then(function (data) {
                         return new Promise((resolve,reject) =>{
-                            course.getCourseNamesOneTime(result,function (error,data) {//获取所有排课记录中的课程名，将其添加到数据库返回记录中
+                            getCourseNamesOneTime(result,function (error,data) {//获取所有排课记录中的课程名，将其添加到数据库返回记录中
                                 if(error)
                                     reject(error);
                                 else
@@ -76,9 +64,5 @@ var auditSchema = new mongoose.Schema({
                     })
             }
         });
-} */
-
-
-var auditModel = mongoose.model("audit",auditSchema);
-
-module.exports = auditModel;
+}
+export default auditAPI.methods;

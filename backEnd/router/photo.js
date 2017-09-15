@@ -1,7 +1,7 @@
 var express = require("express")
 var router = express.Router();
 
-import { savePhoto } from "../module/savePhoto"
+import { savePhoto } from "../utils/commonFunction"
 
 
 

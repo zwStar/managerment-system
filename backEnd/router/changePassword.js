@@ -1,10 +1,10 @@
 var express = require("express");
 var router = express.Router();
-var md5 = require("../module/md5")
-var teacher = require("../module/teacher")
+import admin from "../admin"
 
 router.post("/",function(req,res){
-    teacher.findOne({workNumber:req.body.workNumber},'password',function(error,result){
+    admin.Teacher.changePassword(req,res);
+    /* teacher.findOne({workNumber:req.body.workNumber},'password',function(error,result){
         if(error){
             console.log("error in router/changePassword.js");
             console.log(error);
@@ -30,7 +30,7 @@ router.post("/",function(req,res){
                 res.send("oldPassword error");
             }
         }
-    })
+    }) */
 });
 
 module.exports = router;
