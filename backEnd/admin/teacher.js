@@ -135,6 +135,23 @@ teacherAPI.methods.getTeacherList = function(req,res){
     });
 }
 
+teacherAPI.methods.login = function (req, res, next) {     //注册
+    let LoginPromise = this.find({"workNumber": req.body.workNumber, "password": $.md5(req.body.password)});    //返回一个promise对象
+    LoginPromise.then((documents) => {
+        if (!documents.length) {                        //如果为空 登录失败 返回login failed
+            // $.result(res, 'login failed');
+            res.send({
+                status:401,
+                msg:"params error",
+                success:false
+            })
+        }
+        //登录成功
+        let workNumber = documents.workNumber;
+        return $.result(res, {success: true, "message": "登录成功", workNumber: workNumber, token: $.createToken(workNumber)});           //返回
+    })
+};
+
 /* teacherAPI.methods.getTeacherNamesOneTime = function(data,callback){//找出教师名字
     var promises = [];
     for( var i = 0 ; i < data.length ; i++ ){

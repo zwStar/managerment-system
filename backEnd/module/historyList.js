@@ -1,7 +1,7 @@
-var mongoose = require("mongoose");
-var db = require("./db");
+let mongoose = require("mongoose");
+let db = require("./db");
 
-var historyListSchema = new mongoose.Schema({
+let historyListSchema = new mongoose.Schema({
     workNumber: String,  
     sno:String,
     courseNo:String,
@@ -17,6 +17,6 @@ var historyListSchema = new mongoose.Schema({
     reason:String
 })
 
-var historyListModel = mongoose.model("historyList",historyListSchema);
+let historyListModel = mongoose.model("historyList",historyListSchema);
 
 module.exports = historyListModel

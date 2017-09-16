@@ -7,7 +7,7 @@ var router = express.Router();
 import admin from "../admin";
 import $ from "../utils";
 
-router.get("/",$.checktoken,function (req,res) {
+router.get("/",$.checkToken,function (req,res) {
     admin.Teacher.getTeacherList(req,res);
 });
 

@@ -13,7 +13,6 @@ export default {
             db: {native_parser: true},
             server: {poolSize: 5}
         };
-
         mongoose.connect(dbname, options).then(() => {
             console.log(`数据库连接成功`);
         }, (err) => {

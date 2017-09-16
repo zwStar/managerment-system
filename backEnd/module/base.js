@@ -1,6 +1,6 @@
 
 import mongoose from 'mongoose'
-var db =require("./db.js")
+let db =require("./db.js")
 import $ from '../utils'
 export default class Base {
     constructor(name, options) {
