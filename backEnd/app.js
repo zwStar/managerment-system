@@ -29,31 +29,14 @@ app.use('/', function (req, res, next) {
         next()
 })
 
-app.use("/addTeacher",require("./router/addTeacher"));      //添加老师
-app.use("/getTeacherList",require("./router/getTeacherList"));  //获取教师列表
 
-app.use("/getAuditTable",require("./router/getAuditingTable"));    //获取老师提交的审核记录
-app.use("/getPhoto",require("./router/getPhoto"));              //获取审核记录的照片
-app.use("/refuseAudit",require("./router/refuseAudit"));        //不通过审核
-app.use("/throughAudit",require("./router/throughAudit"));      //通过审核
-app.use("/getClassCount",require("./router/getClassCount"));    //统计某一位老师对某一位学生上过的课的数量
 
-app.use("/teacherLogin",require("./router/teacherLogin"));
-app.use("/getTeacherInfo",require("./router/getTeacherInfo"));
-app.use("/getArrangeClass",require("./router/getArrangeClass"));//获取某位教师的课程表
-app.use("/getAuditedClass",require("./router/getAuditedClass"));    //获取老师已经审核过的课
-app.use("/audit",require("./router/submitAudit"))           //老师上完课提交审核
-app.use("/changePassword",require("./router/changePassword"))       //老师修改密码
 
 app.use('/user',routers.admin);    //请求路由
 app.use('/course',routers.course);  //课程相关操作路由
-app.use("/statis",routers.statis)   //获取每天新增学员 新增教师 新增订单
-//处理上传的图片
-app.use("/photo",require("./router/photo"));
+app.use("/statis",routers.statis);   //获取每天新增学员 新增教师 新增订单
+app.use("/mobilePhone",routers.mobilePhone);
 
-
-
-/* var db = require("./module/db.js") */
 const port = process.env.PORT || 3000;
 app.listen(port,()=>{
     console.log(`server running @${port} `);

@@ -1,10 +1,7 @@
-var mongoose = require("mongoose");
-var db = require("./db");
-/* var student = require("../admin/student").default;
-var course = require("./course"); */
+let mongoose = require("mongoose");
+let db = require("./db");
 
-
-var auditSchema = new mongoose.Schema({
+let auditSchema = new mongoose.Schema({
     workNumber: {type: String},
     sno: {type:String},
     courseNo: {type:String},
@@ -19,7 +16,6 @@ var auditSchema = new mongoose.Schema({
     status:{type:String}
 })
 
-
-var auditModel = mongoose.model("audit",auditSchema);
+let auditModel = mongoose.model("audit",auditSchema);
 
 module.exports = auditModel;

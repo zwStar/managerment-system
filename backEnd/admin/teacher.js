@@ -1,5 +1,3 @@
-
-
 import Base from './base'
 import { dealWithData } from "../utils/commonFunction"
 import $ from "../utils/"
@@ -135,30 +133,21 @@ teacherAPI.methods.getTeacherList = function(req,res){
     });
 }
 
-/* teacherAPI.methods.getTeacherNamesOneTime = function(data,callback){//找出教师名字
-    var promises = [];
-    for( var i = 0 ; i < data.length ; i++ ){
-        promises.push(new Promise(function(resolve,reject){
-            teacherModel.findOne({workNumber:data[i].workNumber},'name',function(error,teacher){
-                if(error){
-                    console.log("error in module teacher.js")
-                    reject(error);
-                }
-                else
-                    resolve(teacher.name);
+teacherAPI.methods.login = function (req, res, next) {     //注册
+    let LoginPromise = teacherModel.find({"workNumber": req.body.workNumber, "password": $.md5(req.body.password)});    //返回一个promise对象
+    LoginPromise.then((documents) => {
+        if (!documents.length) {                        //如果为空 登录失败 返回login failed
+            // $.result(res, 'login failed');
+            res.send({
+                status:401,
+                msg:"params error",
+                success:false
             })
-        }))
-    }
-    Promise.all(promises).then(function(teacher){
-        for( var i = 0 ; i < teacher.length ; i++ ){
-            data[i].teacherName = teacher[i];
         }
-        callback(null,data);
-    },function(error){
-        callback(error,null);
+        //登录成功
+        let workNumber = documents.workNumber;
+        return $.result(res, {success: true, "message": "登录成功", workNumber: workNumber, token: $.createToken(workNumber)});           //返回
     })
-}; */
-
-
+};
 
 export default teacherAPI.methods;

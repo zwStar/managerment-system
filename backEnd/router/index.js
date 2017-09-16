@@ -4,8 +4,10 @@
 import admin from './admin'
 import course from './course'
 import statis from './statis'
+import mobilePhone from "./mobilePhone"
 export default {
     admin,
     course,
-    statis
+    statis,
+    mobilePhone
 }

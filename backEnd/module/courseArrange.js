@@ -1,6 +1,6 @@
-var mongoose = require("mongoose");
-var db =require("./db.js")
-var CourseArrangedSchema = new mongoose.Schema({
+let mongoose = require("mongoose");
+let db =require("./db.js")
+let CourseArrangedSchema = new mongoose.Schema({
     workNumber: String,
     sno:String,
     courseNo:String,

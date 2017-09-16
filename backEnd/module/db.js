@@ -1,7 +1,7 @@
 /**
  * Created by Administrator on 2017/7/31.
  */
-var mongoose = require("mongoose");
+let mongoose = require("mongoose");
 
 // var db = mongoose.createConnection("mongodb://127.0.0.1:27017/managerment-system");
 // var db = mongoose.createConnection("mongodb://zwVic:adgjmp123@119.29.82.47:27017/example")
