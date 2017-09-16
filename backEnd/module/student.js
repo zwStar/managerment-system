@@ -9,7 +9,7 @@ let StudentSchema = new mongoose.Schema({
     sendAt:    { type: Date, default: Date.now },
     school:String,
     managerTeacher:String,
-    grade:String,
+    gradeNo:String,
     orderCourseNumber:String
 });
 

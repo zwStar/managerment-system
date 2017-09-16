@@ -237,18 +237,11 @@ CourseArrangedAPI.methods.throughAudit = function(req,res){
 //筛选出能教课的老师
 CourseArrangedAPI.methods.teacherOptions = function (req, res, next) {
     let query = req.query;
-    let FindCourseNoPromise = CourseModel.findOne({course: query.course, grade: query.grade});  //找出课程号
+    let FindCourseNoPromise = CourseModel.findOne({courseName: query.courseName, gradeNo: query.gradeNo});  //找出课程号
     FindCourseNoPromise.then((result) => {
         if (result != null) {
-            TeacherModel.find({course: result._id})  //找出能授课的老师 根据外键 course 为 该课程id
-                .select("_id workNumber name course")
-                .populate({ //外键
-                    path: 'course',
-                    // match: {_id: result._id},            //这些选择都是针对population find找到内容只与find里面的参数有关
-                    //     // Explicitly exclude `_id`, see http://bit.ly/2aEfTdB
-                    // options: { limit: 1 },
-                    select: ' grade course',   //这里是select Course表中的内容
-                })
+            teacherModel.find({course: result.courseNo})  //找出能授课的老师 根据外键 course 为 该课程id
+                .select("workNumber name")
                 .then((results) => {
                     let PromiseAll = [];
                     results.forEach(function (el) {//找出老师之后 还要根据已经安排的课表 判断该老师这个时间段是否有时间
@@ -294,7 +287,12 @@ CourseArrangedAPI.methods.findGrade = function (req, res, next) {
     findGradePromise.then((doc) => {
         if ($.isEmpty(doc))
             $.result(res, "error");
-        $.result(res, {grade: doc.grade});
+        // $.result(res, {grade: doc.gradeNo});
+        console.log("doc",doc.school)
+        res.send({
+            status:1,
+           grade:doc.gradeNo
+        })
     }, (err) => {
         console.log(err);
     })
@@ -304,10 +302,10 @@ CourseArrangedAPI.methods.findGrade = function (req, res, next) {
 CourseArrangedAPI.methods.courseArranged = function (req, res, next) {
     let query = req.query;
     //找出课程号
-    let findCourseNoPromise = CourseModel.findOne({grade: query.grade, course: query.course});
+    let findCourseNoPromise = CourseModel.findOne({gradeNo: query.gradeNo, courseName: query.courseName});
     findCourseNoPromise.then((doc) => {
-        delete query.grade; //删除年级
-        delete query.course;    //删除课程
+        delete query.gradeNo; //删除年级
+        delete query.courseName;    //删除课程
         query.courseNo = doc.courseNo;//只记录课程号
         let ArrangedPromise = CourseArrangedModel.create(query);
         ArrangedPromise.then((doc) => {
@@ -337,7 +335,7 @@ CourseArrangedAPI.methods.total = function (req, res, next) {
 
 //安排课程列表
 CourseArrangedAPI.methods.arrangedLists = async function (req, res, next) {
-    let _this = this;
+
     let {limit = 10, start = 0} = req.query;
     try {
         let Courses = await CourseArrangedModel.find({}).limit(Number(limit)).skip(Number(limit * start));//已经安排的课程
@@ -345,11 +343,12 @@ CourseArrangedAPI.methods.arrangedLists = async function (req, res, next) {
         for (let i = 0; i < Courses.length; i++) {
             //根据学号 在学生表中查找该学生姓名
             let StudentName = await StudentModel.findOne({sno: Courses[i].sno}, 'name');
+
             // //根据教师工号 找出教师名字
-            let TeacherName = await TeacherModel.findOne({workNumber: Courses[i].workNumber}, 'name');
+            let TeacherName = await teacherModel.findOne({workNumber: Courses[i].workNumber}, 'name');
 
             //根据课程号 找出年级
-            let Course = await _this.findOne({courseNo: Courses[i].courseNo}, 'course grade');
+            let Course = await CourseModel.findOne({courseNo: Courses[i].courseNo}, 'course grade');
             console.log("Course",Course)
             if (StudentName !== null && TeacherName !== null && Course !== null) {
                 let dateformat = {  //对时间进行格式化

@@ -1,10 +1,13 @@
 /**
  * Created by Administrator on 2017/7/31.
  */
-let mongoose = require("mongoose");
-let db =require("./db.js");
+var mongoose = require("mongoose");
+var db =require("./db.js")
+var course = require("./course.js")
 
-let teacherSchema = new mongoose.Schema({
+import $ from '../utils'
+
+var teacherSchema = new mongoose.Schema({
     workNumber:{ type:String },
     name:{ type:String },
     age:{ type: Number },
@@ -13,9 +16,10 @@ let teacherSchema = new mongoose.Schema({
     unpaidTime:{ type:Number },
     paidTime:{ type:Number },
     password:{ type:String },
-    course:{type:Array},
-    tel:{type:String}
+    course:{type:Array}
 });
-let teacherModel = mongoose.model("teacher",teacherSchema);
+
+var teacherModel = mongoose.model("teacher",teacherSchema);
+
 module.exports = teacherModel
 
