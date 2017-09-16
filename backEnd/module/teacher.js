@@ -12,7 +12,7 @@ var teacherSchema = new mongoose.Schema({
     name:{ type:String },
     age:{ type: Number },
     sex:{ type:String },
-    inductionDate:{ type:String },
+    inductionDate:{ type:Date },
     unpaidTime:{ type:Number },
     paidTime:{ type:Number },
     password:{ type:String },

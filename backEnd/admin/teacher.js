@@ -13,33 +13,34 @@ teacherAPI.methods.addTeacher = function (req, res) {
     var date = new Date(req.body.inductionDate);//入职日期
     teacherModel.count({}, function (err, count) {//找出已有教师数量
         if (err) {
-            console.log("addTeacher.js===>error")
+            console.log("error in ./admin/teacher.js 16行");
             console.log(err);
             res.send(err);
         }
         dealWithData(req.body.coursesTag, function (err, courseNo) {//找课程号
             if (err) {
-                console.log("*****error in course.dealWithData******");
+                console.log("error in ./admin/teacher.js 22行");
                 res.send(err);
-                return
+            }else{
+                new teacherModel({
+                    workNumber: date.getFullYear().toString() + count.toString(),
+                    name: req.body.name,
+                    age: req.body.age,
+                    sex: req.body.sex,
+                    inductionDate: date,
+                    password: $.md5("123456"),
+                    unpaidTime: 0,
+                    paidTime: 0,
+                    course: courseNo,
+                }).save(function (err) {
+                    if (err) {
+                        console.log("error in ./admin/teacher.js 38行");
+                        res.send(err);
+                    }
+                    res.send("successful");
+                })
             }
-            new teacherModel({
-                workNumber: date.getFullYear().toString() + count.toString(),
-                name: req.body.name,
-                age: req.body.age,
-                sex: req.body.sex,
-                inductionDate: date.getFullYear().toString() + date.getMonth().toString() + date.getDate().toString(),
-                password: md5("123456"),
-                unpaidTime: 0,
-                paidTime: 0,
-                course: courseNo,
-            }).save(function (err) {
-                if (err) {
-                    console.log("*****error in save teacher***********");
-                    res.send(err);
-                }
-                res.send("successful");
-            })
+            
         });
     });
 }
@@ -47,7 +48,7 @@ teacherAPI.methods.addTeacher = function (req, res) {
 teacherAPI.methods.changePassword = function(req,res){
     teacherModel.findOne({workNumber:req.body.workNumber},'password',function(error,result){
         if(error){
-            console.log("error in router/changePassword.js");
+            console.log("error in ./admin/teacher.js 50行");
             console.log(error);
             res.send("error");
         }else{
@@ -60,7 +61,7 @@ teacherAPI.methods.changePassword = function(req,res){
                     }},
                     (error,rec)=>{
                         if(error){
-                            console.log("error in update teacher's password (router/changePassword.js)");
+                            console.log("error in ./admin/teacher.js 63行");
                             console.log(error);
                             res.send("error");
                         }else{
@@ -117,13 +118,13 @@ teacherAPI.methods.getTeacherInfo = function (req,res) {
 teacherAPI.methods.getTeacherList = function(req,res){
     teacherModel.find({},function (err,data) {
         if(err){
-            console.log("*******error in ./admin/teacher.js***********");
+            console.log("error in ./admin/teacher.js 120行");
             console.log(err);
             res.send(err);
         }
         teacherAPI.methods.findCourse(data,function (err,data) {
             if(err){
-                console.log("*******error in ./admin/teacher.js***********");
+                console.log("error in ./admin/teacher.js 126行");
                 console.log(err);
                 res.send(err);
             }else{
