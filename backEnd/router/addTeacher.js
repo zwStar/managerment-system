@@ -12,4 +12,4 @@ router.post("/",$.checkToken, function (req, res) {
     admin.Teacher.addTeacher(req,res);
 });
 
-module.exports = router
+module.exports = router;

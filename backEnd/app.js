@@ -49,7 +49,7 @@ app.use('/user',routers.admin);    //请求路由
 app.use('/course',routers.course);  //课程相关操作路由
 app.use("/statis",routers.statis)   //获取每天新增学员 新增教师 新增订单
 //处理上传的图片
-app.use("/photo",require("./router/photo"))
+app.use("/photo",require("./router/photo"));
 
 
 

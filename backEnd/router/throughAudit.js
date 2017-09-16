@@ -5,7 +5,6 @@ import admin from "../admin";
 import $ from "../utils";
 
 router.post("/",$.checkToken, function (req, res) {//通过审核
-
     admin.courseArranged.throughAudit(req,res);
 });
 
