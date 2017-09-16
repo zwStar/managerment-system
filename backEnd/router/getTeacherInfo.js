@@ -4,9 +4,9 @@
 var express = require("express");
 var router = express.Router();
 import admin from "../admin"
+import $ from "../utils"
 
-router.get("/",function (req,res) {
-    /*登陆*/
+router.get("/",$.checkToken,function (req,res) {
     admin.Teacher.getTeacherInfo(req,res);
 })
 

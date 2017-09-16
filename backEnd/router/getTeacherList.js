@@ -4,11 +4,11 @@
 var express = require("express");
 var router = express.Router();
 
-import admin from "../admin"
+import admin from "../admin";
+import $ from "../utils";
 
-router.get("/",function (req,res) {
-    /*验证登陆状态*/
-    admin.getTeacherList(req,res);
+router.get("/",$.checktoken,function (req,res) {
+    admin.Teacher.getTeacherList(req,res);
 });
 
 module.exports = router

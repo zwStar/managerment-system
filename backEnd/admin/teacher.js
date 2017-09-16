@@ -107,16 +107,16 @@ teacherAPI.methods.findCourse = function (data,callback) {//根据课程号找�
 }
 
 teacherAPI.methods.getTeacherInfo = function (req,res) {
-    teacherModel.find({workNumber:req.query.workNumber},function (error,teacher) {
+    teacherModel.findOne({workNumber:req.query.workNumber},function (error,teacher) {
         if(error){
             res.send(error);
         }else{
-            res.send(teacher[0]);
+            res.send(teacher);
         }
     })
 };
 
-teacherAPI.methods.getTeacherInfo = function(req,res){
+teacherAPI.methods.getTeacherList = function(req,res){
     teacherModel.find({},function (err,data) {
         if(err){
             console.log("*******error in ./admin/teacher.js***********");

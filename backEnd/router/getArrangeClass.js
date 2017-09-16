@@ -4,10 +4,11 @@
 var express = require("express");
 var router = express.Router();
 
-import admin from "../admin"
+import admin from "../admin";
+import $ from "../utils";
 
 
-router.get("/", function (req, res) {
+router.get("/",$.checkToken, function (req, res) {
 
     admin.courseArranged.findArrangeClass(req, function (error, data) {
         if (error) {

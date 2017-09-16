@@ -1,11 +1,12 @@
 var express = require("express")
 var router = express.Router();
 
-import { savePhoto } from "../utils/commonFunction"
+import { savePhoto } from "../utils/commonFunction";
+import $ from "../utils";
 
 
 
-router.post("/photoEvidence",function(req,res){
+router.post("/photoEvidence",$.checkToken,function(req,res){
     savePhoto(req,res,'photoEvidence')
 })
 

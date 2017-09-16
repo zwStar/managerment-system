@@ -1,12 +1,10 @@
 var express = require("express");
 var router = express.Router();
 
-var historyList = require("../module/historyList");
-var courseArranged = require("../module/courseArrange");
-
+import $ from "../utils";
 import { getClassCount } from "../utils/commonFunction";
 
-router.get("/",function(req,res){
+router.get("/",$.checkToken,function(req,res){
     getClassCount(req,res);
 });
 

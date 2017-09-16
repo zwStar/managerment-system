@@ -1,8 +1,9 @@
 var express = require("express");
 var router = express.Router();
-import admin from "../admin"
+import admin from "../admin";
+import $ from "../utils";
 
-router.post("/",function(req,res){
+router.post("/",$.checkToken,function(req,res){
     admin.courseArranged.refuseAudit(req,res);
 
 });
