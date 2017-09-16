@@ -47,22 +47,26 @@
                     </el-form-item>
                     <el-form-item label="添加课程" :label-width="formLabelWidth">
                         <el-row>
-                            <el-col :span = '6' :offset="1"><el-select v-model="currentGrade" placeholder="请选择年级">
-                                <el-option
-                                        v-for="item in grades"
-                                        :key="item.value"
-                                        :label="item.label"
-                                        :value="item.value">
-                                </el-option>
-                            </el-select></el-col>
-                            <el-col :span = '6' :offset="2"><el-select v-model="currentCourses" placeholder="请选择课程">
-                                <el-option
-                                        v-for="item in courses"
-                                        :key="item.value"
-                                        :label="item.label"
-                                        :value="item.value">
-                                </el-option>
-                            </el-select></el-col>
+                            <el-col :span = '6' :offset="1">
+                                <el-select v-model="currentGrade" placeholder="请选择年级">
+                                    <el-option
+                                            v-for="item in grades"
+                                            :key="item.value"
+                                            :label="item.label"
+                                            :value="item.value">
+                                    </el-option>
+                                </el-select>
+                            </el-col>
+                            <el-col :span = '6' :offset="2">
+                                <el-select v-model="currentCourses" placeholder="请选择课程">
+                                    <el-option
+                                            v-for="item in courses"
+                                            :key="item.value"
+                                            :label="item.label"
+                                            :value="item.value">
+                                    </el-option>
+                                </el-select>
+                            </el-col>
                         </el-row>
                     </el-form-item>
                     <el-form-item label="已选课程" prop="coursesTag" :label-width="formLabelWidth">
@@ -99,12 +103,13 @@
                     :data="teacherList"
                     :default-sort = "{prop: 'workNumber', order: '1'}"
                     highlight-current-row
+                    height = 242
                     @current-change="">
                 <el-table-column property="workNumber" label="工号" width="120px"></el-table-column>
                 <el-table-column property="name" label="姓名" width="120px"></el-table-column>
                 <el-table-column property="sex" label="性别" width="120px"></el-table-column>
                 <el-table-column property="age" label="年龄" width="120px"></el-table-column>
-                <el-table-column property="inductionDate" label="入职日期" width="120px"></el-table-column>
+                <el-table-column property="date" label="入职日期" width="120px"></el-table-column>
                 <el-table-column property="unpaidTime" label="未结课时" width="120px"></el-table-column>
                 <el-table-column property="paidTime" label="已结课时" width="120px"></el-table-column>
                 <el-table-column label="操作" width="150px">
@@ -114,9 +119,13 @@
                 </el-table-column>
             </el-table>
             <el-pagination
+                v-if ="teacherCount != 0"
                 small
                 layout="prev, pager, next"
-                :total="50">
+                page-size=5
+                current-page.sync='page'
+                @current-change="changePage"
+                :total="teacherCount">
           </el-pagination>
         </div>
     </div>
@@ -171,6 +180,8 @@ export default{
             coursesTag:[],
             sex:[{ value:'男' , label:'男' },{ value:'女',label:'女'}],
             teacherList:[],
+            page:1,
+            teacherCount:"",
         }
     },
     computed:{
@@ -208,10 +219,17 @@ export default{
             this.coursesTag.push(temp);
             this.currentGrade = '';
             this.currentCourses = '';
+        },
+        showInputForm:function (newVal,oldVal) {
+            if(!newVal){
+                this.clearForm();
+            }
         }
     },
     mounted(){
+        this.getTeacherCount();
         this.updateTable();
+        
     },
     methods:{
         removeCourse:function (index) {
@@ -235,10 +253,20 @@ export default{
                         }
                     })
                         .then(function (response) {
+                            if(response.data == "successful"){
+                                _this.$message({
+                                    message: '教师添加成功',
+                                    type: 'success'
+                                });
+                                _this.updateTable();
+                            }else{
+                                _this.$message.error('教师添加失败');
+                            }
                             _this.showInputForm = false;
                         })
                         .catch(function (error) {
-                            console.log(err);
+                            console.log(error);
+                            _this.$message.error('教师添加失败');
                         })
                 }
             }.bind(this))
@@ -247,16 +275,48 @@ export default{
         updateTable(){
             var _this = this;
             _get({
-                url:'user/getTeacherList'
+                url:'user/getTeacherList',
+                data:{
+                    page:this.page
+                }
             }).then(function(teacher){
                 _this.teacherList = teacher.data;
-                console.log(_this.teacherList[0].course);
                 for( var i = 0 ; i < _this.teacherList.length ; i++ ){
+                    let date = new Date(_this.teacherList[i].inductionDate);
                     _this.teacherList[i].course = _this.teacherList[i].course.join(",");
+                    _this.teacherList[i].date = date.getFullYear() + '-' + (date.getMonth() + 1) + "-" + date.getDate();
                 }
             }).catch(function(err){
                 console.log(err);
+                _this.$message.error('获取教师信息失败');
             })
+        },
+        clearForm(){
+            this.form.name = "";
+            this.form.age = "";
+            this.form.sex = "";
+            this.form.date = "";
+            this.form.tel = "";
+            this.coursesTag = "";
+            this.currentGrade = "",
+            this.currentCourses = "",
+            this.coursesTag.splice(0,this.coursesTag.length);
+        },
+        getTeacherCount(){
+            var _this = this;
+            _get({
+                url:"user/getTeacherCount"
+            })
+            .then(function(response){
+                _this.teacherCount = response.data.count;
+            })
+            .catch(function(error){
+                console.log(error);
+            })
+        },
+        changePage(page){
+            this.page = page;
+            this.updateTable();
         }
     }
 }
