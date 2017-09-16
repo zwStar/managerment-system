@@ -7,7 +7,7 @@ let auditAPI = new Base({
    model:auditModel
 });
 
-auditAPI.methods.findAuditedClass = function(req,res,callback){
+auditAPI.methods.findAuditedClass = function(req,res){
     auditModel.find({
         workNumber:req.query.workNumber,
         startTime:{
@@ -17,8 +17,11 @@ auditAPI.methods.findAuditedClass = function(req,res,callback){
             "$lte":req.query.endTime
         }
     },function(error,result){
-        if(error)
-            callback(error,null);
+        if(error){
+            console.log("error in ./admin/audit.js  21行");
+            console.log(error);
+            res.send("error");
+        }
         else{
             for( var i = 0 ; i < result.length ; i++ ){
                 var obj = {
@@ -54,13 +57,16 @@ auditAPI.methods.findAuditedClass = function(req,res,callback){
                             });
                         });
                     },function (error) {
-                        callback(error,null);
+                        console.log("error in ./admin/audit.js  60行");
+                        console.log(error);
+                        res.send("error");
                     })
                     .then(function (data) {
                         result = data;
-                        callback(null,result);
+                        res.send(data);
                     },function (error) {
-                        callback(error,null);
+                        console.log("error in ./admin/audit.js  68行");
+                        console.log(error);
                     })
             }
         });

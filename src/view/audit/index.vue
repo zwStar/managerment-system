@@ -145,7 +145,7 @@
                 var _this = this;
                 if(newValue){
                     _get({
-                        url:"getClassCount",
+                        url:"course/getClassCount",
                         data:{
                             workNumber:this.detail.workNumber,
                             sno:this.detail.sno
@@ -177,7 +177,7 @@
         mounted(){
             var _this = this;
             _get({
-                url:"getAuditTable",
+                url:"course/getAuditTable",
             })
             .then(function(response){
                 response.data.forEach(function(el){
@@ -197,7 +197,7 @@
                 this.detail.reason = this.reason;
                 var _this = this;
                 _post({
-                    url:"refuseAudit",
+                    url:"course/refuseAudit",
                     data:{
                         detail:this.detail
                     }
@@ -226,7 +226,7 @@
                     this.detail.realCourseTime = 0;
                 }
                 _post({
-                    url:"throughAudit",
+                    url:"course/throughAudit",
                     data:{
                         detail:this.detail
                     }
@@ -256,7 +256,7 @@
             showPhoto(info){
                 var _this = this;
                 _get({
-                    url:"getPhoto",
+                    url:"course/getPhoto",
                     data:{
                         photoEvidence:info.photoEvidencePath,
                         returnVisit:info.returnVisitPath

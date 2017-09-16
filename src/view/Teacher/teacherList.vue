@@ -224,7 +224,7 @@ export default{
             this.$refs.form.validate(function (result) {
                 if(result){
                     _post({
-                        url:'addTeacher',
+                        url:'user/addTeacher',
                         data:{
                             name:this.form.name,
                             age:this.form.age,
@@ -247,7 +247,7 @@ export default{
         updateTable(){
             var _this = this;
             _get({
-                url:'getTeacherList'
+                url:'user/getTeacherList'
             }).then(function(teacher){
                 _this.teacherList = teacher.data;
                 console.log(_this.teacherList[0].course);

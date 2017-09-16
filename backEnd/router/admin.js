@@ -6,10 +6,13 @@ const router = express.Router();
 import Admin from '../admin'
 import $ from '../utils'
 import Captchas from '../admin/captchas'
+var fs = require("fs");
 
 router.post("/register",Admin.User.register);
 router.post("/login",Admin.User.login);
 router.post("/changeInfo",$.checkToken,Admin.User.update);
+router.post("/addTeacher",$.checkToken, Admin.Teacher.addTeacher);
+router.get("/getTeacherList",$.checkToken,Admin.Teacher.getTeacherList);
 
 
 //创建学生信息

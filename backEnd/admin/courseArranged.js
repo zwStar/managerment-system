@@ -16,7 +16,7 @@ let CourseArrangedAPI = new Base({
     model: CourseArrangedModel
 });
 
-CourseArrangedAPI.methods.findArrangeClass = function(req,res,callback){
+CourseArrangedAPI.methods.findArrangeClass = function(req,res){
     CourseArrangedModel.find({
         workNumber:req.query.workNumber,
         startTime:{
@@ -26,6 +26,7 @@ CourseArrangedAPI.methods.findArrangeClass = function(req,res,callback){
             "$lte":req.query.endTime
         }
     } ,function (error,result) {
+        console.log(error);
         for( var i = 0 ; i < result.length ; i++ ){
             var obj = {
                 workNumber:result[i].workNumber,
@@ -44,8 +45,11 @@ CourseArrangedAPI.methods.findArrangeClass = function(req,res,callback){
             }
             result[i] = obj;
         }
-        if(error)
-            callback(error,null);
+        if(error){
+            console.log("error in ./admin/courseArranged.js  48行");
+            console.log(error);
+            res.send("error");
+        }
         else{
             new Promise((resolve,reject)=>{
                 getNamesBySnoOneTime(result,function (error,data) { //获取所有排课记录中的学生姓名，将其添加到数据库返回的记录中
@@ -64,13 +68,17 @@ CourseArrangedAPI.methods.findArrangeClass = function(req,res,callback){
                             })
                         })
                     },function (error) {
-                        callback(error,null);
+                        console.log("error in ./admin/courseArranged.js  70行");
+                        console.log(error);
+                        res.send("error");
                     })
                     .then(function (data) {
                         result = data;
-                        callback(null,result);
+                        res.send(result);
                     },function (error) {
-                        callback(error,null);
+                        console.log("error in ./admin/courseArranged.js  78行");
+                        console.log(error);
+                        res.send("error");
                     })
             }
     });

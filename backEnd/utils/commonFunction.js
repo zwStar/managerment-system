@@ -50,6 +50,12 @@ export const getCourseNamesOneTime = function (data, callback) { //通过多个�
 }
 
 export const dealWithData = function (data, callback) {
+
+    var PRIMARY_REG = /(小学)([\u4e00-\u9fa5]{2})/
+    var JUNIOR_REG = /(初中)([\u4e00-\u9fa5]{2})/
+    var HIGH_REG = /(高中)([\u4e00-\u9fa5]{2})/
+    var CONVENTIONAL_REG = /([\u4e00-\u9fa5]{2})([\u4e00-\u9fa5]{2})/
+
     var courseNo = new Array();
     var promises = new Array();
     for (var i = 0; i < data.length; i++) {

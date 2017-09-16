@@ -16,5 +16,16 @@ router.get("/ArrangedCount",Admin.courseArranged.total)
 //     Admin.courseArranged.arrangedLists(req,res,next)
 // });
 
+router.get("/getAuditTable",$.checkToken,admin.courseArranged.findAuditingClass);
+router.get("/getPhoto",$.checkToken,function(req,res){
+    var img = new Array();
+    img.push(fs.readFileSync("./photo/photoEvidence/" + req.query.photoEvidence).toString("base64"));
+    img.push(fs.readFileSync("./photo/returnVisit/" + req.query.returnVisit).toString("base64"));
+    res.send(img);
+});
+router.post("/refuseAudit",$.checkToken,admin.courseArranged.refuseAudit);
+router.post("/throughAudit",$.checkToken,admin.courseArranged.throughAudit);
+
+
 router.get("/ArrangedLists",Admin.courseArranged.arrangedLists);    //安排的课程列表
 export default router;
