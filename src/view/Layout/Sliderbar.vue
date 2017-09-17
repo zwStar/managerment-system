@@ -4,8 +4,8 @@
             <el-col :span="24">
                 <el-menu @open="handleOpen" @close="handleClose" theme="dark" router>
                     <el-submenu index="1">
-                        <template slot="title"><i class="el-icon-message"></i>合同管理</template>
-                        <el-menu-item index="/lists">合同列表</el-menu-item>
+                        <template slot="title"><i class="el-icon-message"></i>数据显示</template>
+                        <el-menu-item index="/home">数据显示</el-menu-item>
                     </el-submenu>
                     <el-submenu index="2">
                         <template slot="title"><i class="el-icon-message"></i>学生管理</template>

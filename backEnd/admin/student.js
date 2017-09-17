@@ -49,7 +49,7 @@ StudentAPI.methods.createStudent = async function (req,res,next) {
             throw new Error('必须填写家长电话号码');
         }else if(!params.managerTeacher){
             throw new Error('必须填写学管师');
-        }else if(!params.grade){
+        }else if(!params.gradeNo){
             throw new Error('必须填写年级');
         }else if(!params.orderCourseNumber){
             throw new Error('必须填写购买总课程数量');
@@ -96,7 +96,7 @@ StudentAPI.methods.studentLists = async function (req,res,next) {
         let  courseNumber = 0;
         let remainCourse = 0;
         CourseArrangeds.forEach(course=>{
-            courseNumber += course.courseNumber;
+            courseNumber += parseInt(course.courseNumber);
         })
         remainCourse = Students[i].orderCourseNumber - courseNumber;
         let Student = {...Students[i]._doc,...{remainCourse:remainCourse},...{date:$.dateformat(Students[i].sendAt)}};

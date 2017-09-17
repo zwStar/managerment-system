@@ -5,6 +5,7 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import Login from '../view/Login/index.vue'
 import Layout from '../view/Layout/index.vue'
+import Index from '../view/Index/index.vue'
 import UserInfo from '../view/Layout/UserInfo.vue'
 import Course from '../view/Course/index.vue'
 
@@ -20,12 +21,18 @@ const routes = [
         path: "/",
         component: Layout,
         children: [
-
+            {
+                path:"",
+                redirect:"/home"
+            },
             {
                 path: "/teacherList",
                 component: teacherList
             },
-
+            {
+                path:"/home",
+                component:Index
+            },
             {path: "student", component: Student},
             {path: "userInfo", component: UserInfo},
             {path: "course", component: Course},

@@ -25,7 +25,7 @@
                 <el-form-item label="年级">
                     <el-row>
                         <el-col :span="16">
-                            <el-select v-model="grade" placeholder="请选择年级">
+                            <el-select v-model="gradeNo" placeholder="请选择年级">
                                 <el-option v-for="item in gradeOptions" :key="item" :label="item" :value="item">
                                 </el-option>
                             </el-select>
@@ -36,7 +36,7 @@
                 <el-form-item label="课程">
                     <el-row>
                         <el-col :span="16">
-                            <el-select v-model="course" placeholder="请选择课程">
+                            <el-select v-model="courseName" placeholder="请选择课程">
                                 <el-option v-for="item in courseOptions" :key="item" :label="item" :value="item">
                                 </el-option>
                             </el-select>
@@ -104,8 +104,8 @@
         data() {
             return {
                 gradeOptions: [],
-                grade: '',
-                course: "",
+                gradeNo: '',
+                courseName: "",
                 teacherOptions: [
                     {
                         name: "请先填写前面信息",
@@ -129,8 +129,8 @@
         },
         computed: {
             courseOptions() {   //根据年级  选出可选课程
-                if (this.grade)
-                    return courseList[this.grade];
+                if (this.gradeNo)
+                    return courseList[this.gradeNo];
                 else
                     return "";
             },
@@ -146,26 +146,30 @@
         },
         watch: {
             courseNumber() {    //对课程数进行监听 因为课程数是选择教师的前一个选项 选择完该选项就需要动态获取教师可选列表
-                if (this.courseNumber !== "" && this.course !== "" && this.grade !== "" && this.startTime !== "") {
+                if (this.courseNumber !== "" && this.courseName !== "" && this.gradeNo !== "" && this.startTime !== "") {
                     const _this = this;
                     api._get({
                         url: "course/teacherOptions",
                         data: {//根据年级 课程 开始时间 结束时间去推出可选教师
-                            grade: _this.grade,
-                            course: _this.course,
+                            gradeNo: _this.gradeNo,
+                            courseName: _this.courseName,
                             startTime: _this.startTime,
                             endTime: _this.endTime
                         }
                     }).then((results) => {
                         let result = results.data;
                         _this.teacherOptions = [];
-                        let list = {};
-                        result.data.forEach((el) => {
-                            list = {};
-                            list.name = el.name;
-                            list.workNumber = el.workNumber;
-                            _this.teacherOptions.push(list);
-                        })
+                        if(!result.data.length){
+                            _this.teacherOptions.push({name:"该课程暂无可授课老师",workNumber:""})
+                        }else{
+                            let list = {};
+                            result.data.forEach((el) => {
+                                list = {};
+                                list.name = el.name;
+                                list.workNumber = el.workNumber;
+                                _this.teacherOptions.push(list);
+                            })
+                        }
                     }, (error) => {
                         console.log(error)
                     })
@@ -175,34 +179,43 @@
         methods: {
             onSubmit() { //提交
                 let _this = this;
-                api._get({
-                    url: 'course/courseArranged',
-                    data: {
-                        sno: _this.sno,
-                        grade: _this.grade,
-                        course: _this.course,
-                        startTime: _this.startTime,
-                        endTime: _this.endTime,
-                        courseNumber: _this.courseNumber,
-                        courseHour: _this.courseHour,
-                        workNumber: _this.teacher
-                    }
-                }).then((result) => {
-                    console.log(result)
-                    if (result.status === 200) {  //添加成功
-                        this.$message({
-                            message: '添加成功',
-                            type: 'success'
-                        });
-                    } else {      //添加失败
-                        this.$message({
-                            message: '添加失败',
-                            type: 'error'
-                        });
-                    }
-                }, (err) => {
-                    console.log(err);
-                })
+                if(_this.sno && _this.gradeNo && _this.courseName && _this.startTime && _this.endTime && _this.courseNumber && _this.courseHour && _this.teacher){
+                    api._get({
+                        url: 'course/courseArranged',
+                        data: {
+                            sno: _this.sno,
+                            gradeNo: _this.gradeNo,
+                            courseName: _this.courseName,
+                            startTime: _this.startTime,
+                            endTime: _this.endTime,
+                            courseNumber: _this.courseNumber,
+                            courseHour: _this.courseHour,
+                            workNumber: _this.teacher
+                        }
+                    }).then((result) => {
+                        console.log(result)
+                        if (result.status === 200) {  //添加成功
+                            this.$message({
+                                message: '添加成功',
+                                type: 'success'
+                            });
+                            _this.fetch();
+                        } else {      //添加失败
+                            this.$message({
+                                message: '添加失败',
+                                type: 'error'
+                            });
+                        }
+                    }, (err) => {
+                        console.log(err);
+                    })
+                }else{
+                    this.$message({
+                        message: '请完整填写信息',
+                        type: 'error'
+                    });
+                }
+
             },
             resetForm(formName) {   //表单重置
                 this.$refs[formName].resetFields();
@@ -248,7 +261,6 @@
             }
         },
         mounted() {//页面加载后获取总数量 和 抓取限量内容
-            console.log("token",this.$store.state.user.token);
             this.count();
             this.fetch();
         }

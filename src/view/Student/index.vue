@@ -30,7 +30,7 @@
                 <el-form-item label="年级" required>
                     <el-row>
                         <el-col :span="16">
-                            <el-select v-model="studentForm.grade" placeholder="请选择年级" required>
+                            <el-select v-model="studentForm.gradeNo" placeholder="请选择年级" required>
                                 <el-option v-for="item in gradeOptions" :key="item" :label="item" :value="item">
                                 </el-option>
                             </el-select>
@@ -41,6 +41,14 @@
                     <el-row>
                         <el-col :span="16">
                             <el-input v-model="studentForm.parentName"></el-input>
+                        </el-col>
+                    </el-row>
+                </el-form-item>
+                <el-form-item label="报名时间" required>
+                    <el-row>
+                        <el-col :span="16">
+                            <el-date-picker v-model='studentForm.sendAt' type="datetime" placeholder="选择日期时间">
+                            </el-date-picker>
                         </el-col>
                     </el-row>
                 </el-form-item>
@@ -112,10 +120,11 @@
                     tel: "",    //电话号码
                     school: "", //学校
                     managerTeacher: "", //学管师
-                    grade: "",      //年级
-                    orderCourseNumber: ""   //购买课程
+                    gradeNo: "",      //年级
+                    orderCourseNumber: "",   //购买课程
+                    sendAt:null
                 },
-                gradeOptions: ["小学", "初一", "初二", "初三", "高一", "高二", "高三"],//年级可选
+                gradeOptions: ["小一","小二","小三","小四","小五","小六", "初一", "初二", "初三", "高一", "高二", "高三"],//年级可选
                 Count: 0,   //总数量
                 pageSize:10,    //每页多少条
                 formLabelWidth: '100px',    //label宽度
@@ -124,7 +133,7 @@
                         {required: true, trigger: 'blur', validator: validateSno}
                     ],
                     tel: [  //电话号码
-                        {required: true, message: "请输入正确的家长电话", pattern: /^1[3|4|5|8][0-9]\d{4,8}$/, trigger: 'blur'}
+                        {required: true, message: "请输入正确的家长电话", pattern: /^1[0-9]{2}\d{4,8}$/, trigger: 'blur'}
                     ],
                     orderCourseNumber: [    //购买的数量 必须是数字
                         {required: true, message: "请输入该学生购买的课程时数量", pattern: /^\d+$/, trigger: 'blur'}

@@ -80,7 +80,7 @@ class Statis {
         }
         try {
             let obj = $.todayAndTomorrow(date);
-            const count = await CourseArrangedModell.find({$and: [{startTime: {$gte: obj.today}}, {startTime: {$lt: obj.nextDay}}]}).count();
+            const count = await CourseArrangedModel.find({$and: [{startTime: {$gte: obj.today}}, {startTime: {$lt: obj.nextDay}}]}).count();
             res.send({
                 status: 1,
                 count,

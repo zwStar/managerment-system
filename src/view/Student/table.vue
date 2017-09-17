@@ -1,7 +1,7 @@
 <template>
     <div class="table-content">
         <el-table :data="data" border width="100%">
-            <el-table-column label="学号" width="120">
+            <el-table-column label="学号" width="140">
                 <template scope="scope" >
                     <span>{{scope.row.sno}}</span>
                 </template>
@@ -33,7 +33,7 @@
 
             <el-table-column label="年级" width="120">
                 <template scope="scope" >
-                    <span>{{scope.row.grade}}</span>
+                    <span>{{scope.row.gradeNo}}</span>
                 </template>
             </el-table-column>
 

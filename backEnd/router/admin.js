@@ -23,7 +23,7 @@ router.get("/studentsCount",$.checkToken,Admin.Student.total);
 router.get("/students",$.checkToken,Admin.Student.studentLists);
 
 // //获取教师数量
-// router.get("/teachersCount",$.checkToken,Admin.Teacher.total);
+router.get("/teachersCount",$.checkToken,Admin.Teacher.total);
 // //获取教师列表
 // router.get("/teachers",$.checkToken,Admin.Teacher.teacherLists);
 

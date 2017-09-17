@@ -295,8 +295,6 @@ CourseArrangedAPI.methods.findGrade = function (req, res, next) {
     findGradePromise.then((doc) => {
         if ($.isEmpty(doc))
             $.result(res, "error");
-        // $.result(res, {grade: doc.gradeNo});
-        console.log("doc",doc.school)
         res.send({
             status:1,
            grade:doc.gradeNo
@@ -343,7 +341,7 @@ CourseArrangedAPI.methods.total = function (req, res, next) {
 
 //安排课程列表
 CourseArrangedAPI.methods.arrangedLists = async function (req, res, next) {
-
+    let _this = this;
     let {limit = 10, start = 0} = req.query;
     try {
         let Courses = await CourseArrangedModel.find({}).limit(Number(limit)).skip(Number(limit * start));//已经安排的课程
@@ -351,13 +349,11 @@ CourseArrangedAPI.methods.arrangedLists = async function (req, res, next) {
         for (let i = 0; i < Courses.length; i++) {
             //根据学号 在学生表中查找该学生姓名
             let StudentName = await StudentModel.findOne({sno: Courses[i].sno}, 'name');
-
             // //根据教师工号 找出教师名字
             let TeacherName = await teacherModel.findOne({workNumber: Courses[i].workNumber}, 'name');
 
             //根据课程号 找出年级
-            let Course = await CourseModel.findOne({courseNo: Courses[i].courseNo}, 'course grade');
-            console.log("Course",Course)
+            let Course = await CourseModel.findOne({courseNo: Courses[i].courseNo}, 'courseName gradeNo');
             if (StudentName !== null && TeacherName !== null && Course !== null) {
                 let dateformat = {  //对时间进行格式化
                     startTime: $.dateformat(Courses[i].startTime, 'YYYY-MM-DD HH:mm:ss'),
