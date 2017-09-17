@@ -6,6 +6,8 @@ import express from 'express'
 const router = express.Router();
 import Admin from '../admin'
 import $ from '../utils'
+import { getClassCount } from "../utils/commonFunction"
+var fs = require("fs");
 
 router.get("/findGrade",Admin.courseArranged.findGrade)         //查找年级
 router.get("/teacherOptions",Admin.courseArranged.teacherOptions)   //找教师列表
@@ -25,7 +27,7 @@ router.get("/getPhoto",$.checkToken,function(req,res){
 });
 router.post("/refuseAudit",$.checkToken,Admin.courseArranged.refuseAudit);
 router.post("/throughAudit",$.checkToken,Admin.courseArranged.throughAudit);
-
+router.get("/getClassCount",$.checkToken,getClassCount);
 
 router.get("/ArrangedLists",Admin.courseArranged.arrangedLists);    //安排的课程列表
 export default router;

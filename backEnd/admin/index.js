@@ -9,6 +9,7 @@ import Search from './search'
 import Course from './course'
 import Statis from './statis'
 import audit from "./audit"
+import historyList from "./historyList"
 export default {
     User,
     Student,
@@ -17,5 +18,6 @@ export default {
     Search,
     Course,
     Statis,
-    audit
+    audit,
+    historyList
 }

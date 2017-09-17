@@ -10,12 +10,18 @@ let teacherAPI = new Base({
 });
 
 teacherAPI.methods.addTeacher = function (req, res) {
-    var date = new Date(req.body.inductionDate);//入职日期
+    
     teacherModel.count({}, function (err, count) {//找出已有教师数量
         if (err) {
             console.log("error in ./admin/teacher.js 16行");
             console.log(err);
             res.send(err);
+        }
+        if( ( ++count ) < 10 ){
+            count = "0" + count;
+        }else{
+            count++;
+            count = count.toString();
         }
         dealWithData(req.body.coursesTag, function (err, courseNo) {//找课程号
             if (err) {
@@ -23,7 +29,7 @@ teacherAPI.methods.addTeacher = function (req, res) {
                 res.send(err);
             }else{
                 new teacherModel({
-                    workNumber: date.getFullYear().toString() + count.toString(),
+                    workNumber: req.body.workNumber + count,
                     name: req.body.name,
                     age: req.body.age,
                     sex: req.body.sex,

@@ -26,7 +26,6 @@ CourseArrangedAPI.methods.findArrangeClass = function(req,res){
             "$lte":req.query.endTime
         }
     } ,function (error,result) {
-        console.log(error);
         for( var i = 0 ; i < result.length ; i++ ){
             var obj = {
                 workNumber:result[i].workNumber,
@@ -41,7 +40,8 @@ CourseArrangedAPI.methods.findArrangeClass = function(req,res){
                 remark:result[i].remark,
                 reason:result[i].reason,
                 photoEvidencePath:result[i].photoEvidencePath,
-                returnVisitPath:result[i].returnVisitPath
+                returnVisitPath:result[i].returnVisitPath,
+                threeTimes:result[i].threeTimes
             }
             result[i] = obj;
         }
@@ -106,7 +106,8 @@ CourseArrangedAPI.methods.findAuditingClass = function(req,res){
                     remark:result[i].remark,
                     reason:result[i].reason,
                     photoEvidencePath:result[i].photoEvidencePath,
-                    returnVisitPath:result[i].returnVisitPath
+                    returnVisitPath:result[i].returnVisitPath,
+                    threeTimes:result[i].threeTimes
                 }
                 result[i] = obj;
             }
@@ -163,7 +164,7 @@ CourseArrangedAPI.methods.refuseAudit = function(req,res){  //不通过教师提
             status:detail.status,
             reason:detail.reason
         },
-        function(err,docs){
+        function(error,docs){
             if(error)
                 res.send(error);
             else
@@ -172,6 +173,7 @@ CourseArrangedAPI.methods.refuseAudit = function(req,res){  //不通过教师提
 }
 
 CourseArrangedAPI.methods.submitAudit = function(req,res){      //教师在手机端提交审核
+    let flag = req.body.threeTimes;
     CourseArrangedModel.update({
             workNumber:req.body.workNumber,
             sno:req.body.sno,
@@ -182,7 +184,8 @@ CourseArrangedAPI.methods.submitAudit = function(req,res){      //教师在手�
                 remark:req.body.remark,
                 photoEvidencePath:req.body.photoEvidencePath,
                 returnVisitPath:req.body.returnVisitPath,
-                status:req.body.status
+                status:req.body.status,
+                threeTimes:flag
             }
         },
         (error,rec)=>{
@@ -194,7 +197,7 @@ CourseArrangedAPI.methods.submitAudit = function(req,res){      //教师在手�
                     {'$inc':{'unpaidTime':req.body.realCourseTime}},
                     (error) =>{
                         if(error){
-                            console.log("error in ./admin/courseArranged.js")
+                            console.log("error in ./admin/courseArranged.js   196行")
                             res.send(error);
                         }else{
                             res.send("successful");

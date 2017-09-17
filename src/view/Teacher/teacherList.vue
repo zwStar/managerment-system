@@ -240,10 +240,17 @@ export default{
         confirm(){
             var _this = this;
             this.$refs.form.validate(function (result) {
+                //拼接工号
+                let date = new Date(this.form.date);
+                let month = (date.getMonth() + 1) >= 10 ? (date.getMonth() + 1) : ("0" + (date.getMonth() + 1));
+                let day = date.getDate() >= 10 ? date.getDate() : ("0" + date.getDate());
+                let workNumber = date.getFullYear().toString() + month.toString() + day.toString();
+
                 if(result){
                     _post({
                         url:'user/addTeacher',
                         data:{
+                            workNumber:workNumber,
                             name:this.form.name,
                             age:this.form.age,
                             sex:this.form.sex,

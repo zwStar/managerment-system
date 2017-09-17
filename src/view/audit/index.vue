@@ -22,7 +22,7 @@
                     width="160">
                 </el-table-column>
                 <el-table-column
-                    prop="courseNumber | explain"
+                    prop="courseNumber"
                     label="计划课时"
                     width="160">
                 </el-table-column>
@@ -142,35 +142,16 @@
         },
         watch:{
             detailShow:function(newValue,oldValue){
-                var _this = this;
                 if(newValue){
-                    _get({
-                        url:"course/getClassCount",
-                        data:{
-                            workNumber:this.detail.workNumber,
-                            sno:this.detail.sno
-                        }
-                    })
-                    .then(function(response){
-                        if(typeof response.data.count == 'number'){
-                            if( (response.data.count+1)%3 == 0 ){
-                                _this.returnWay = "电话回访";
-                                _this.$notify.info({
-                                    title: '提示',
-                                    message: '此次'+_this.detail.teacherName+'老师需要提交电话回访记录哦~~'
-                                });
-                            }else{
-                                _this.returnWay = "微信回访";
-                            }
-                        }else{
-                            _this.$message.error('未知错误，请重试');
-                            _this.detailShow = false;
-                        }
-                    })
-                    .catch(function(){
-                        _this.$message.error('未知错误，请重试');
-                        _this.detailShow = false;
-                    })
+                    if(this.detail.threeTimes){
+                        this.returnWay = "电话回访";
+                        this.$notify.info({
+                            title: '提示',
+                            message: '此次'+this.detail.teacherName+'老师需要提交电话回访记录哦~~'
+                        });
+                    }else{
+                        this.returnWay = "微信回访";
+                    }
                 }
             }
         },
