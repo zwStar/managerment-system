@@ -13,6 +13,7 @@ router.post("/login",Admin.User.login);
 router.post("/changeInfo",$.checkToken,Admin.User.update);
 router.post("/addTeacher",$.checkToken, Admin.Teacher.addTeacher);
 router.get("/getTeacherList",$.checkToken,Admin.Teacher.getTeacherList);
+router.get("/getTeacherCount",$.checkToken,Admin.Teacher.getTeacherCount);
 
 
 //创建学生信息

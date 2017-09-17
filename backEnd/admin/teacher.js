@@ -116,21 +116,37 @@ teacherAPI.methods.getTeacherInfo = function (req,res) {
 };
 
 teacherAPI.methods.getTeacherList = function(req,res){
-    teacherModel.find({},function (err,data) {
-        if(err){
-            console.log("error in ./admin/teacher.js 120行");
-            console.log(err);
-            res.send(err);
-        }
-        teacherAPI.methods.findCourse(data,function (err,data) {
-            if(err){
-                console.log("error in ./admin/teacher.js 126行");
-                console.log(err);
-                res.send(err);
-            }else{
-                res.send(data);
-            }
+
+
+    teacherModel.find({})
+        .skip((req.query.page - 1) * 5)
+        .limit(5).exec(
+            function (err,data) {
+                if(err){
+                    console.log("error in ./admin/teacher.js 120行");
+                    console.log(err);
+                    res.send(err);
+                }
+                teacherAPI.methods.findCourse(data,function (err,data) {
+                    if(err){
+                        console.log("error in ./admin/teacher.js 126行");
+                        console.log(err);
+                        res.send(err);
+                    }else{
+                        res.send(data);
+                    }
+                });
         });
+}
+
+teacherAPI.methods.getTeacherCount = function(req,res){
+    teacherModel.count( {} , function(error,result){
+        if(error){
+            console.log("error in ./admin/teacher.js  145行");
+            res.send(error);
+        }else{
+            res.send({count:result});
+        }
     });
 }
 
