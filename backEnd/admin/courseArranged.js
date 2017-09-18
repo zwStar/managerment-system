@@ -158,7 +158,7 @@ CourseArrangedAPI.methods.refuseAudit = function(req,res){  //不通过教师提
         {
             workNumber:detail.workNumber,
             sno:detail.sno,
-            startTime:detail.startTime
+            startTime:detail.startTime,
         },
         {
             status:detail.status,
@@ -167,8 +167,20 @@ CourseArrangedAPI.methods.refuseAudit = function(req,res){  //不通过教师提
         function(error,docs){
             if(error)
                 res.send(error);
-            else
-                res.send("successful");
+            else{
+                teacherModel.update(
+                    {workNumber:detail.workNumber},
+                    {'$inc':{'unpaidTime':-detail.realCourseTime}},
+                    (error) =>{
+                        if(error){
+                            console.log("error in ./admin/courseArranged.js   176行")
+                            res.send(error);
+                        }else{
+                            res.send("successful");
+                        }  
+                    });
+            }
+               
         })
 }
 
@@ -224,7 +236,7 @@ CourseArrangedAPI.methods.throughAudit = function(req,res){
                     console.log(error);
                     res.send(error);
                 }
-                else
+                else{
                     teacherModel.update({
                         workNumber: detail.workNumber
                     }, {
@@ -241,6 +253,8 @@ CourseArrangedAPI.methods.throughAudit = function(req,res){
                             res.send("successful");
                         }
                     });
+                }
+                    
             });
     });
 }
