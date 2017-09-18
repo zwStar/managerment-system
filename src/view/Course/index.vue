@@ -99,7 +99,37 @@
     import * as api from '../../api'
     import courseList from '../../assets/json/course.json'
     import vTable from './table.vue'
-
+    function getTeacherOptions(){
+        if (this.courseNumber !== "" && this.courseName !== "" && this.gradeNo !== "" && this.startTime !== "") {
+            const _this = this;
+            api._get({
+                url: "course/teacherOptions",
+                data: {//根据年级 课程 开始时间 结束时间去推出可选教师
+                    gradeNo: _this.gradeNo,
+                    courseName: _this.courseName,
+                    startTime: _this.startTime,
+                    endTime: _this.endTime
+                }
+            }).then((results) => {
+                let result = results.data;
+                _this.teacherOptions = [];
+                if (!result.data.length) {
+                    _this.teacherOptions.push({name: "该课程暂无可授课老师", workNumber: ""})
+                    _this.teacher = "该课程暂无可授课老师";
+                } else {
+                    let list = {};
+                    result.data.forEach((el) => {
+                        list = {};
+                        list.name = el.name;
+                        list.workNumber = el.workNumber;
+                        _this.teacherOptions.push(list);
+                    })
+                }
+            }, (error) => {
+                console.log(error)
+            })
+        }
+    }
     export default {
         data() {
             return {
@@ -117,7 +147,7 @@
                 startTime: "",  //开始时间
                 courseNumberOptions: [1, 2, 3, 4, 5],//课节数可选
                 courseNumber: "",       //课节数
-                courseHour: 45,         //每节课多少分钟
+                courseHour: 40,         //每节课多少分钟
                 dialogVisible: false,   //对话框显示
                 formLabelWidth: '80px', //lebel宽度
                 Count: 0,       //总数量
@@ -146,40 +176,20 @@
         },
         watch: {
             courseNumber() {    //对课程数进行监听 因为课程数是选择教师的前一个选项 选择完该选项就需要动态获取教师可选列表
-                if (this.courseNumber !== "" && this.courseName !== "" && this.gradeNo !== "" && this.startTime !== "") {
-                    const _this = this;
-                    api._get({
-                        url: "course/teacherOptions",
-                        data: {//根据年级 课程 开始时间 结束时间去推出可选教师
-                            gradeNo: _this.gradeNo,
-                            courseName: _this.courseName,
-                            startTime: _this.startTime,
-                            endTime: _this.endTime
-                        }
-                    }).then((results) => {
-                        let result = results.data;
-                        _this.teacherOptions = [];
-                        if(!result.data.length){
-                            _this.teacherOptions.push({name:"该课程暂无可授课老师",workNumber:""})
-                        }else{
-                            let list = {};
-                            result.data.forEach((el) => {
-                                list = {};
-                                list.name = el.name;
-                                list.workNumber = el.workNumber;
-                                _this.teacherOptions.push(list);
-                            })
-                        }
-                    }, (error) => {
-                        console.log(error)
-                    })
-                }
+                getTeacherOptions.call(this);
+            },
+            startTime(){
+                getTeacherOptions.call(this);
+            },
+            courseName(){
+                getTeacherOptions.call(this);
             }
+
         },
         methods: {
             onSubmit() { //提交
                 let _this = this;
-                if(_this.sno && _this.gradeNo && _this.courseName && _this.startTime && _this.endTime && _this.courseNumber && _this.courseHour && _this.teacher){
+                if (_this.sno && _this.gradeNo && _this.courseName && _this.startTime && _this.endTime && _this.courseNumber &&  _this.teacher) {
                     api._get({
                         url: 'course/courseArranged',
                         data: {
@@ -198,7 +208,16 @@
                                 message: '添加成功',
                                 type: 'success'
                             });
-                            _this.fetch();
+                            _this.sno = '';
+                            _this.gradeNo = '';
+                            _this.courseName = '';
+                            _this.startTime = '';
+                            _this.courseNumber = '';
+                            _this.teacherOptions = [];
+                            _this.teacherOptions.push({name: "该课程暂无可授课老师", workNumber: ""});
+                            _this. teacher = ""    //老师工号
+                            _this.count();          //重新获取总数
+                            _this.fetch();          //获取数据
                         } else {      //添加失败
                             this.$message({
                                 message: '添加失败',
@@ -208,7 +227,7 @@
                     }, (err) => {
                         console.log(err);
                     })
-                }else{
+                } else {
                     this.$message({
                         message: '请完整填写信息',
                         type: 'error'
@@ -235,7 +254,7 @@
                 })
             },
             handleCurrentChange(CurrentPage) {  //分页器切换
-                this.fetch(CurrentPage- 1);
+                this.fetch(CurrentPage - 1);
             },
             fetch(start = 0, limit = this.pageSize) {   //抓取数据
                 let _this = this;
