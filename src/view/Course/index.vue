@@ -193,7 +193,6 @@
                             workNumber: _this.teacher
                         }
                     }).then((result) => {
-                        console.log(result)
                         if (result.status === 200) {  //添加成功
                             this.$message({
                                 message: '添加成功',
@@ -247,6 +246,7 @@
                         limit
                     }
                 }).then((results) => {  //用vuex管理数据
+                    console.log(results)
                     _this.$store.commit("SET_ITEM", {key: 'adminItems', val: results.data});
                 })
             },

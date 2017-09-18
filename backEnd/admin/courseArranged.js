@@ -361,8 +361,8 @@ CourseArrangedAPI.methods.arrangedLists = async function (req, res, next) {
                 }
                 let CourseArranged = {//组成一个前端数据需要的对象
                     ...Courses[i]._doc, ...{StudentName: StudentName.name}, ...{TeacherName: TeacherName.name}, ...{
-                        course: Course.courseName,
-                        grade: Course.gradeNo
+                        courseName: Course.courseName,
+                        gradeNo: Course.gradeNo
                     }, ...dateformat
                 };
                 results.push(CourseArranged);

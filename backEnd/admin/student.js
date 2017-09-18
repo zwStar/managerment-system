@@ -38,6 +38,7 @@ let StudentAPI = new Base({
 //创建学生
 StudentAPI.methods.createStudent = async function (req,res,next) {
     let params = req.method === 'POST' ? req.body : req.query;
+    console.log(params.sendAt)
     try{
         if(!params.sno){
             throw new Error('必须填写学生学号');
