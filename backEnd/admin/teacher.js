@@ -33,7 +33,7 @@ teacherAPI.methods.addTeacher = function (req, res) {
                     name: req.body.name,
                     age: req.body.age,
                     sex: req.body.sex,
-                    inductionDate: date,
+                    inductionDate: req.body.inductionDate,
                     password: $.md5("123456"),
                     unpaidTime: 0,
                     paidTime: 0,
@@ -42,8 +42,10 @@ teacherAPI.methods.addTeacher = function (req, res) {
                     if (err) {
                         console.log("error in ./admin/teacher.js 38行");
                         res.send(err);
+                    }else{
+                        res.send("successful");
                     }
-                    res.send("successful");
+                    
                 })
             }
             

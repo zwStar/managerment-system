@@ -256,7 +256,6 @@
                 this.showBigPicture = true;
                 if( this.initialIndex == -1 ){
                     this.initialIndex = index;
-                    console.log(this.initialIndex);
                 }
                 else
                     this.$refs.carousel.setActiveItem(index);

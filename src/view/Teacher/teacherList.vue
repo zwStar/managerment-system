@@ -101,7 +101,7 @@
             <el-table
                     strip="true"
                     :data="teacherList"
-                    :default-sort = "{prop: 'workNumber', order: '1'}"
+                    :default-sort = "{prop: 'date', order: '1'}"
                     highlight-current-row
                     height = 242
                     @current-change="">
@@ -265,13 +265,17 @@ export default{
                                     message: '教师添加成功',
                                     type: 'success'
                                 });
+                                _this.clearForm();
                                 _this.updateTable();
                             }else{
+                                console.log(222);
                                 _this.$message.error('教师添加失败');
                             }
+                            console.log(3333);
                             _this.showInputForm = false;
                         })
                         .catch(function (error) {
+                            console.log(444);
                             console.log(error);
                             _this.$message.error('教师添加失败');
                         })
@@ -304,7 +308,6 @@ export default{
             this.form.sex = "";
             this.form.date = "";
             this.form.tel = "";
-            this.coursesTag = "";
             this.currentGrade = "",
             this.currentCourses = "",
             this.coursesTag.splice(0,this.coursesTag.length);
@@ -355,6 +358,10 @@ export default{
     .teacherList{
         width: 992px;
         margin: 50px auto;
+        .el-pagination {
+            text-align: center;
+            margin-top: 20px;
+        }
     }
 }
 </style>
