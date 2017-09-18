@@ -13,7 +13,8 @@ let auditSchema = new mongoose.Schema({
     remark:{type:String},       //备注
     photoEvidencePath:{type:String},//拍照取证图片名称
     returnVisitPath:{type:String},   //微信回访图片名称
-    status:{type:String}
+    status:{type:String},
+    threeTimes:{type:Boolean,default:false}
 })
 
 let auditModel = mongoose.model("audit",auditSchema);

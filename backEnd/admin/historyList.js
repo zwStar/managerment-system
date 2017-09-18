@@ -1,25 +1,24 @@
 import Base from './base'
 import { getNamesBySnoOneTime,getCourseNamesOneTime } from "../utils/commonFunction"
 
-let auditModel = require("../module/audit");
+let historyListModel = require("../module/historyList");
 
-let auditAPI = new Base({
-   model:auditModel
+let historyListAPI = new Base({
+   model:historyListModel
 });
 
-auditAPI.methods.findAuditedClass = function(req,res){
-    auditModel.find({
+historyListAPI.methods.findAuditedClass = function(req,res){
+    historyListModel.find({
         workNumber:req.query.workNumber,
-        /* startTime:{
+        startTime:{
             "$gte":req.query.startTime
         },
         endTime:{
             "$lte":req.query.endTime
-        } */
+        }
     },function(error,result){
-        console.log(result);
         if(error){
-            console.log("error in ./admin/audit.js  21行");
+            console.log("error in ./admin/historyList.js  21行");
             console.log(error);
             res.send("error");
         }
@@ -59,7 +58,7 @@ auditAPI.methods.findAuditedClass = function(req,res){
                             });
                         });
                     },function (error) {
-                        console.log("error in ./admin/audit.js  60行");
+                        console.log("error in ./admin/historyList.js  60行");
                         console.log(error);
                         res.send("error");
                     })
@@ -67,10 +66,10 @@ auditAPI.methods.findAuditedClass = function(req,res){
                         result = data;
                         res.send(data);
                     },function (error) {
-                        console.log("error in ./admin/audit.js  68行");
+                        console.log("error in ./admin/historyList.js  68行");
                         console.log(error);
                     })
             }
         });
 }
-export default auditAPI.methods;
+export default historyListAPI.methods;

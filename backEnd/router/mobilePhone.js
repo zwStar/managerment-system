@@ -5,43 +5,29 @@ import $ from "../utils";
 import { getClassCount,savePhoto } from "../utils/commonFunction";
 
 //老师修改密码
-router.post("/changePassword",$.checkToken,function(req,res){ 
-    admin.Teacher.changePassword(req,res);
-});
+router.post("/changePassword",$.checkToken,admin.Teacher.changePassword);
 
 //处理上传的图片
-router.post("/photoEvidence",$.checkToken,function(req,res){
+router.post("/photo/photoEvidence",$.checkToken,function(req,res){
     savePhoto(req,res,'photoEvidence');
 })
 
 //处理上传的图片
-router.post("/returnVisit",function(req,res){
+router.post("/photo/returnVisit",function(req,res){
     savePhoto(req,res,'returnVisit');
 });
 
 //老师上完课提交审核
-router.post("/audit",$.checkToken,function(req,res){ 
-    admin.courseArranged.submitAudit(req,res);
-});
-router.post("/teacherLogin",function (req,res) {
-    admin.Teacher.login(req,res)
-});
+router.post("/audit",$.checkToken,admin.courseArranged.submitAudit);
+router.post("/teacherLogin",admin.Teacher.login);
 
 //获取某位教师的课程表
-router.get("/getArrangeClass",$.checkToken, function (req, res) {
-    admin.courseArranged.findArrangeClass(req, res);
-});
+router.get("/getArrangeClass",$.checkToken, admin.courseArranged.findArrangeClass);
 
-router.get("/getAuditedClass",$.checkToken,function(req,res){
-    admin.audit.findAuditedClass(req,res);
-});
+router.get("/getAuditedClass",$.checkToken,admin.historyList.findAuditedClass);
 
-router.get("/getClassCount",$.checkToken,function(req,res){
-    getClassCount(req,res);
-});
+router.get("/getClassCount",$.checkToken,getClassCount);
 
-router.get("/getTeacherInfo",$.checkToken,function (req,res) {
-    admin.Teacher.getTeacherInfo(req,res);
-});
+router.get("/getTeacherInfo",$.checkToken,admin.Teacher.getTeacherInfo);
 
 export default router;

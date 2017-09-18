@@ -13,7 +13,8 @@ let CourseArrangedSchema = new mongoose.Schema({
     remark:{type:String},       //备注
     photoEvidencePath:{type:String},//拍照取证图片名称
     returnVisitPath:{type:String},   //微信回访图片名称
-    reason:String                   //被撤回的原因
+    reason:String,                   //被撤回的原因
+    threeTimes:{type:Boolean,default:false}
 });
 
 let CourseArrangedModel = mongoose.model("CourseArranged",CourseArrangedSchema);

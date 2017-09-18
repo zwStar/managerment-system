@@ -1,5 +1,5 @@
 var courseModel = require("../module/course");
-var teacher = require("../module/teacher");
+var teacherModel = require("../module/teacher");
 var studentModel = require("../module/student");
 var historyListModel = require("../module/historyList");
 var courseArrangeModel = require("../module/courseArrange");
@@ -141,8 +141,10 @@ export const getClassCount = function(req,res){    //获取老师上课的次数
         courseArrangeModel.count({ ...req.body.data,$or:[{status:'未通过'},{status:'审核中'}]},(error,result)=>{
             if(error)
                 reject(error);
-            else
+            else{
                 resolve(result);
+            }
+                
         })
     }))
 
