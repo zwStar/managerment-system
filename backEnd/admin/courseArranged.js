@@ -319,6 +319,7 @@ CourseArrangedAPI.methods.courseArranged = function (req, res, next) {
         delete query.gradeNo; //删除年级
         delete query.courseName;    //删除课程
         query.courseNo = doc.courseNo;//只记录课程号
+        console.log(query)
         let ArrangedPromise = CourseArrangedModel.create(query);
         ArrangedPromise.then((doc) => {
             if (doc)
