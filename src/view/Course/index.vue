@@ -111,6 +111,7 @@
                     endTime: _this.endTime
                 }
             }).then((results) => {
+                console.log("results",results.data)
                 let result = results.data;
                 _this.teacherOptions = [];
                 if (!result.data.length) {
