@@ -15,7 +15,7 @@
 
             <el-table-column label="课程名字" width="150">
                 <template scope="scope">
-                    <span>{{scope.row.gradeNo}}-{{scope.row.course}}</span>
+                    <span>{{scope.row.gradeNo}}-{{scope.row.courseName}}</span>
                 </template>
             </el-table-column>
 

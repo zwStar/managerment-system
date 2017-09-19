@@ -262,6 +262,7 @@ CourseArrangedAPI.methods.throughAudit = function(req,res){
 //筛选出能教课的老师
 CourseArrangedAPI.methods.teacherOptions = function (req, res, next) {
     let query = req.query;
+    console.log(query);
     let FindCourseNoPromise = CourseModel.findOne({courseName: query.courseName, gradeNo: query.gradeNo});  //找出课程号
     FindCourseNoPromise.then((result) => {
         if (result != null) {
@@ -281,11 +282,13 @@ CourseArrangedAPI.methods.teacherOptions = function (req, res, next) {
                         }));
                     });
                     Promise.all(PromiseAll).then((documents) => {
-                        let options = results.filter(function (el) {//根据在已经安排的课程中找到出来的老师 在开始的授课老师中过滤掉
+                        console.log(documents)
+                        let options = results.filter(function (el,index) {//根据在已经安排的课程中找到出来的老师 在开始的授课老师中过滤掉
                             let flag = true;    //标志 表示可以任课
-                            for (let i = 0; i < documents.length; i++) {//循环 如果该教师存在 flag为false
-                                if (documents[i] !== null) {
-                                    if (documents[i].workNumber === el.workNumber) {
+                            for (let i = 0; i < documents[index].length; i++) {//循环 如果该教师存在 flag为false
+                                if (documents[index][i] !== null) {
+                                    console.log("is equai",documents[index][i].workNumber === el.workNumber);
+                                    if (documents[index][i].workNumber === el.workNumber) {
                                         flag = false;
                                         break;
                                     }
@@ -378,8 +381,8 @@ CourseArrangedAPI.methods.arrangedLists = async function (req, res, next) {
                 }
                 let CourseArranged = {//组成一个前端数据需要的对象
                     ...Courses[i]._doc, ...{StudentName: StudentName.name}, ...{TeacherName: TeacherName.name}, ...{
-                        course: Course.courseName,
-                        grade: Course.gradeNo
+                        courseName: Course.courseName,
+                        gradeNo: Course.gradeNo
                     }, ...dateformat
                 };
                 results.push(CourseArranged);
