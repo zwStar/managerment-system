@@ -4,7 +4,7 @@
 let mongoose = require("mongoose");
 
 // var db = mongoose.createConnection("mongodb://127.0.0.1:27017/managerment-system");
-// var db = mongoose.createConnection("mongodb://zwVic:adgjmp123@119.29.82.47:27017/example")
+// var db = mongoose.createConnection("mongodb:")
 // db.once('open',function (callback) {
 //     console.log("mongodb connect successful");
 // })
@@ -16,6 +16,7 @@ let options = {
 
 
 //127.0.0.1:27017/data
+//39.108.162.150:27017/example
 mongoose.connect("mongodb://zwVic:adgjmp123@119.29.82.47:27017/example", options).then(() => {
     console.log(`数据库连接成功`);
 }, (err) => {

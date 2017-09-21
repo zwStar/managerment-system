@@ -125,7 +125,6 @@ teacherAPI.methods.getTeacherInfo = function (req,res) {
 
 teacherAPI.methods.getTeacherList = function(req,res){
 
-
     teacherModel.find({})
         .skip((req.query.page - 1) * 5)
         .limit(5).exec(

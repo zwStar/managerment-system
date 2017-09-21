@@ -87,10 +87,10 @@
                     <el-form-item>
                         <el-row :gutter = "12">
                             <el-col :span="3" :offset="8">
-                                <el-button type="info" @click="confirm()">确认</el-button>
+                                <el-button type="info" @click="confirm()" :class="{requesting:requestFlag}">确认</el-button>
                             </el-col>
                             <el-col :span="3">
-                                <el-button type="danger" @click="showInputForm=false;">取消</el-button>
+                                <el-button type="danger" @click="showInputForm=false;" :class="{requesting:requestFlag}">取消</el-button>
                             </el-col>
                         </el-row>
                     </el-form-item>
@@ -128,8 +128,89 @@
                 :total="teacherCount">
           </el-pagination>
         </div>
+        <el-dialog title="教师详情" :visible.sync="detailFlag" class="detail">
+            <el-form :model="detail" ref="detail" :rules="this.$store.state.rule.rules">
+                <el-form-item label="教师姓名" prop="name" :label-width="formLabelWidth" >
+                    <el-row>
+                        <el-col :span="6" :offset="1"><el-input v-model="detail.name" auto-complete="off" :disabled="editFlag" icon="edit"></el-input></el-col>
+                    </el-row>
+                </el-form-item>
+                <el-form-item label="教师年龄" prop="age" :label-width="formLabelWidth">
+                    <el-row>
+                        <el-col :span="6" :offset="1"><el-input v-model="detail.age" auto-complete="off" :disabled="editFlag" icon="edit"></el-input></el-col>
+                    </el-row>
+                </el-form-item>
+                <el-form-item label="教师性别" prop="sex" :label-width="formLabelWidth">
+                    <el-row>
+                        <el-col :span = '14' :offset="1">
+                            <el-input v-model="detail.sex" :disabled="true"></el-input>
+                        </el-col>
+                    </el-row>
+                </el-form-item>
+                <el-form-item label="手机号码" prop="tel" :label-width="formLabelWidth">
+                    <el-row>
+                        <el-col :span="8" :offset="1"><el-input v-model="detail.tel" auto-complete="off" :disabled="editFlag" icon="edit"></el-input></el-col>
+                    </el-row>
+                </el-form-item>
+                <el-form-item label="入职日期" prop="date" :label-width="formLabelWidth">
+                    <el-row>
+                        <el-col :span="14" :offset="1">
+                            <el-input v-model="detail.date" :disabled="editFlag" ></el-input>
+                        </el-col>
+                    </el-row>
+                </el-form-item>
+                <!-- <el-form-item label="添加课程" :label-width="formLabelWidth">
+                    <el-row>
+                        <el-col :span = '6' :offset="1">
+                            <el-select v-model="currentGrade" placeholder="请选择年级">
+                                <el-option
+                                        v-for="item in grades"
+                                        :key="item.value"
+                                        :label="item.label"
+                                        :value="item.value">
+                                </el-option>
+                            </el-select>
+                        </el-col>
+                        <el-col :span = '6' :offset="2">
+                            <el-select v-model="currentCourses" placeholder="请选择课程">
+                                <el-option
+                                        v-for="item in courses"
+                                        :key="item.value"
+                                        :label="item.label"
+                                        :value="item.value">
+                                </el-option>
+                            </el-select>
+                        </el-col>
+                    </el-row>
+                </el-form-item> -->
+                <el-form-item label="已选课程" prop="coursesTag" :label-width="formLabelWidth">
+                    <el-row>
+                        <el-col :span="16" :offset="1">
+                            <el-tag
+                                    v-for="(tag,index) in coursesTag"
+                                    :key="tag.name"
+                                    :closable="true"
+                                    :type="tag.type"
+                                    @close="removeCourse(index)"
+                            >
+                                {{tag.name}}
+                            </el-tag>
+                        </el-col>
+                    </el-row>
+                </el-form-item>
+                <el-form-item>
+                    <el-row :gutter = "12">
+                        <el-col :span="3" :offset="8">
+                            <el-button type="info" @click="confirm()" :class="{requesting:requestFlag}">确认</el-button>
+                        </el-col>
+                        <el-col :span="3">
+                            <el-button type="danger" @click="showInputForm=false;" :class="{requesting:requestFlag}">取消</el-button>
+                        </el-col>
+                    </el-row>
+                </el-form-item>
+            </el-form>
+        </el-dialog>
     </div>
-
 </template>
 <script>
     import { _post,_get } from "../../api/index.js"
@@ -138,6 +219,9 @@ export default{
     data(){
         return{
             showInputForm:false,
+            detailFlag:false,       //教师详情显示
+            detail:"",                 //详情页的老师实例
+            editFlag:true,                //教师详情页面是否处于编辑状态
             formLabelWidth:'140px',
             form:{
                 name:'',
@@ -182,6 +266,7 @@ export default{
             teacherList:[],
             page:1,
             teacherCount:"",
+            requestFlag:false
         }
     },
     computed:{
@@ -232,13 +317,17 @@ export default{
         
     },
     methods:{
-        removeCourse:function (index) {
+        removeCourse(index) {
             this.coursesTag.splice(index,1);
         },
         showDetail(content){
+            console.log(content);
+            this.detailFlag = true;
+            this.detail = content;
         },
         confirm(){
             var _this = this;
+            this.requestFlag = true;        //按钮设置不可点击
             this.$refs.form.validate(function (result) {
                 //拼接工号
                 let date = new Date(this.form.date);
@@ -260,23 +349,22 @@ export default{
                         }
                     })
                         .then(function (response) {
-                            if(response.data == "successful"){
+                            if(response.data.result == "successful"){
                                 _this.$message({
-                                    message: '教师添加成功',
+                                    message: '教师添加成功，工号为'+response.data.workNumber,
                                     type: 'success'
                                 });
                                 _this.clearForm();
                                 _this.updateTable();
                             }else{
-                                console.log(222);
                                 _this.$message.error('教师添加失败');
                             }
-                            console.log(3333);
+                            _this.requestFlag = false;      //按钮回复正常
                             _this.showInputForm = false;
                         })
                         .catch(function (error) {
-                            console.log(444);
                             console.log(error);
+                            _this.requestFlag = false;  //按钮回复正常
                             _this.$message.error('教师添加失败');
                         })
                 }
@@ -352,6 +440,9 @@ export default{
                 .el-select{
                     width: 100%;
                 }
+                .requesting{
+                    pointer-events: none;
+                }
             }
         }
     }
@@ -361,6 +452,18 @@ export default{
         .el-pagination {
             text-align: center;
             margin-top: 20px;
+        }
+    }
+    .detail{
+        .is-disabled{
+            .el-input__inner{
+                border:none;
+                background:white;
+                color:#48576a;
+                cursor:none;
+                
+            }
+            
         }
     }
 }

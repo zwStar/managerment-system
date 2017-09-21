@@ -29,7 +29,7 @@ import store from '../stores';
 // });
 const axios = require('axios').create({
     baseURL: baseURL,            //api请求的baseURL
-    timeout: 5000,
+    timeout: 25000,
     withCredentials: true, // 允许跨域 cookie
     headers: {'X-Requested-With': 'XMLHttpRequest'},
 });
