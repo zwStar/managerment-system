@@ -16,7 +16,8 @@ var teacherSchema = new mongoose.Schema({
     unpaidTime:{ type:Number },
     paidTime:{ type:Number },
     password:{ type:String },
-    course:{type:Array}
+    course:{type:Array},
+    tel:{type:String}
 });
 
 var teacherModel = mongoose.model("teacher",teacherSchema);

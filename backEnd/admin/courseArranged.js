@@ -246,11 +246,26 @@ CourseArrangedAPI.methods.throughAudit = function(req,res){
                         }
                     }, (error) => {
                         if (error) {
-                            console.log("error in ./admin/courseArranged.js");
+                            console.log("error in ./admin/courseArranged.js  249行");
                             console.log(error);
                             res.send(error);
                         } else {
-                            res.send("successful");
+                            let changeValue = detail.courseNumber-detail.realCourseTime;
+                            StudentModel.update({
+                                'sno':detail.sno
+                            },{
+                                '$inc':{
+                                    orderCourseNumber:changeValue
+                                }
+                            },(error) =>{
+                                if(error){
+                                    console.log("error in ./admin/courseArranged.js   261行");
+                                    console.log(error);
+                                    res.send(error);
+                                }else{
+                                    res.send("successful");
+                                }
+                            })
                         }
                     });
                 }

@@ -10,7 +10,7 @@ let StudentSchema = new mongoose.Schema({
     school:String,
     managerTeacher:String,
     gradeNo:String,
-    orderCourseNumber:String
+    orderCourseNumber:Number
 });
 
 let StudentModel = mongoose.model("Student",StudentSchema);

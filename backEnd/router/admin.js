@@ -14,6 +14,7 @@ router.post("/changeInfo",$.checkToken,Admin.User.update);
 router.post("/addTeacher",$.checkToken, Admin.Teacher.addTeacher);
 router.get("/getTeacherList",$.checkToken,Admin.Teacher.getTeacherList);
 router.get("/getTeacherCount",$.checkToken,Admin.Teacher.getTeacherCount);
+router.post("/updateTeacherInfo",$.checkToken,Admin.Teacher.updateTeacherInfo);
 
 
 //创建学生信息

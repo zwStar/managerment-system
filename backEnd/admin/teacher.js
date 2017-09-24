@@ -29,7 +29,7 @@ teacherAPI.methods.addTeacher = function (req, res) {
                 res.send(err);
             }else{
                 new teacherModel({
-                    workNumber: req.body.workNumber + count,
+                    workNumber: req.body.workNumber + "01" + count,
                     name: req.body.name,
                     age: req.body.age,
                     sex: req.body.sex,
@@ -43,7 +43,8 @@ teacherAPI.methods.addTeacher = function (req, res) {
                         console.log("error in ./admin/teacher.js 38行");
                         res.send(err);
                     }else{
-                        res.send("successful");
+                        //res.send("successful");
+                        res.send({result:"successful",workNumber:req.body.workNumber + "01" + count});
                     }
                     
                 })
@@ -51,6 +52,66 @@ teacherAPI.methods.addTeacher = function (req, res) {
             
         });
     });
+}
+
+teacherAPI.methods.updateTeacherInfo = function(req,res){
+    switch(req.body.key){
+        case "name":
+            teacherModel.update(
+                {workNumber:req.body.workNumber},
+                {
+                    $set:{
+                        name:req.body.value
+                    }
+                },(error)=>{
+                    if(error){
+                        console.log("error in ./admin/teacher.js   68行");
+                        console.log(error);
+                        res.send({result:"error"});
+                    }else{
+                        res.send({result:"successful"})
+                    }
+                }
+            );
+            break;
+        case "age":
+            teacherModel.update(
+                {workNumber:req.body.workNumber},
+                {
+                    $set:{
+                        age:req.body.value
+                    }
+                },(error)=>{
+                    if(error){
+                        console.log("error in ./admin/teacher.js   86行");
+                        console.log(error);
+                        res.send({result:"error"});
+                    }else{
+                        res.send({result:"successful"})
+                    }
+                }
+            );
+            break;
+        case "tel":
+            teacherModel.update(
+                {workNumber:req.body.workNumber},
+                {
+                    $set:{
+                        tel:req.body.value
+                    }
+                },(error,rec)=>{
+                    if(error){
+                        console.log("error in ./admin/teacher.js   104行");
+                        console.log(error);
+                        res.send({result:"error"});
+                    }else{
+                        res.send({result:"successful"})
+                    }
+                }
+            );
+            break;
+    }
+    teacherModel.update({workNumber:req.body.workNumber})
 }
 
 teacherAPI.methods.changePassword = function(req,res){
@@ -124,7 +185,6 @@ teacherAPI.methods.getTeacherInfo = function (req,res) {
 };
 
 teacherAPI.methods.getTeacherList = function(req,res){
-
     teacherModel.find({})
         .skip((req.query.page - 1) * 5)
         .limit(5).exec(
@@ -167,10 +227,12 @@ teacherAPI.methods.login = function (req, res, next) {     //注册
                 msg:"params error",
                 success:false
             })
+        }else{
+             //登录成功
+            let workNumber = documents.workNumber;
+            return $.result(res, {success: true, "message": "登录成功", workNumber: workNumber, token: $.createToken(workNumber)});  
         }
-        //登录成功
-        let workNumber = documents.workNumber;
-        return $.result(res, {success: true, "message": "登录成功", workNumber: workNumber, token: $.createToken(workNumber)});           //返回
+                //返回
     })
 };
 

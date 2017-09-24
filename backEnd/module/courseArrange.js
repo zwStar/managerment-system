@@ -6,7 +6,7 @@ let CourseArrangedSchema = new mongoose.Schema({
     courseNo:String,
     startTime:{ type: Date},
     endTime:{type:Date},
-    courseNumber:String,
+    courseNumber:Number,
     courseHour:Number,
     status:{type:String,default:'未审核'},
     realCourseTime:{type:Number},//实际课时

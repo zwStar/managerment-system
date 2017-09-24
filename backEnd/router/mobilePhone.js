@@ -22,7 +22,7 @@ router.post("/audit",$.checkToken,admin.courseArranged.submitAudit);
 router.post("/teacherLogin",admin.Teacher.login);
 
 //获取某位教师的课程表
-router.get("/getArrangeClass",$.checkToken, admin.courseArranged.findArrangeClass);
+router.get("/getArrangeClass",$.checkToken,admin.courseArranged.findArrangeClass);
 
 router.get("/getAuditedClass",$.checkToken,admin.historyList.findAuditedClass);
 

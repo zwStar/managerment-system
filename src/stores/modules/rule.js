@@ -22,11 +22,6 @@ const state = {
     }
 }
 
-const action = {
-
-}
-
 export default {
-    state,
-    action
+    state
 }

@@ -4,7 +4,7 @@
             <el-input  icon="search" placeholder="请输入教师工号"  class="seach"></el-input>
             <el-button icon="plus" @click="showInputForm = true" class="add">新增教师</el-button>
             <el-dialog title="新增教师" :visible.sync="showInputForm">
-                <el-form :model="form" ref="form" :rules="this.$store.state.rule.rules">
+                <el-form :model="form" ref="addTeacher" :rules="this.$store.state.rule.rules">
                     <el-form-item label="教师姓名" prop="name" :label-width="formLabelWidth" >
                         <el-row>
                             <el-col :span="14" :offset="1"><el-input v-model="form.name" auto-complete="off" ></el-input></el-col>
@@ -129,15 +129,19 @@
           </el-pagination>
         </div>
         <el-dialog title="教师详情" :visible.sync="detailFlag" class="detail">
-            <el-form :model="detail" ref="detail" :rules="this.$store.state.rule.rules">
+            <el-form :model="detail" ref="teacherDetail" :rules="this.$store.state.rule.rules">
                 <el-form-item label="教师姓名" prop="name" :label-width="formLabelWidth" >
                     <el-row>
-                        <el-col :span="6" :offset="1"><el-input v-model="detail.name" auto-complete="off" :disabled="editFlag" icon="edit"></el-input></el-col>
+                        <el-col :span="6" :offset="1">
+                            <el-input v-model="detail.name" auto-complete="off" :disabled="editFlag.name" icon="edit" :on-icon-click="editName" @blur="editNameBlur"></el-input>
+                        </el-col>
                     </el-row>
                 </el-form-item>
                 <el-form-item label="教师年龄" prop="age" :label-width="formLabelWidth">
                     <el-row>
-                        <el-col :span="6" :offset="1"><el-input v-model="detail.age" auto-complete="off" :disabled="editFlag" icon="edit"></el-input></el-col>
+                        <el-col :span="6" :offset="1">
+                            <el-input v-model="detail.age" auto-complete="off" :disabled="editFlag.age" icon="edit" :on-icon-click="editAge" @blur="editAgeBlur"></el-input>
+                        </el-col>
                     </el-row>
                 </el-form-item>
                 <el-form-item label="教师性别" prop="sex" :label-width="formLabelWidth">
@@ -149,7 +153,9 @@
                 </el-form-item>
                 <el-form-item label="手机号码" prop="tel" :label-width="formLabelWidth">
                     <el-row>
-                        <el-col :span="8" :offset="1"><el-input v-model="detail.tel" auto-complete="off" :disabled="editFlag" icon="edit"></el-input></el-col>
+                        <el-col :span="8" :offset="1">
+                            <el-input v-model="detail.tel" auto-complete="off" :disabled="editFlag.tel" icon="edit"  :on-icon-click="editTel" @blur="editTelBlur"></el-input>
+                        </el-col>
                     </el-row>
                 </el-form-item>
                 <el-form-item label="入职日期" prop="date" :label-width="formLabelWidth">
@@ -221,7 +227,11 @@ export default{
             showInputForm:false,
             detailFlag:false,       //教师详情显示
             detail:"",                 //详情页的老师实例
-            editFlag:true,                //教师详情页面是否处于编辑状态
+            editFlag:{
+                name:true,
+                age:true,
+                tel:true
+            },                //教师详情页面是否处于编辑状态
             formLabelWidth:'140px',
             form:{
                 name:'',
@@ -327,15 +337,15 @@ export default{
         },
         confirm(){
             var _this = this;
-            this.requestFlag = true;        //按钮设置不可点击
-            this.$refs.form.validate(function (result) {
-                //拼接工号
-                let date = new Date(this.form.date);
-                let month = (date.getMonth() + 1) >= 10 ? (date.getMonth() + 1) : ("0" + (date.getMonth() + 1));
-                let day = date.getDate() >= 10 ? date.getDate() : ("0" + date.getDate());
-                let workNumber = date.getFullYear().toString() + month.toString() + day.toString();
-
+            this.$refs.addTeacher.validate(function (result) {
                 if(result){
+                    //按钮设置不可点击
+                    this.requestFlag = true;        
+                    //拼接工号
+                    let date = new Date(this.form.date);
+                    let month = (date.getMonth() + 1) >= 10 ? (date.getMonth() + 1) : ("0" + (date.getMonth() + 1));
+                    let day = date.getDate() >= 10 ? date.getDate() : ("0" + date.getDate());
+                    let workNumber = date.getFullYear().toString() + month.toString() + day.toString();
                     _post({
                         url:'user/addTeacher',
                         data:{
@@ -348,25 +358,25 @@ export default{
                             coursesTag:this.coursesTag
                         }
                     })
-                        .then(function (response) {
-                            if(response.data.result == "successful"){
-                                _this.$message({
-                                    message: '教师添加成功，工号为'+response.data.workNumber,
-                                    type: 'success'
-                                });
-                                _this.clearForm();
-                                _this.updateTable();
-                            }else{
-                                _this.$message.error('教师添加失败');
-                            }
-                            _this.requestFlag = false;      //按钮回复正常
-                            _this.showInputForm = false;
-                        })
-                        .catch(function (error) {
-                            console.log(error);
-                            _this.requestFlag = false;  //按钮回复正常
+                    .then(function (response) {
+                        if(response.data.result == "successful"){
+                            _this.$message({
+                                message: '教师添加成功，工号为'+response.data.workNumber,
+                                type: 'success'
+                            });
+                            _this.clearForm();
+                            _this.updateTable();
+                        }else{
                             _this.$message.error('教师添加失败');
-                        })
+                        }
+                        _this.requestFlag = false;      //按钮回复正常
+                        _this.showInputForm = false;
+                    })
+                    .catch(function (error) {
+                        console.log(error);
+                        _this.requestFlag = false;  //按钮回复正常
+                        _this.$message.error('教师添加失败');
+                    })
                 }
             }.bind(this))
 
@@ -415,6 +425,51 @@ export default{
         changePage(page){
             this.page = page;
             this.updateTable();
+        },
+        editName(){
+            this.editFlag.name = false;
+        },
+        editNameBlur(){
+            this.commitEdit("name");
+        },
+        editAge(){
+            this.editFlag.age = false;
+        },
+        editAgeBlur(){
+            this.commitEdit("age");
+        },
+        editTel(){
+            this.editFlag.tel = false;
+        },
+        editTelBlur(){
+            this.commitEdit("tel");
+        },
+        commitEdit(item){
+            var _this = this;
+            this.$refs.teacherDetail.validateField(item,function(result){
+                if(!result){
+                    _post({
+                        url:'user/updateTeacherInfo',
+                        data:{
+                            workNumber:_this.detail.workNumber,
+                            key:item,
+                            value:_this.detail[item],
+                        }
+                    })
+                    .then(function (response) {
+                        if(response.data.result == "successful"){
+                            _this.editFlag[item] = true;     //输入框变为不可编辑
+                            _this.updateTable();
+                        }else{
+                            _this.$message.error('信息修改失败');
+                        }
+                    })
+                    .catch(function (error) {
+                        console.log(error);
+                        _this.$message.error('信息修改失败');
+                    })
+                }
+            });
         }
     }
 }

@@ -14,9 +14,8 @@ let options = {
     server: {poolSize: 5}
 };
 
+//admin:dgxuebajun0830.@39.108.162.150:27017/example
 
-//127.0.0.1:27017/data
-//39.108.162.150:27017/example
 mongoose.connect("mongodb://zwVic:adgjmp123@119.29.82.47:27017/example", options).then(() => {
     console.log(`数据库连接成功`);
 }, (err) => {

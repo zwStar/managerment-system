@@ -85,7 +85,7 @@ export const dealWithData = function (data, callback) {
         }
         var _this = this;
         var promise = new Promise(function (resolve, reject) {
-            courseModel.find({gradeNo: result[1], courseName: result[2]}, function (err, course) {
+            courseModel.findOne({gradeNo: result[1], courseName: result[2]}, function (err, course) {
                 if (err) {
                     reject(err);
                 } else {
@@ -96,6 +96,7 @@ export const dealWithData = function (data, callback) {
         promises.push(promise);
     }
     Promise.all(promises).then(function (courseNo) {
+       
         callback(null, courseNo);
     }, function (err) {
         callback(err);
