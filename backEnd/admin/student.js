@@ -91,19 +91,20 @@ StudentAPI.methods.createStudent = async function (req,res,next) {
 StudentAPI.methods.studentLists = async function (req,res,next) {
     let {limit = 10 ,start = 0} = req.query;
     let Students = await StudentModel.find({}).limit(Number(limit)).skip(Number(limit * start));
-    let arr = [];
-    for(let i=0;i<Students.length;i++){
-        let CourseArrangeds = await CourseArrangedModel.find({sno:Students[i].sno});
-        let  courseNumber = 0;
-        let remainCourse = 0;
-        CourseArrangeds.forEach(course=>{
-            courseNumber += parseInt(course.courseNumber);
-        })
-        remainCourse = Students[i].orderCourseNumber - courseNumber;
-        let Student = {...Students[i]._doc,...{remainCourse:remainCourse},...{date:$.dateformat(Students[i].sendAt)}};
-        arr.push(Student)
-    }
-    $.result(res,arr);
+    $.result(res,Students);
+    // let arr = [];
+    // for(let i=0;i<Students.length;i++){
+    //     let CourseArrangeds = await CourseArrangedModel.find({sno:Students[i].sno});
+    //     let  courseNumber = 0;
+    //     let remainCourse = 0;
+    //     CourseArrangeds.forEach(course=>{
+    //         courseNumber += parseInt(course.courseNumber);
+    //     })
+    //     remainCourse = Students[i].orderCourseNumber - courseNumber;
+    //     let Student = {...Students[i]._doc,...{remainCourse:remainCourse},...{date:$.dateformat(Students[i].sendAt)}};
+    //     arr.push(Student)
+    // }
+    // $.result(res,arr);
 }
 
 export default StudentAPI.methods;

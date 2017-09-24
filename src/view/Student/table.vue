@@ -25,7 +25,7 @@
                 </template>
             </el-table-column>
 
-            <el-table-column label="所读学校" width="120">
+            <el-table-column label="所读学校" width="150">
                 <template scope="scope" >
                     <span>{{scope.row.school}}</span>
                 </template>
@@ -39,7 +39,7 @@
 
             <el-table-column label="一对一剩余课时" width="180px">
                 <template scope="scope" >
-                    <span>{{scope.row.remainCourse}}</span>
+                    <span>{{scope.row.orderCourseNumber}}</span>
                 </template>
             </el-table-column>
 
@@ -49,12 +49,12 @@
                 </template>
             </el-table-column>
 
-            <el-table-column min-width="220" label="日期" >
-                <template scope="scope" >
-                    <el-icon name="time"></el-icon>
-                    <span style="margin-left: 10px">{{ scope.row.date }}</span>
-                </template>
-            </el-table-column>
+            <!--<el-table-column min-width="220" label="日期" >-->
+                <!--<template scope="scope" >-->
+                    <!--<el-icon name="time"></el-icon>-->
+                    <!--<span style="margin-left: 10px">{{ scope.row.sendAt }}</span>-->
+                <!--</template>-->
+            <!--</el-table-column>-->
         </el-table>
     </div>
 </template>

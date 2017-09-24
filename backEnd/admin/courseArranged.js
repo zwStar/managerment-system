@@ -3,11 +3,11 @@
  */
 import Base from './base'
 
-import { getNamesBySnoOneTime,getCourseNamesOneTime,getTeacherNamesOneTime } from "../utils/commonFunction"
+import {getNamesBySnoOneTime, getCourseNamesOneTime, getTeacherNamesOneTime} from "../utils/commonFunction"
 
 import CourseModel from '../module/course'
 import CourseArrangedModel from '../module/courseArrange'   //课程安排表
-import StudentModel from '../module/student'   
+import StudentModel from '../module/student'
 import teacherModel from "../module/teacher"
 import historyListModel from "../module/historyList"
 import $ from '../utils'
@@ -16,211 +16,211 @@ let CourseArrangedAPI = new Base({
     model: CourseArrangedModel
 });
 
-CourseArrangedAPI.methods.findArrangeClass = function(req,res){
+CourseArrangedAPI.methods.findArrangeClass = function (req, res) {
     CourseArrangedModel.find({
-        workNumber:req.query.workNumber,
-        startTime:{
-            "$gte":req.query.startTime
+        workNumber: req.query.workNumber,
+        startTime: {
+            "$gte": req.query.startTime
         },
-        endTime:{
-            "$lte":req.query.endTime
+        endTime: {
+            "$lte": req.query.endTime
         }
-    } ,function (error,result) {
-        for( var i = 0 ; i < result.length ; i++ ){
+    }, function (error, result) {
+        for (var i = 0; i < result.length; i++) {
             var obj = {
-                workNumber:result[i].workNumber,
-                sno:result[i].sno,
-                courseNo:result[i].courseNo,
-                startTime:result[i].startTime,
-                endTime:result[i].endTime,
-                courseNumber:result[i].courseNumber,
-                courseHour:result[i].courseHour,
-                status:result[i].status,
-                realCourseTime:result[i].realCourseTime,
-                remark:result[i].remark,
-                reason:result[i].reason,
-                photoEvidencePath:result[i].photoEvidencePath,
-                returnVisitPath:result[i].returnVisitPath,
-                threeTimes:result[i].threeTimes
+                workNumber: result[i].workNumber,
+                sno: result[i].sno,
+                courseNo: result[i].courseNo,
+                startTime: result[i].startTime,
+                endTime: result[i].endTime,
+                courseNumber: result[i].courseNumber,
+                courseHour: result[i].courseHour,
+                status: result[i].status,
+                realCourseTime: result[i].realCourseTime,
+                remark: result[i].remark,
+                reason: result[i].reason,
+                photoEvidencePath: result[i].photoEvidencePath,
+                returnVisitPath: result[i].returnVisitPath,
+                threeTimes: result[i].threeTimes
             }
             result[i] = obj;
         }
-        if(error){
+        if (error) {
             console.log("error in ./admin/courseArranged.js  48行");
             console.log(error);
             res.send("error");
         }
-        else{
-            new Promise((resolve,reject)=>{
-                getNamesBySnoOneTime(result,function (error,data) { //获取所有排课记录中的学生姓名，将其添加到数据库返回的记录中
-                    if(error)
+        else {
+            new Promise((resolve, reject) => {
+                getNamesBySnoOneTime(result, function (error, data) { //获取所有排课记录中的学生姓名，将其添加到数据库返回的记录中
+                    if (error)
                         reject(error);
                     else
                         resolve(data);
                 })
             }).then(function (data) {
-                        return new Promise((resolve,reject) =>{
-                            getCourseNamesOneTime(result,function (error,data) {//获取所有排课记录中的课程名，将其添加到数据库返回记录中
-                                if(error)
-                                    reject(error);
-                                else
-                                    resolve(data);
-                            })
-                        })
-                    },function (error) {
-                        console.log("error in ./admin/courseArranged.js  70行");
-                        console.log(error);
-                        res.send("error");
+                return new Promise((resolve, reject) => {
+                    getCourseNamesOneTime(result, function (error, data) {//获取所有排课记录中的课程名，将其添加到数据库返回记录中
+                        if (error)
+                            reject(error);
+                        else
+                            resolve(data);
                     })
-                    .then(function (data) {
-                        result = data;
-                        res.send(result);
-                    },function (error) {
-                        console.log("error in ./admin/courseArranged.js  78行");
-                        console.log(error);
-                        res.send("error");
-                    })
-            }
+                })
+            }, function (error) {
+                console.log("error in ./admin/courseArranged.js  70行");
+                console.log(error);
+                res.send("error");
+            })
+                .then(function (data) {
+                    result = data;
+                    res.send(result);
+                }, function (error) {
+                    console.log("error in ./admin/courseArranged.js  78行");
+                    console.log(error);
+                    res.send("error");
+                })
+        }
     });
 }
 
-CourseArrangedAPI.methods.findAuditingClass = function(req,res){
-    CourseArrangedModel.find({ status:'审核中'},function (error,result) {
-        if(error){
+CourseArrangedAPI.methods.findAuditingClass = function (req, res) {
+    CourseArrangedModel.find({status: '审核中'}, function (error, result) {
+        if (error) {
             console.log("error in getAuditTable");
             console.log(error);
             res.send(error);
         }
-        else{
-            for( var i = 0 ; i < result.length ; i++ ){
+        else {
+            for (var i = 0; i < result.length; i++) {
                 var obj = {
-                    workNumber:result[i].workNumber,
-                    sno:result[i].sno,
-                    courseNo:result[i].courseNo,
-                    startTime:result[i].startTime,
-                    endTime:result[i].endTime,
-                    courseNumber:result[i].courseNumber,
-                    courseHour:result[i].courseHour,
-                    status:result[i].status,
-                    realCourseTime:result[i].realCourseTime,
-                    remark:result[i].remark,
-                    reason:result[i].reason,
-                    photoEvidencePath:result[i].photoEvidencePath,
-                    returnVisitPath:result[i].returnVisitPath,
-                    threeTimes:result[i].threeTimes
+                    workNumber: result[i].workNumber,
+                    sno: result[i].sno,
+                    courseNo: result[i].courseNo,
+                    startTime: result[i].startTime,
+                    endTime: result[i].endTime,
+                    courseNumber: result[i].courseNumber,
+                    courseHour: result[i].courseHour,
+                    status: result[i].status,
+                    realCourseTime: result[i].realCourseTime,
+                    remark: result[i].remark,
+                    reason: result[i].reason,
+                    photoEvidencePath: result[i].photoEvidencePath,
+                    returnVisitPath: result[i].returnVisitPath,
+                    threeTimes: result[i].threeTimes
                 }
                 result[i] = obj;
             }
-            new Promise((resolve,reject)=>{
-                getNamesBySnoOneTime(result,function (error,data) { //获取所有排课记录中的学生姓名，将其添加到数据库返回的记录中
-                    if(error)
+            new Promise((resolve, reject) => {
+                getNamesBySnoOneTime(result, function (error, data) { //获取所有排课记录中的学生姓名，将其添加到数据库返回的记录中
+                    if (error)
                         reject(error);
                     else
                         resolve(data);
                 })
             }).then(function (data) {
-                        return new Promise((resolve,reject) =>{
-                            getCourseNamesOneTime(result,function (error,data) {//获取所有排课记录中的课程名，将其添加到数据库返回记录中
-                                if(error)
-                                    reject(error);
-                                else
-                                    resolve(data);
-                            })
-                        })
-                    },function (error) {
-                        console.log("error in getAuditTable");
-                        console.log(error);
-                        res.send(error);
+                return new Promise((resolve, reject) => {
+                    getCourseNamesOneTime(result, function (error, data) {//获取所有排课记录中的课程名，将其添加到数据库返回记录中
+                        if (error)
+                            reject(error);
+                        else
+                            resolve(data);
                     })
-                    .then(function (data) {
-                        result = data;
-                        getTeacherNamesOneTime(result,function(error,data){
-                            if(error){
-                                console.log("error in getTeacherNamesOneTime");
-                                console.log(error);
-                                res.send("error in getTeacherNamesOneTime")
-                            }else{
-                                res.send(data);
-                            }
-                        })
-                    },function (error) {
-                        console.log("error in getCourseNamesOneTime");
-                        console.log(error);
-                        res.send(error);
+                })
+            }, function (error) {
+                console.log("error in getAuditTable");
+                console.log(error);
+                res.send(error);
+            })
+                .then(function (data) {
+                    result = data;
+                    getTeacherNamesOneTime(result, function (error, data) {
+                        if (error) {
+                            console.log("error in getTeacherNamesOneTime");
+                            console.log(error);
+                            res.send("error in getTeacherNamesOneTime")
+                        } else {
+                            res.send(data);
+                        }
                     })
-            }
+                }, function (error) {
+                    console.log("error in getCourseNamesOneTime");
+                    console.log(error);
+                    res.send(error);
+                })
+        }
     });
 }
 
-CourseArrangedAPI.methods.refuseAudit = function(req,res){  //不通过教师提交的审核记录
+CourseArrangedAPI.methods.refuseAudit = function (req, res) {  //不通过教师提交的审核记录
     var detail = req.body.detail;
     CourseArrangedModel.update(
         {
-            workNumber:detail.workNumber,
-            sno:detail.sno,
-            startTime:detail.startTime,
+            workNumber: detail.workNumber,
+            sno: detail.sno,
+            startTime: detail.startTime,
         },
         {
-            status:detail.status,
-            reason:detail.reason
+            status: detail.status,
+            reason: detail.reason
         },
-        function(error,docs){
-            if(error)
+        function (error, docs) {
+            if (error)
                 res.send(error);
-            else{
+            else {
                 teacherModel.update(
-                    {workNumber:detail.workNumber},
-                    {'$inc':{'unpaidTime':-detail.realCourseTime}},
-                    (error) =>{
-                        if(error){
+                    {workNumber: detail.workNumber},
+                    {'$inc': {'unpaidTime': -detail.realCourseTime}},
+                    (error) => {
+                        if (error) {
                             console.log("error in ./admin/courseArranged.js   176行")
                             res.send(error);
-                        }else{
+                        } else {
                             res.send("successful");
-                        }  
+                        }
                     });
             }
-               
+
         })
 }
 
-CourseArrangedAPI.methods.submitAudit = function(req,res){      //教师在手机端提交审核
+CourseArrangedAPI.methods.submitAudit = function (req, res) {      //教师在手机端提交审核
     let flag = req.body.threeTimes;
     CourseArrangedModel.update({
-            workNumber:req.body.workNumber,
-            sno:req.body.sno,
-            startTime:req.body.startTime
-        },{
-            $set:{
-                realCourseTime:req.body.realCourseTime,//实际课时
-                remark:req.body.remark,
-                photoEvidencePath:req.body.photoEvidencePath,
-                returnVisitPath:req.body.returnVisitPath,
-                status:req.body.status,
-                threeTimes:flag
+            workNumber: req.body.workNumber,
+            sno: req.body.sno,
+            startTime: req.body.startTime
+        }, {
+            $set: {
+                realCourseTime: req.body.realCourseTime,//实际课时
+                remark: req.body.remark,
+                photoEvidencePath: req.body.photoEvidencePath,
+                returnVisitPath: req.body.returnVisitPath,
+                status: req.body.status,
+                threeTimes: flag
             }
         },
-        (error,rec)=>{
-            if(error)
+        (error, rec) => {
+            if (error)
                 res.send(error);
-            else{
+            else {
                 teacherModel.update(
-                    {workNumber:req.body.workNumber},
-                    {'$inc':{'unpaidTime':req.body.realCourseTime}},
-                    (error) =>{
-                        if(error){
+                    {workNumber: req.body.workNumber},
+                    {'$inc': {'unpaidTime': req.body.realCourseTime}},
+                    (error) => {
+                        if (error) {
                             console.log("error in ./admin/courseArranged.js   196行")
                             res.send(error);
-                        }else{
+                        } else {
                             res.send("successful");
-                        }  
+                        }
                     });
-            }       
+            }
         }
     );
 }
 
-CourseArrangedAPI.methods.throughAudit = function(req,res){
+CourseArrangedAPI.methods.throughAudit = function (req, res) {
     var detail = req.body.detail;
     CourseArrangedModel.remove({
         workNumber: detail.workNumber,
@@ -236,7 +236,7 @@ CourseArrangedAPI.methods.throughAudit = function(req,res){
                     console.log(error);
                     res.send(error);
                 }
-                else{
+                else {
                     teacherModel.update({
                         workNumber: detail.workNumber
                     }, {
@@ -250,26 +250,26 @@ CourseArrangedAPI.methods.throughAudit = function(req,res){
                             console.log(error);
                             res.send(error);
                         } else {
-                            let changeValue = detail.courseNumber-detail.realCourseTime;
+                            let changeValue = detail.courseNumber - detail.realCourseTime;
                             StudentModel.update({
-                                'sno':detail.sno
-                            },{
-                                '$inc':{
-                                    orderCourseNumber:changeValue
+                                'sno': detail.sno
+                            }, {
+                                '$inc': {
+                                    orderCourseNumber: changeValue
                                 }
-                            },(error) =>{
-                                if(error){
+                            }, (error) => {
+                                if (error) {
                                     console.log("error in ./admin/courseArranged.js   261行");
                                     console.log(error);
                                     res.send(error);
-                                }else{
+                                } else {
                                     res.send("successful");
                                 }
                             })
                         }
                     });
                 }
-                    
+
             });
     });
 }
@@ -298,11 +298,11 @@ CourseArrangedAPI.methods.teacherOptions = function (req, res, next) {
                     });
                     Promise.all(PromiseAll).then((documents) => {
                         console.log(documents)
-                        let options = results.filter(function (el,index) {//根据在已经安排的课程中找到出来的老师 在开始的授课老师中过滤掉
+                        let options = results.filter(function (el, index) {//根据在已经安排的课程中找到出来的老师 在开始的授课老师中过滤掉
                             let flag = true;    //标志 表示可以任课
                             for (let i = 0; i < documents[index].length; i++) {//循环 如果该教师存在 flag为false
                                 if (documents[index][i] !== null) {
-                                    console.log("is equai",documents[index][i].workNumber === el.workNumber);
+                                    console.log("is equai", documents[index][i].workNumber === el.workNumber);
                                     if (documents[index][i].workNumber === el.workNumber) {
                                         flag = false;
                                         break;
@@ -331,8 +331,8 @@ CourseArrangedAPI.methods.findGrade = function (req, res, next) {
         if ($.isEmpty(doc))
             $.result(res, "error");
         res.send({
-            status:1,
-           grade:doc.gradeNo
+            status: 1,
+            grade: doc.gradeNo
         })
     }, (err) => {
         console.log(err);
@@ -348,11 +348,17 @@ CourseArrangedAPI.methods.courseArranged = function (req, res, next) {
         delete query.gradeNo; //删除年级
         delete query.courseName;    //删除课程
         query.courseNo = doc.courseNo;//只记录课程号
-        console.log(query)
         let ArrangedPromise = CourseArrangedModel.create(query);
         ArrangedPromise.then((doc) => {
-            if (doc)
+            if (doc) {
+                StudentModel.update({sno: query.sno},
+                    {
+                        '$inc': {'orderCourseNumber': -parseInt(doc.courseNumber)}
+                    }).then((res)=>{
+                    console.log(res)
+                })
                 $.result(res, doc);
+            }
             else
                 $.result(res, "error");
         }, (err) => {
